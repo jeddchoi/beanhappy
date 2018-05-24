@@ -31,16 +31,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.016"
-        android:contentDescription="@string/backbutton"
         app:srcCompat="@drawable/arrow" />
 
     <TextView
+        android:id="@+id/id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:contentDescription="@string/login"
+        android:contentDescription="@string/action_sign_in"
         android:textColor="#000000"
         android:textSize="40sp"
         android:textStyle="bold"
@@ -62,7 +62,7 @@
         android:background="@drawable/bdg_loginpassword"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/idtype"
+        android:text="@string/prompt_email"
         android:textColor="#9b9b9b"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"

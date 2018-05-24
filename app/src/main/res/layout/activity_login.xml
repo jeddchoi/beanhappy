@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/bgd_screen"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -29,21 +30,28 @@
 
         <TextView
             android:id="@+id/title_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/app_name_kor" />
+            android:layout_gravity="center"
+            android:text="@string/app_name_kor"
+            android:textColor="#ffffff"
+            android:textSize="57.6sp"
+            android:fontFamily="@font/hanna"
+            android:layout_marginTop="20dp"
+            tools:text="빈 해 피" />
 
         <ImageView
             android:id="@+id/bh_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
             android:layout_gravity="center"
-            android:scaleType="fitXY"
+            android:layout_margin="20dp"
             android:adjustViewBounds="true"
             android:maxHeight="200dp"
-            app:srcCompat="@drawable/beanhappy" />
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/beanhappy"
+            tools:ignore="ContentDescription"
+            />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -53,6 +61,9 @@
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bdg_loginpassword"
+                android:textSize="25sp"
+                android:textColor="#ffffff"
                 android:hint="@string/prompt_email"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
@@ -68,13 +79,16 @@
                 android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bdg_loginpassword"
+
                 android:hint="@string/prompt_password"
                 android:imeActionId="6"
                 android:imeActionLabel="@string/action_sign_in_short"
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textSize="25sp" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -91,6 +105,9 @@
                 android:layout_marginTop="16dp"
                 android:layout_weight="1"
                 android:text="@string/action_sign_up"
+                android:textSize="30sp"
+                android:textColor="#ffffff"
+                android:fontFamily="@font/hanna"
                 android:textStyle="bold" />
 
             <Button
@@ -101,6 +118,9 @@
                 android:layout_marginTop="16dp"
                 android:layout_weight="1"
                 android:text="@string/action_sign_in"
+                android:textSize="30sp"
+                android:textColor="#ffffff"
+                android:fontFamily="@font/hanna"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -109,15 +129,19 @@
             android:id="@+id/autologinChk"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/autologin" />
+            android:textSize="20sp"
+            android:text="@string/autologin"
+            android:layout_marginBottom="60dp"
+            />
 
         <TextView
             android:id="@+id/show_agreementText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:clickable="true"
-            android:text="@string/show_agreement" />
+            android:gravity="center"
+            android:text="@string/show_agreement" android:focusable="true"
+            />
 
         <TextView
             android:id="@+id/copyrightText"
