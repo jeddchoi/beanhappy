@@ -60,11 +60,11 @@
             <AutoCompleteTextView
                 android:id="@+id/email"
                 android:layout_width="match_parent"
-
                 android:background="@drawable/bdg_loginpassword"
                 android:textSize="25sp"
                 android:textColor="#ffffff"
                 android:hint="@string/prompt_email"
+                android:textColorHint="@color/BackgroundtWhiteColor"
                 android:layout_height="50dp"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
@@ -131,10 +131,9 @@
             android:id="@+id/autologinChk"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
             android:layout_marginBottom="15dp"
             android:text="@string/autologin"
-            />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/show_agreementText"
@@ -148,9 +147,8 @@
         <TextView
             android:id="@+id/copyrightText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@string/copyright"
-            />
+            android:text="@string/copyright" />
     </LinearLayout>
 </LinearLayout>
