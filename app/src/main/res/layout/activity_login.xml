@@ -107,6 +107,7 @@
                 android:text="@string/action_sign_up"
                 android:textSize="30sp"
                 android:textColor="#ffffff"
+                android:backgroundTint="#004181"
                 android:fontFamily="@font/hanna"
                 android:textStyle="bold" />
 
@@ -120,6 +121,7 @@
                 android:text="@string/action_sign_in"
                 android:textSize="30sp"
                 android:textColor="#ffffff"
+                android:backgroundTint="#004181"
                 android:fontFamily="@font/hanna"
                 android:textStyle="bold" />
 
