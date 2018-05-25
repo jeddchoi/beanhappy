@@ -21,8 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".usingactivity"></activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".usingactivity" />
+        <activity android:name=".awaybeacon"></activity>
     </application>
 
 </manifest>
