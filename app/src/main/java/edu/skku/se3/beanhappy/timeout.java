@@ -7,30 +7,25 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class usingactivity extends AppCompatActivity {
+public class timeout extends AppCompatActivity {
+
     private Context mContext = this;
-    private Context mContext1 = this;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_usingactivity);
+        setContentView(R.layout.activity_timeout);
 
-        Button btn = (Button)findViewById(R.id.to_main);
-        Button btn1 = (Button)findViewById(R.id.returnseat);
+        Button btn = (Button)findViewById(R.id.wakeup);
         btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
-                startActivity(intentToActivitymain);
-            }
-        });
-        btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getout();
             }
         });
     }
+
     public void getout(){
         Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
         startActivity(intentToActivitymain);

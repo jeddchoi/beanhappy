@@ -23,7 +23,8 @@
         </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".usingactivity" />
-        <activity android:name=".awaybeacon"></activity>
+        <activity android:name=".awaybeacon" />
+        <activity android:name=".timeout"></activity>
     </application>
 
 </manifest>
