@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "454393854080-tva4anhf51m3r62qhjro78nbv7h95dc8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.skku.se3.beanhappy",
+            "certificate_hash": "86e7ddb02fb3250ee5a28f592771478f7186f871"
+          }
+        },
+        {
           "client_id": "454393854080-umo73vnobbuijqbcj7kors41dcgc9ica.apps.googleusercontent.com",
           "client_type": 3
         },
