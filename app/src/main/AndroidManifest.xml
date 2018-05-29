@@ -25,7 +25,7 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".usingactivity" />
         <activity android:name=".awaybeacon" />
-        <activity android:name=".timeout"></activity>
+        <activity android:name=".timeoutactivity"></activity>
     </application>
 
 </manifest>
