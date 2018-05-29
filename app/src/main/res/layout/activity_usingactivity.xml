@@ -108,17 +108,17 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/btn_start"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_below="@+id/textView"
-        android:layout_marginStart="13dp"
-        android:text="S"
-        app:layout_constraintBottom_toTopOf="@+id/timeout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.085"
-        app:layout_constraintStart_toStartOf="parent" />
+    <!--<Button-->
+        <!--android:id="@+id/btn_start"-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:layout_below="@+id/textView"-->
+        <!--android:layout_marginStart="13dp"-->
+        <!--android:text="S"-->
+        <!--app:layout_constraintBottom_toTopOf="@+id/timeout"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.085"-->
+        <!--app:layout_constraintStart_toStartOf="parent" />-->
 
 
 </RelativeLayout>
