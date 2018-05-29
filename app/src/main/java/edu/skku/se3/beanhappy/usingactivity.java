@@ -19,18 +19,20 @@ import android.widget.Toast;
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
 public class usingactivity extends Activity {
-
+    private int limit_usingtime = 40;
+    private int limit_leavingtime = 10;
     private Context mContext = this;
     private  TextView txtView;
     private  Button btn_away;
     private  User user;
-
+    private  Button btn_extend;
     int pauseprogress = 0;
     int myProgress = 0;
     ProgressBar progressBarView;
     //Button btn_start;
     TextView tv_time;
     int progress;
+    int additiontime = 0;
     CountDownTimer countDownTimer;
     int endTime = 250;
 
@@ -47,6 +49,7 @@ public class usingactivity extends Activity {
         Button btn_main = (Button)findViewById(R.id.to_main);
         Button btn_return = (Button)findViewById(R.id.returnseat);
         Button btn_timeout = (Button)findViewById(R.id.timeout);
+        btn_extend = (Button)findViewById(R.id.btn_extend);
         btn_away = (Button)findViewById(R.id.away);
         txtView = findViewById(R.id.textView);
         user = new User("minki");
@@ -59,7 +62,7 @@ public class usingactivity extends Activity {
         progressBarView.setSecondaryProgress(endTime);
         progressBarView.setProgress(0);
 
-
+        btn_extend.setVisibility(View.INVISIBLE);
         fn_countdown(0);
 //        btn_start.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -95,6 +98,12 @@ public class usingactivity extends Activity {
                     beaconout();
                 }
         });
+        btn_extend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                extend();
+            }
+        });
     }
 
     private void fn_countdown(int pausetime) {
@@ -102,22 +111,22 @@ public class usingactivity extends Activity {
 
             myProgress = 0;
 
-            try {
-                countDownTimer.cancel();
-
-            } catch (Exception e) {
-
-            }
+//            try {
+//                countDownTimer.cancel();
+//
+//            } catch (Exception e) {
+//
+//            }
             //String timeInterval = "2000";
             //String timeInterval = et_timer.getText().toString();
 
             progress = pausetime;
             //endTime = Integer.parseInt(timeInterval); // up to finish time
             if (user.getType() == 3){
-                endTime = 15; // up to finish time
+                endTime = limit_usingtime; // up to finish time
             }
             if (user.getType() == 4){
-                endTime = 10;
+                endTime = limit_leavingtime;
             }
 
 
@@ -128,6 +137,22 @@ public class usingactivity extends Activity {
                     setProgress(progress, endTime);
                     progress = progress + 1;
 
+                    if((user.getType() == 4) & (pauseprogress + progress) == limit_usingtime){
+                        Intent intentToActivitytimeout = new Intent(mContext, timeoutactivity.class);
+                        startActivity(intentToActivitytimeout);
+                        finish();
+                    }
+
+                    if((progress <= limit_leavingtime/2)&(user.getType() == 4)){
+                        btn_extend.setEnabled(false);
+                    }
+                    else if((user.getType() == 4)){
+                        btn_extend.setEnabled(true);
+                    }else{
+                        btn_extend.setEnabled(true);
+                    }
+
+
                     int seconds = (endTime - progress) % 60;
                     int minutes =  (((endTime - progress) / 60) % 60);
                     int hours =  (((endTime - progress) / (60 * 60)) % 24);
@@ -135,21 +160,9 @@ public class usingactivity extends Activity {
 //                    int minutes = (int) ((millisUntilFinished / (1000 * 60)) % 60);
 //                    int hours = (int) ((millisUntilFinished / (1000 * 60 * 60)) % 24);
                     String newtime = hours + ":" + minutes + ":" + seconds;
-                    if((user.getType() == 4) & (pauseprogress + progress) > endTime){
-                        Intent intentToActivitytimeout = new Intent(mContext, timeoutactivity.class);
-                        startActivity(intentToActivitytimeout);
-                        finish();
-                    }
-                    if((endTime - progress) <= 0){  //타이머 시간이 다 지난 경우
-                        if(user.getType() == 3){    //시간 다되면 타임아웃 엑티비티로
-                            Intent intentToActivitytimeout = new Intent(mContext, timeoutactivity.class);
-                            startActivity(intentToActivitytimeout);
-                            finish();
-                        }
-                        if(user.getType() == 4){    //자리비운상태로 시간 다되면 자리 반납
-                            getout();
-                        }
-                    }
+
+
+
                     if (newtime.equals("0:0:0")) {
                         tv_time.setText("00:00:00");
                     } else if ((String.valueOf(hours).length() == 1) && (String.valueOf(minutes).length() == 1) && (String.valueOf(seconds).length() == 1)) {
@@ -176,6 +189,17 @@ public class usingactivity extends Activity {
                 public void onFinish() {
                     setProgress(progress, endTime);
 
+                    if((endTime - progress) == 0){  //타이머 시간이 다 지난 경우
+                        if(user.getType() == 3){    //시간 다되면 타임아웃 엑티비티로
+                            Intent intentToActivitytimeout = new Intent(mContext, timeoutactivity.class);
+                            startActivity(intentToActivitytimeout);
+                            //ontick 뭠춰
+                            finish();
+                        }
+                        if(user.getType() == 4){    //자리비운상태로 시간 다되면 자리 반납
+                            getout();
+                        }
+                    }
 
                 }
             };
@@ -193,6 +217,7 @@ public class usingactivity extends Activity {
     public void getout(){
         Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
         startActivity(intentToActivitymain);
+        checkusingbeanbag.using_beanbag = 0;
         finish();
         //+자리 반납. 타이머 종료. activity 종료
     }
@@ -203,19 +228,23 @@ public class usingactivity extends Activity {
             txtView.setText("사용중인 좌석은 //입니다");
             btn_away.setText("beacon out");
             user.setType(3);
+            btn_extend.setVisibility(View.INVISIBLE);
             pauseprogress = pauseprogress + progress;
-            System.out.println("time:"+pauseprogress);
             fn_countdown(pauseprogress);
         }
         else if(user.getType() == 3){
             txtView.setText("자리를 비우셨습니다.");
             btn_away.setText("beacon in");
             user.setType(4);
+            btn_extend.setVisibility(View.VISIBLE);
             pauseprogress = progress;
-            System.out.println("time:"+pauseprogress);
             fn_countdown(0);
         }
         //+자리 반납. 타이머 종료. activity 종료
+    }
+    public void extend(){
+        progress = progress - 3;
+        //error: 연장시 3초에서 멈춤
     }
 
 }

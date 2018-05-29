@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
+    public static int a;
     private Context mContext = this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,8 +19,13 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentToUsing = new Intent(mContext, usingactivity.class);
-                startActivity(intentToUsing);
+
+                if(checkusingbeanbag.using_beanbag == 0) {
+                    Intent intentToUsing = new Intent(mContext, usingactivity.class);
+                    startActivity(intentToUsing);
+                    checkusingbeanbag.using_beanbag = 1;
+                }
+                finish();
             }
         });
         chat_btn.setOnClickListener(new View.OnClickListener() {

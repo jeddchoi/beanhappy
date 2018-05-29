@@ -138,7 +138,9 @@ public class timeoutactivity extends Activity {
     public void getout(){
         Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
         startActivity(intentToActivitymain);
+        checkusingbeanbag.using_beanbag = 0;
         finish();
+
         //+자리 반납
     }
 }
