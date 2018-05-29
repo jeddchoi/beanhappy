@@ -14,11 +14,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button btn = (Button)findViewById(R.id.button4);
+        Button chat_btn = (Button)findViewById(R.id.button5);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intentToUsing = new Intent(mContext, usingactivity.class);
                 startActivity(intentToUsing);
+            }
+        });
+        chat_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentToChat = new Intent(mContext, ChatActivity.class);
+                startActivity(intentToChat);
             }
         });
     }
