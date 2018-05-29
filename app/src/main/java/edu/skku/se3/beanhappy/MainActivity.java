@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button btn = (Button)findViewById(R.id.button4);
         Button chat_btn = (Button)findViewById(R.id.button5);
+        Button res_btn = (Button)findViewById(R.id.button3);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -27,6 +28,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intentToChat = new Intent(mContext, ChatActivity.class);
                 startActivity(intentToChat);
+            }
+        });
+        res_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intentToReserve = new Intent(mContext, ReserveActivity.class);
+                startActivity(intentToReserve);
             }
         });
     }
