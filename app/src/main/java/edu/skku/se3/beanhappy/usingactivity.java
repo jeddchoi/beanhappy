@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
+
 public class usingactivity extends Activity {
 
     private Context mContext = this;
@@ -84,7 +85,7 @@ public class usingactivity extends Activity {
         btn_timeout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentToActivitytimeout = new Intent(mContext, timeout.class);
+                Intent intentToActivitytimeout = new Intent(mContext, timeoutactivity.class);
                 startActivity(intentToActivitytimeout);
             }
         });
@@ -134,13 +135,23 @@ public class usingactivity extends Activity {
 //                    int minutes = (int) ((millisUntilFinished / (1000 * 60)) % 60);
 //                    int hours = (int) ((millisUntilFinished / (1000 * 60 * 60)) % 24);
                     String newtime = hours + ":" + minutes + ":" + seconds;
-
+                    if((user.getType() == 4) & (pauseprogress + progress) > endTime){
+                        Intent intentToActivitytimeout = new Intent(mContext, timeoutactivity.class);
+                        startActivity(intentToActivitytimeout);
+                        finish();
+                    }
+                    if((endTime - progress) <= 0){  //타이머 시간이 다 지난 경우
+                        if(user.getType() == 3){    //시간 다되면 타임아웃 엑티비티로
+                            Intent intentToActivitytimeout = new Intent(mContext, timeoutactivity.class);
+                            startActivity(intentToActivitytimeout);
+                            finish();
+                        }
+                        if(user.getType() == 4){    //자리비운상태로 시간 다되면 자리 반납
+                            getout();
+                        }
+                    }
                     if (newtime.equals("0:0:0")) {
                         tv_time.setText("00:00:00");
-                        if(user.getType() == 3){    //시간 다되면 타임아웃
-                            Intent intentToActivitytimeout = new Intent(mContext, timeout.class);
-                            startActivity(intentToActivitytimeout);
-                        }
                     } else if ((String.valueOf(hours).length() == 1) && (String.valueOf(minutes).length() == 1) && (String.valueOf(seconds).length() == 1)) {
                         tv_time.setText("0" + hours + ":0" + minutes + ":0" + seconds);
                     } else if ((String.valueOf(hours).length() == 1) && (String.valueOf(minutes).length() == 1)) {
@@ -182,6 +193,7 @@ public class usingactivity extends Activity {
     public void getout(){
         Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
         startActivity(intentToActivitymain);
+        finish();
         //+자리 반납. 타이머 종료. activity 종료
     }
     public void beaconout(){
