@@ -16,7 +16,7 @@
 
 
         <TextView
-            android:id="@+id/logoutBtn"
+            android:id="@+id/logout_textBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
@@ -29,7 +29,7 @@
             android:textSize="25sp" />
 
         <Switch
-            android:id="@+id/pushAlarmSwtch"
+            android:id="@+id/pushAlarmSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="end"
@@ -60,8 +60,7 @@
             android:textSize="57.6sp"
             android:fontFamily="@font/hanna"
             tools:text="빈 해 피"
-            android:layout_marginTop="10dp"
-            />
+            android:layout_marginTop="10dp" />
 
     </LinearLayout>
 
@@ -128,15 +127,13 @@
 
         <Button
             android:id="@+id/reportBtn"
-            android:id="@+id/button5"
             android:layout_width="200dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
             android:backgroundTint="#e12d60"
             android:fontFamily="@font/hanna"
             android:text="@string/report"
-            android:textSize="30sp"
-            />
+            android:textSize="30sp" />
 
 
         <TextView
@@ -147,10 +144,6 @@
             android:layout_marginBottom="1dp"
             android:gravity="center"
             android:text="@string/copyright" />
-
-
-
-
 
     </LinearLayout>
 </LinearLayout>
