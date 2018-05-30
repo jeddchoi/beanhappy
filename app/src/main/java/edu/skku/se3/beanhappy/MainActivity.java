@@ -28,15 +28,16 @@ public class MainActivity extends BaseActivity implements
 
 
         // top ui
-        logout_textBtn = (TextView)findViewById(R.id.logout_textBtn);
-        pushAlarmSwitch = (Switch)findViewById(R.id.pushAlarmSwitch);
-        seatNum = (TextView)findViewById(R.id.seatNum);
+        logout_textBtn = (TextView) findViewById(R.id.logout_textBtn);
+        pushAlarmSwitch = (Switch) findViewById(R.id.pushAlarmSwitch);
+        seatNum = (TextView) findViewById(R.id.seatNum);
 
         // Buttons
-        quickReserveBtn = (Button)findViewById(R.id.quickReserveBtn);
-        reserveBtn = (Button)findViewById(R.id.reserveBtn);
-        myStatusBtn = (Button)findViewById(R.id.myStatusBtn);
-        reportBtn = (Button)findViewById(R.id.reportBtn);
+        quickReserveBtn = (Button) findViewById(R.id.quickReserveBtn);
+        reserveBtn = (Button) findViewById(R.id.reserveBtn);
+        myStatusBtn = (Button) findViewById(R.id.myStatusBtn);
+        reportBtn = (Button) findViewById(R.id.reportBtn);
+        reserveBtn.setOnClickListener(this);
     }
 
     @Override
@@ -70,8 +71,11 @@ public class MainActivity extends BaseActivity implements
         int i = v.getId();
         if (i == R.id.quickReserveBtn) {
 
-        } else if (i == R.id.reserveBtn) {
+        } else if( i == R.id.quickReserveBtn) {
 
+        } else if (i == R.id.reserveBtn) {
+            Intent intentToReserve = new Intent(getApplicationContext(), ReserveActivity.class);
+            startActivity(intentToReserve);
         } else if (i == R.id.myStatusBtn) {
             if(checkusingbeanbag.using_beanbag == 0) {
                 Intent intentToUsing = new Intent(getApplicationContext(), usingactivity.class);

@@ -32,6 +32,7 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".usingactivity" />
         <activity android:name=".awaybeacon" />
+        <activity android:name=".ReserveActivity"/>
         <activity android:name=".timeoutactivity"></activity>
     </application>
 
