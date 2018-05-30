@@ -1,6 +1,7 @@
 package edu.skku.se3.beanhappy;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -37,6 +38,27 @@ public class MainActivity extends BaseActivity implements
         reserveBtn = (Button)findViewById(R.id.reserveBtn);
         myStatusBtn = (Button)findViewById(R.id.myStatusBtn);
         reportBtn = (Button)findViewById(R.id.reportBtn);
+
+
+        logout_textBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "LOGOUT"); // test
+                mAuth.signOut();
+
+                SharedPreferences pref;
+                SharedPreferences.Editor editor;
+                pref = getSharedPreferences("pref", 0);
+                editor = pref.edit();
+
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                editor.putBoolean("autoLogin", false);
+                editor.commit();
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     @Override
@@ -82,8 +104,6 @@ public class MainActivity extends BaseActivity implements
         } else if (i == R.id.reportBtn) {
             Intent intentToChat = new Intent(getApplicationContext(), ChatActivity.class);
             startActivity(intentToChat);
-        } else if (i == R.id.logout_textBtn) {
-
         }
     }
 }
