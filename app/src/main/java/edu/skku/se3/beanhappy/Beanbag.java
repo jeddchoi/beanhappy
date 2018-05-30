@@ -17,21 +17,14 @@ public class Beanbag {
 
     }
 
-    public void setBid(int Btype){
+    public void setBtype(int Btype){
         this.Btype = Btype;
     }
-    public int getBid(){
+    public int getBtype(){
         return this.Btype;
     }
     public int getBcount(){
         return Bcount;
     }
-
-    Beanbag A1 = new Beanbag("A1");
-    Beanbag A2 = new Beanbag("A2");
-    Beanbag A3 = new Beanbag("A3");
-    Beanbag A4 = new Beanbag("A4");
-    Beanbag A5 = new Beanbag("A5");
-    Beanbag A6 = new Beanbag("A6");
 }
 
