@@ -23,126 +23,134 @@
         android:layout_marginBottom="8dp"
         android:visibility="gone" />
 
-    <LinearLayout
-        android:id="@+id/email_login_form"
+
+    <ScrollView
+        android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-
-
-        <TextView
-            android:id="@+id/title_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/app_name_kor"
-            android:textColor="#ffffff"
-            android:textSize="57.6sp"
-            android:fontFamily="@font/hanna"
-            android:layout_marginTop="20dp"
-            tools:text="빈 해 피" />
-
-        <ImageView
-            android:id="@+id/bh_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="20dp"
-            android:adjustViewBounds="true"
-            android:maxHeight="200dp"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/beanhappy"
-            tools:ignore="ContentDescription"
-            />
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/email_edit"
-                android:layout_width="match_parent"
-                android:background="@drawable/bdg_loginpassword"
-                android:textSize="25sp"
-                android:textColor="#ffffff"
-                android:hint="@string/prompt_email"
-                android:textColorHint="@color/BackgroundtWhiteColor"
-                android:layout_height="50dp"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:singleLine="true" />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/pw_edit"
-                android:layout_width="match_parent"
-                android:background="@drawable/bdg_loginpassword"
-                android:layout_height="50dp"
-                android:hint="@string/prompt_password"
-                android:imeActionId="6"
-                android:imeActionLabel="@string/action_sign_in_short"
-                android:imeOptions="actionUnspecified"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textSize="25sp" />
-
-        </android.support.design.widget.TextInputLayout>
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/email_sign_up_button"
-                style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_weight="1"
-                android:text="@string/action_sign_up"
-                android:textSize="30sp"
-                android:textColor="#ffffff"
-                android:backgroundTint="#004181"
-                android:fontFamily="@font/hanna"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/email_sign_in_button"
-                style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_weight="1"
-                android:text="@string/action_sign_in"
-                android:textSize="30sp"
-                android:textColor="#ffffff"
-                android:backgroundTint="#004181"
-                android:fontFamily="@font/hanna"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <CheckBox
-            android:id="@+id/autologinChk"
+            android:id="@+id/email_login_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:text="@string/autologin"
-            android:textSize="20sp" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/copyrightText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/copyright" />
-    </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/title_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/app_name_kor"
+                android:textColor="#ffffff"
+                android:textSize="57.6sp"
+                android:fontFamily="@font/hanna"
+                android:layout_marginTop="20dp"
+                tools:text="빈 해 피" />
+
+            <ImageView
+                android:id="@+id/bh_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="20dp"
+                android:adjustViewBounds="true"
+                android:maxHeight="200dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/beanhappy"
+                tools:ignore="ContentDescription"
+                />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/email_edit"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/bdg_loginpassword"
+                    android:textSize="25sp"
+                    android:textColor="#ffffff"
+                    android:hint="@string/prompt_email"
+                    android:textColorHint="@color/BackgroundtWhiteColor"
+                    android:layout_height="50dp"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/pw_edit"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/bdg_loginpassword"
+                    android:layout_height="50dp"
+                    android:hint="@string/prompt_password"
+                    android:imeActionId="6"
+                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textSize="25sp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/email_sign_up_button"
+                    style="?android:textAppearanceSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:text="@string/action_sign_up"
+                    android:textSize="30sp"
+                    android:textColor="#ffffff"
+                    android:backgroundTint="#004181"
+                    android:fontFamily="@font/hanna"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/email_sign_in_button"
+                    style="?android:textAppearanceSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:text="@string/action_sign_in"
+                    android:textSize="30sp"
+                    android:textColor="#ffffff"
+                    android:backgroundTint="#004181"
+                    android:fontFamily="@font/hanna"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/autologinChk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:text="@string/autologin"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/copyrightText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/copyright" />
+        </LinearLayout>
+    </ScrollView>
+
 </LinearLayout>
