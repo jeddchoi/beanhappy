@@ -35,6 +35,8 @@ public class usingactivity extends Activity {
     int additiontime = 0;
     CountDownTimer countDownTimer;
     int endTime = 250;
+    int extendtime;
+    boolean isextended = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,12 +113,12 @@ public class usingactivity extends Activity {
 
             myProgress = 0;
 
-//            try {
-//                countDownTimer.cancel();
-//
-//            } catch (Exception e) {
-//
-//            }
+            try {
+                countDownTimer.cancel();
+
+            } catch (Exception e) {
+
+            }
             //String timeInterval = "2000";
             //String timeInterval = et_timer.getText().toString();
 
@@ -143,7 +145,7 @@ public class usingactivity extends Activity {
                         finish();
                     }
 
-                    if((progress <= limit_leavingtime/2)&(user.getType() == 4)){
+                    if((progress <= limit_leavingtime/2)&(user.getType() == 4)&(isextended == true)){
                         btn_extend.setEnabled(false);
                     }
                     else if((user.getType() == 4)){
@@ -243,8 +245,9 @@ public class usingactivity extends Activity {
         //+자리 반납. 타이머 종료. activity 종료
     }
     public void extend(){
-        progress = progress - 3;
-        //error: 연장시 3초에서 멈춤
+        extendtime = progress - limit_leavingtime/2;
+        fn_countdown(extendtime);
+        isextended = true;
     }
 
 }
