@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/bgd_screen"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -40,10 +41,15 @@
                 android:layout_height="wrap_content">
 
                 <EditText
+                    android:layout_marginTop="10dp"
                     android:id="@+id/register_email_edit"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:background="@drawable/bdg_loginpassword"
+                    android:textSize="25sp"
+                    android:textColor="#ffffff"
                     android:hint="@string/prompt_email"
+                    android:textColorHint="@color/BackgroundtWhiteColor"
+                    android:layout_height="50dp"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:singleLine="true" />
@@ -57,7 +63,9 @@
                 <EditText
                     android:id="@+id/register_pw_edit"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:textSize="25sp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bdg_loginpassword"
                     android:hint="@string/prompt_password"
                     android:imeActionId="6"
                     android:imeActionLabel="@string/action_sign_in_short"
@@ -75,7 +83,9 @@
                 <EditText
                     android:id="@+id/register_pw_edit_check"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:textSize="25sp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bdg_loginpassword"
                     android:hint="@string/prompt_password_check"
                     android:imeActionId="6"
                     android:imeActionLabel="@string/action_sign_in_short"
@@ -102,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:clickable="true"
-                android:orientation="horizontal">
+                android:orientation="horizontal" android:focusable="true">
 
                 <CheckBox
                     android:id="@+id/register_check"
@@ -121,9 +131,16 @@
             <Button
                 android:id="@+id/register_button"
                 style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_width="250dp"
+                android:layout_marginTop="16dp"
+                android:layout_weight="1"
                 android:text="@string/action_sign_up"
+                android:textSize="45sp"
+                android:layout_gravity="center"
+                android:textColor="#ffffff"
+                android:backgroundTint="#004181"
+                android:fontFamily="@font/hanna"
                 android:visibility="visible"
                 android:textStyle="bold" />
 
