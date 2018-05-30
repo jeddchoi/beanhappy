@@ -76,10 +76,10 @@ public class MainActivity extends BaseActivity implements
         int i = v.getId();
         Log.d(TAG, "myStatusBtn clicked"); // test
         if (i == R.id.quickReserveBtn) {
-
-        } else if( i == R.id.quickReserveBtn) {
-
-        } else if (i == R.id.reserveBtn) {
+            Intent intentToquick = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+            startActivity(intentToquick);
+            finish();
+        }  else if (i == R.id.reserveBtn) {
             Intent intentToReserve = new Intent(getApplicationContext(), ReserveActivity.class);
             startActivity(intentToReserve);
         } else if (i == R.id.myStatusBtn) {
