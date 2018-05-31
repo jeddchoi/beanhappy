@@ -103,7 +103,7 @@ public class AfterRegisterActivity extends AppCompatActivity {
 
         @Override
         public void onFinish() {    //타이머가 종료될때 실행됨
-            //getout();
+            myCountDownTimer.cancel();
             finish();
         }
     }
@@ -119,8 +119,11 @@ public class AfterRegisterActivity extends AppCompatActivity {
 
     /*비콘에 들어오는 경우 실행되는 함수*/
     public void beaconin(){
-        Intent intentToActivityusing = new Intent(mContext, usingactivity.class);
-        startActivity(intentToActivityusing);
+//        Intent intentToActivityusing = new Intent(mContext, usingactivity.class);
+//        startActivity(intentToActivityusing);
+        Intent intentToUsing = new Intent(getApplicationContext(), usingactivity.class);
+        intentToUsing.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intentToUsing);
         //activity 넘어갈때 FLAG로 해야함 일단은 startActivity로 만들었음
         myCountDownTimer.cancel();  //ontick()(=타이머) 정지
         finish();   //해당 activity종료
