@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/bgd_screen"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -31,8 +32,27 @@
             android:id="@+id/email_login_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:id="@+id/email_password_fields">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/register_email_edit"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/bdg_loginpassword"
+                    android:textSize="25sp"
+                    android:textColor="#ffffff"
+                    android:hint="@string/prompt_email"
+                    android:textColorHint="@color/BackgroundtWhiteColor"
+                    android:layout_height="50dp"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+
 
 
             <LinearLayout
@@ -43,7 +63,18 @@
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
+                    android:textSize="25sp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bdg_loginpassword"
+                    android:hint="@string/prompt_password"
+                    android:imeActionId="6"
+                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true" />
                     android:layout_height="wrap_content">
+
 
                     <EditText
                         android:id="@+id/register_email_edit"
@@ -98,8 +129,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="20dp">
+                android:gravity="center_vertical"
+                android:clickable="true"
+                android:orientation="horizontal" android:focusable="true">
+
 
 
                 <LinearLayout
@@ -142,7 +175,22 @@
                     android:visibility="gone"
                     android:textStyle="bold" />
 
-            </LinearLayout>
+            <Button
+                android:id="@+id/register_button"
+                style="?android:textAppearanceSmall"
+                android:layout_height="0dp"
+                android:layout_width="250dp"
+                android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                android:text="@string/action_sign_up"
+                android:textSize="45sp"
+                android:layout_gravity="center"
+                android:textColor="#ffffff"
+                android:backgroundTint="#004181"
+                android:fontFamily="@font/hanna"
+                android:visibility="visible"
+                android:textStyle="bold" />
+
 
         <TextView
             android:id="@+id/return_login_txt"
