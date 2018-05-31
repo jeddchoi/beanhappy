@@ -86,6 +86,8 @@ public class usingactivity extends Activity {
             public void onClick(View v) {
                 Intent intentToActivitytimeout = new Intent(mContext, timeoutactivity.class);
                 startActivity(intentToActivitytimeout);
+                countDownTimer.cancel();
+                finish();
             }
         });
         btn_away.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +135,16 @@ public class usingactivity extends Activity {
                     setProgress(progress, endTime);
                     progress = progress + 1;
 
-                    if((user.getType() == 4) & (pauseprogress + progress) == limit_usingtime){
+
+                    if((user.getType() == 3) & (endTime - progress == 0)){
+                        Intent intentToActivitytimeout = new Intent(mContext, timeoutactivity.class);
+                        startActivity(intentToActivitytimeout);
+                        countDownTimer.cancel();
+                        finish();
+                    }
+
+
+                    if((user.getType() == 4) & (pauseprogress + progress == limit_usingtime)){
                         Intent intentToActivitytimeout = new Intent(mContext, timeoutactivity.class);
                         startActivity(intentToActivitytimeout);
                         countDownTimer.cancel();
@@ -141,8 +152,8 @@ public class usingactivity extends Activity {
                     }
                     if((user.getType() == 4) & (endTime - progress == 0)){
                         getout();
-                        countDownTimer.cancel();
                     }
+
 
                     if((progress >= limit_leavingtime/2)&(user.getType() == 4)){
                         if(isextended == true){
@@ -193,18 +204,17 @@ public class usingactivity extends Activity {
                 public void onFinish() {
                     setProgress(progress, endTime);
 
-                    if((endTime - progress) == 0){  //타이머 시간이 다 지난 경우
-                        if(user.getType() == 3){    //시간 다되면 타임아웃 엑티비티로
-                            Intent intentToActivitytimeout = new Intent(mContext, timeoutactivity.class);
-                            startActivity(intentToActivitytimeout);
-                            countDownTimer.cancel();
-                            finish();
-                        }
-                        if(user.getType() == 4){    //자리비운상태로 시간 다되면 자리 반납
-                            getout();
-                            countDownTimer.cancel();
-                        }
+                    //if((endTime - progress) == 0){  //타이머 시간이 다 지난 경우
+                    if(user.getType() == 3){    //시간 다되면 타임아웃 엑티비티로
+                        Intent intentToActivitytimeout = new Intent(mContext, timeoutactivity.class);
+                        startActivity(intentToActivitytimeout);
+                        countDownTimer.cancel();
+                        finish();
                     }
+                    if(user.getType() == 4){    //자리비운상태로 시간 다되면 자리 반납
+                        getout();
+                    }
+                    //}
 
                 }
             };
@@ -223,6 +233,7 @@ public class usingactivity extends Activity {
         Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
         startActivity(intentToActivitymain);
         checkusingbeanbag.using_beanbag = 0;
+        countDownTimer.cancel();
         finish();
         //+자리 반납. 타이머 종료. activity 종료
     }
@@ -240,7 +251,7 @@ public class usingactivity extends Activity {
             else{
                 pauseprogress = pauseprogress + progress;
             }
-
+            countDownTimer.cancel();
             fn_countdown(pauseprogress);
         }
         else if(user.getType() == 3){
@@ -250,12 +261,14 @@ public class usingactivity extends Activity {
             btn_extend.setVisibility(View.VISIBLE);
             pauseprogress = progress;
             isextended = false;
+            countDownTimer.cancel();
             fn_countdown(0);
         }
         //+자리 반납. 타이머 종료. activity 종료
     }
     public void extend(){
         extendtime = progress - limit_leavingtime/2;
+        countDownTimer.cancel();
         fn_countdown(extendtime);
         isextended = true;
     }
