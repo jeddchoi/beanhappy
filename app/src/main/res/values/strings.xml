@@ -44,6 +44,10 @@
     <string name="myStatus">내 이용 현황</string>
     <string name="report">신고 문의</string>
     <string name="사용현황숫자">25/27</string>
+    <string name="go_back">뒤로가기</string>
+    <string name="보내기">SEND</string>
+    <string name="일어날게요">일어날게요</string>
+    <string name="화남">화남</string>
 
 
 </resources>
