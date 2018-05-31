@@ -1,33 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#2f3843"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".timeoutactivity">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:contentDescription="@string/화남"
+    <TextView
+        android:id="@+id/angry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="29dp"
-        android:src="@drawable/angry" />
+        android:layout_marginTop="97dp"
+        android:text="화난 이미지 위치"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/wakeup"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="27dp"
-        android:text="@string/일어날게요"
-        android:background="#596069"
-        android:fontFamily="@font/hanna"
-        android:textSize="30sp"
+        android:text="일어날게요"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
@@ -38,18 +37,14 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:layout_above="@+id/wakeup"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:layout_marginBottom="13dp"
-        android:indeterminate="false"
-        android:max="100"
-        android:progress="90"
-        android:progressDrawable="@drawable/progressbar"
+        android:layout_marginBottom="98dp"
+        android:progressDrawable="@drawable/timeout_circularprogressbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 
     <TextView
@@ -65,6 +60,4 @@
         app:layout_constraintEnd_toEndOf="@+id/view_progress_bar"
         app:layout_constraintStart_toStartOf="@+id/view_progress_bar"
         app:layout_constraintTop_toTopOf="@+id/view_progress_bar" />
-
-
 </RelativeLayout>
