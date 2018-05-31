@@ -35,6 +35,8 @@ public class usingactivity extends Activity {
     int additiontime = 0;
     CountDownTimer countDownTimer;
     int endTime = 250;
+    int extendtime;
+    boolean isextended = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +66,6 @@ public class usingactivity extends Activity {
 
         btn_extend.setVisibility(View.INVISIBLE);
         fn_countdown(0);
-//        btn_start.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                fn_countdown();
-//            }
-//        });
 
 
         btn_main.setOnClickListener(new View.OnClickListener() {
@@ -111,12 +107,12 @@ public class usingactivity extends Activity {
 
             myProgress = 0;
 
-//            try {
-//                countDownTimer.cancel();
-//
-//            } catch (Exception e) {
-//
-//            }
+            try {
+                countDownTimer.cancel();
+
+            } catch (Exception e) {
+
+            }
             //String timeInterval = "2000";
             //String timeInterval = et_timer.getText().toString();
 
@@ -140,16 +136,24 @@ public class usingactivity extends Activity {
                     if((user.getType() == 4) & (pauseprogress + progress) == limit_usingtime){
                         Intent intentToActivitytimeout = new Intent(mContext, timeoutactivity.class);
                         startActivity(intentToActivitytimeout);
+                        countDownTimer.cancel();
                         finish();
                     }
-
-                    if((progress <= limit_leavingtime/2)&(user.getType() == 4)){
-                        btn_extend.setEnabled(false);
+                    if((user.getType() == 4) & (endTime - progress == 0)){
+                        getout();
+                        countDownTimer.cancel();
                     }
-                    else if((user.getType() == 4)){
-                        btn_extend.setEnabled(true);
-                    }else{
-                        btn_extend.setEnabled(true);
+
+                    if((progress >= limit_leavingtime/2)&(user.getType() == 4)){
+                        if(isextended == true){
+                            btn_extend.setEnabled(false);
+                        }
+                        else{
+                            btn_extend.setEnabled(true);
+                        }
+                    }
+                    else{
+                        btn_extend.setEnabled(false);
                     }
 
 
@@ -193,11 +197,12 @@ public class usingactivity extends Activity {
                         if(user.getType() == 3){    //시간 다되면 타임아웃 엑티비티로
                             Intent intentToActivitytimeout = new Intent(mContext, timeoutactivity.class);
                             startActivity(intentToActivitytimeout);
-                            //ontick 뭠춰
+                            countDownTimer.cancel();
                             finish();
                         }
                         if(user.getType() == 4){    //자리비운상태로 시간 다되면 자리 반납
                             getout();
+                            countDownTimer.cancel();
                         }
                     }
 
@@ -229,7 +234,13 @@ public class usingactivity extends Activity {
             btn_away.setText("beacon out");
             user.setType(3);
             btn_extend.setVisibility(View.INVISIBLE);
-            pauseprogress = pauseprogress + progress;
+            if(isextended){
+                pauseprogress = pauseprogress + progress + limit_leavingtime/2;
+            }
+            else{
+                pauseprogress = pauseprogress + progress;
+            }
+
             fn_countdown(pauseprogress);
         }
         else if(user.getType() == 3){
@@ -238,13 +249,15 @@ public class usingactivity extends Activity {
             user.setType(4);
             btn_extend.setVisibility(View.VISIBLE);
             pauseprogress = progress;
+            isextended = false;
             fn_countdown(0);
         }
         //+자리 반납. 타이머 종료. activity 종료
     }
     public void extend(){
-        progress = progress - 3;
-        //error: 연장시 3초에서 멈춤
+        extendtime = progress - limit_leavingtime/2;
+        fn_countdown(extendtime);
+        isextended = true;
     }
 
 }

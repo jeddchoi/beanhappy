@@ -170,7 +170,6 @@ public class RegisterActivity extends BaseActivity implements
 
         if(requestCode == REQUEST_CODE_AGREEMENT && resultCode == RESULT_OK) {
             register_check.setChecked(true);
-
         }
     }
 
@@ -225,6 +224,10 @@ public class RegisterActivity extends BaseActivity implements
                             Toast.makeText(RegisterActivity.this,
                                     "Verification email sent to " + user.getEmail(),
                                     Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intent);
+                            finish();
                         } else {
                             Log.e(TAG, "sendEmailVerification", task.getException());
                             Toast.makeText(RegisterActivity.this,

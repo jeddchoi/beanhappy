@@ -38,8 +38,8 @@ public class LoginActivity extends BaseActivity {
     private FirebaseAuth mAuth;
 
 
-//    SharedPreferences pref;
-//    SharedPreferences.Editor editor;
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
 
 
 
@@ -56,8 +56,8 @@ public class LoginActivity extends BaseActivity {
         autologin_ChkBox = (CheckBox)findViewById(R.id.autologinChk);
         mAuth = FirebaseAuth.getInstance();
 
-//        pref = getSharedPreferences("pref", 0);
-//        editor = pref.edit();
+        pref = getSharedPreferences("pref", 0);
+        editor = pref.edit();
 
     }
 
@@ -105,61 +105,29 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
-//        /* -- 자동로그인 체크박스 클릭시 -- */
-//        autologin_ChkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if(isChecked) {
-//                    loginChecked = true;
-//                } else {
-//                    // if unChecked, removeAll
-//                    loginChecked = false;
-//                    editor.clear();
-//                    editor.commit();
-//                }
-//            }
-//        });
-//
-//        if (pref.getBoolean("autoLogin", false)) {
-//            email_edit.setText(pref.getString("id", ""));
-//            pw_edit.setText(pref.getString("pw", ""));
-//            autologin_ChkBox.setChecked(true);
-//            // goto mainActivity
-//            showProgress(true);
-//            signIn(email_edit.getText().toString(), pw_edit.getText().toString());
-//
-//            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//            startActivity(intent);
-//
-//        } else {
-//            // if autoLogin unChecked
-//            String id = email_edit.getText().toString();
-//            String password = pw_edit.getText().toString();
-//            Boolean validation = loginValidation(id, password);
-//
-//            if(validation) {
-//                Toast.makeText(getApplicationContext(), "Login Success", Toast.LENGTH_LONG).show();
-//                // save id, password to Database
-//
-//                if(loginChecked) {
-//                    // if autoLogin Checked, save values
-//                    editor.putString("id", id);
-//                    editor.putString("pw", password);
-//                    editor.putBoolean("autoLogin", true);
-//                    editor.commit();
-//                }
-//                // goto mainActivity
-//                showProgress(true);
-//                signIn(email_edit.getText().toString(), pw_edit.getText().toString());
-//
-//                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                startActivity(intent);
-//
-//            } else {
-//                Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_LONG).show();
-//                // goto LoginActivity
-//            }
-//        }
+        /* -- 자동로그인 체크박스 클릭시 -- */
+        autologin_ChkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    loginChecked = true;
+                } else {
+                    // if unChecked, removeAll
+                    loginChecked = false;
+                    editor.clear();
+                    editor.commit();
+                }
+            }
+        });
+
+        if (pref.getBoolean("autoLogin", false)) {
+            email_edit.setText(pref.getString("id", ""));
+            pw_edit.setText(pref.getString("pw", ""));
+            autologin_ChkBox.setChecked(true);
+
+            signIn(email_edit.getText().toString(), pw_edit.getText().toString());
+
+        }
 
     }
 
@@ -212,6 +180,13 @@ public class LoginActivity extends BaseActivity {
             // form field with an error.
             focusView.requestFocus();
         } else {
+            if(loginChecked) {
+                // if autoLogin Checked, save values
+                editor.putString("id", email);
+                editor.putString("pw", password);
+                editor.putBoolean("autoLogin", true);
+                editor.commit();
+            }
             signIn(email, password);
         }
     }
@@ -262,6 +237,7 @@ public class LoginActivity extends BaseActivity {
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(intent);
+                            finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());

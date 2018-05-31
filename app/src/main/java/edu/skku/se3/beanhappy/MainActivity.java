@@ -1,6 +1,7 @@
 package edu.skku.se3.beanhappy;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,12 +15,14 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends BaseActivity implements
         View.OnClickListener {
+
     public static final String TAG = "BeanHappy";
     private FirebaseAuth mAuth;
     TextView logout_textBtn;
     Switch pushAlarmSwitch;
     Button quickReserveBtn, reserveBtn, myStatusBtn, reportBtn;
     TextView seatNum;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,15 +31,18 @@ public class MainActivity extends BaseActivity implements
 
 
         // top ui
-        logout_textBtn = (TextView)findViewById(R.id.logout_textBtn);
-        pushAlarmSwitch = (Switch)findViewById(R.id.pushAlarmSwitch);
-        seatNum = (TextView)findViewById(R.id.seatNum);
+        logout_textBtn = (TextView) findViewById(R.id.logout_textBtn);
+        pushAlarmSwitch = (Switch) findViewById(R.id.pushAlarmSwitch);
+        seatNum = (TextView) findViewById(R.id.seatNum);
 
         // Buttons
-        quickReserveBtn = (Button)findViewById(R.id.quickReserveBtn);
-        reserveBtn = (Button)findViewById(R.id.reserveBtn);
-        myStatusBtn = (Button)findViewById(R.id.myStatusBtn);
-        reportBtn = (Button)findViewById(R.id.reportBtn);
+        findViewById(R.id.logout_textBtn).setOnClickListener(this);
+        findViewById(R.id.quickReserveBtn).setOnClickListener(this);
+        findViewById(R.id.reserveBtn).setOnClickListener(this);
+        findViewById(R.id.myStatusBtn).setOnClickListener(this);
+        findViewById(R.id.reportBtn).setOnClickListener(this);
+
+
     }
 
     @Override
@@ -68,11 +74,16 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onClick(View v) {
         int i = v.getId();
+        Log.d(TAG, "myStatusBtn clicked"); // test
         if (i == R.id.quickReserveBtn) {
-
-        } else if (i == R.id.reserveBtn) {
-
+            Intent intentToquick = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+            startActivity(intentToquick);
+            finish();
+        }  else if (i == R.id.reserveBtn) {
+            Intent intentToReserve = new Intent(getApplicationContext(), ReserveActivity.class);
+            startActivity(intentToReserve);
         } else if (i == R.id.myStatusBtn) {
+
             if(checkusingbeanbag.using_beanbag == 0) {
                 Intent intentToUsing = new Intent(getApplicationContext(), usingactivity.class);
                 startActivity(intentToUsing);
@@ -83,7 +94,20 @@ public class MainActivity extends BaseActivity implements
             Intent intentToChat = new Intent(getApplicationContext(), ChatActivity.class);
             startActivity(intentToChat);
         } else if (i == R.id.logout_textBtn) {
+            Log.d(TAG, "LOGOUT"); // test
+            mAuth.signOut();
 
+            SharedPreferences pref;
+            SharedPreferences.Editor editor;
+            pref = getSharedPreferences("pref", 0);
+            editor = pref.edit();
+
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            editor.putBoolean("autoLogin", false);
+            editor.commit();
+            startActivity(intent);
+            finish();
         }
     }
 }
