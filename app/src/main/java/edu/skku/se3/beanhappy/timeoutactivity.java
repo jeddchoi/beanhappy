@@ -61,6 +61,12 @@ public class timeoutactivity extends Activity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        Toast.makeText(timeoutactivity.this,"뒤로가기는 제한됩니다.", Toast.LENGTH_SHORT).show();
+    }
+
     private void fn_countdown() {
         //if (et_timer.getText().toString().length()>0) {
 
@@ -127,6 +133,8 @@ public class timeoutactivity extends Activity {
         countDownTimer.start();
 
     }
+
+
 
     public void setProgress(int startTime, int endTime) {
         progressBarView.setMax(endTime);
