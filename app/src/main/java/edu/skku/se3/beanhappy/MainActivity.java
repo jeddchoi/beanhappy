@@ -77,6 +77,7 @@ public class MainActivity extends BaseActivity implements
         Log.d(TAG, "myStatusBtn clicked"); // test
         if (i == R.id.quickReserveBtn) {
             Intent intentToquick = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+            intentToquick.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intentToquick);
             finish();
         }  else if (i == R.id.reserveBtn) {
