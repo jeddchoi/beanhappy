@@ -3,6 +3,7 @@ package edu.skku.se3.beanhappy;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -29,18 +30,25 @@ public class timeoutactivity extends Activity {
     int progress;
     CountDownTimer countDownTimer;
     int endTime = 250;
+    Vibrator vide;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeout);
 
-        //진동기능 넣기
+        //진동기능
+        vide = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+
 
         progressBarView = (ProgressBar) findViewById(R.id.view_progress_bar);
         //btn_start = (Button)findViewById(R.id.btn_start);
         tv_time= (TextView)findViewById(R.id.tv_timer);
 
+
+        /*vibrater*/
+        long[] pattern = {0,500,200,100};
+        vide.vibrate(pattern, 0);
 
         /*Animation*/
         RotateAnimation makeVertical = new RotateAnimation(0, -90, RELATIVE_TO_SELF, 0.5f, RELATIVE_TO_SELF, 0.5f);
@@ -59,6 +67,13 @@ public class timeoutactivity extends Activity {
                 getout();
             }
         });
+    }
+
+    /*뒤로가기를 눌렀을 때 작동되는 함수*/
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        Toast.makeText(timeoutactivity.this,"뒤로가기는 제한됩니다.", Toast.LENGTH_SHORT).show();
     }
 
     private void fn_countdown() {
@@ -128,6 +143,8 @@ public class timeoutactivity extends Activity {
 
     }
 
+
+
     public void setProgress(int startTime, int endTime) {
         progressBarView.setMax(endTime);
         progressBarView.setSecondaryProgress(endTime);
@@ -138,7 +155,8 @@ public class timeoutactivity extends Activity {
     public void getout(){
         Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
         startActivity(intentToActivitymain);
-        checkusingbeanbag.using_beanbag = 0;
+        //checkusingbeanbag.using_beanbag = 0;
+        vide.cancel();
         finish();
 
         //+자리 반납
