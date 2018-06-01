@@ -55,7 +55,6 @@
     <string name="D구역">D구역</string>
     <string name="E구역">E구역</string>
     <string name="todo">TODO</string>
-    <string name="_0_4">0/4</string>
     <string name="_0_8">0/8</string>
     <string name="_0_5">0/5</string>
     <string name="_0_6">0/6</string>
@@ -85,6 +84,22 @@
     <string name="view8">view8</string>
     <string name="d2">d2</string>
     <string name="d1">d1</string>
+    <string name="_0_4">0/4</string>
+    <string name="_0_4_1">0/4</string>
+    <string name="a2">a2</string>
+    <string name="a3">a3</string>
+    <string name="a4">a4</string>
+    <string name="a1">a1</string>
+    <string name="studyroom">studyroom</string>
+    <string name="cinema">cinema</string>
+    <string name="elevator">elevator</string>
+    <string name="imageview12">imageView12</string>
+    <string name="imageview13">imageView13</string>
+    <string name="e1">e1</string>
+    <string name="e2">e2</string>
+    <string name="e3">e3</string>
+    <string name="e4">e4</string>
+    <string name="multimedia">multimedia</string>
 
 
 </resources>
