@@ -16,11 +16,19 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
 public class usingactivity extends Activity {
+
     private int limit_usingtime = 40;
     private int limit_leavingtime = 10;
+    /*피크타임 시작과 끝 그리고 피크타임 여부 설정*/
+    private int peak_starthour = 15;
+    private int peak_endhour = 19;
+    private boolean isnotpeak = true;
+
     private Context mContext = this;
     private  TextView txtView;
     private  Button btn_away;
@@ -37,7 +45,9 @@ public class usingactivity extends Activity {
     int endTime = 250;
     int extendtime;
     boolean isextended = false;
-
+    Calendar t = Calendar.getInstance();
+    String hh = Integer.toString(t.get(Calendar.HOUR_OF_DAY));
+    int H = Integer.parseInt(hh);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +75,8 @@ public class usingactivity extends Activity {
         progressBarView.setProgress(0);
 
         btn_extend.setVisibility(View.INVISIBLE);
-        fn_countdown(0);
+
+            fn_countdown(0);
 
 
         btn_main.setOnClickListener(new View.OnClickListener() {
@@ -154,7 +165,7 @@ public class usingactivity extends Activity {
 
 
                     if((progress >= limit_leavingtime/2)&(user.getType() == 4)){
-                        if(isextended == true){
+                        if(isextended){
                             btn_extend.setEnabled(false);
                         }
                         else{
@@ -213,7 +224,10 @@ public class usingactivity extends Activity {
 
                 }
             };
-            countDownTimer.start();
+
+            if(peak_starthour < H & H < peak_endhour | isnotpeak) {
+                countDownTimer.start();
+            }
 
     }
 
