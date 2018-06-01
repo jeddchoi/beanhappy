@@ -46,8 +46,8 @@ public class timeoutactivity extends Activity {
         tv_time= (TextView)findViewById(R.id.tv_timer);
 
 
-        /*vibrater*/
-        long[] pattern = {0,500,200,100};
+        /*vibrate*/
+        long[] pattern = {0, 1000, 200, 1000, 200};
         vide.vibrate(pattern, 0);
 
         /*Animation*/
@@ -156,6 +156,7 @@ public class timeoutactivity extends Activity {
         Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
         startActivity(intentToActivitymain);
         //checkusingbeanbag.using_beanbag = 0;
+        countDownTimer.cancel();
         vide.cancel();
         finish();
 
