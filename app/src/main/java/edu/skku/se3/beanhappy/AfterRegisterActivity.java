@@ -35,7 +35,7 @@ public class AfterRegisterActivity extends AppCompatActivity {
         myCountDownTimer = new MyCountDownTimer(endTime * 1000, 1000);
         myCountDownTimer.start();
 
-
+        //+유저의 type 예약 전에서 예약중 타입으로 변경
         btn_return.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,7 +52,7 @@ public class AfterRegisterActivity extends AppCompatActivity {
         });
 
     }
-
+    /*뒤로가기를 눌렀을 때 작동되는 함수*/
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
