@@ -80,10 +80,10 @@ public class MainActivity extends BaseActivity implements
             intentToquick.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intentToquick);
             finish();
-        }  else if (i == R.id.reserveBtn) {
+        }  /*else if (i == R.id.reserveBtn) {
             Intent intentToReserve = new Intent(getApplicationContext(), ReserveActivity.class);
             startActivity(intentToReserve);
-        } else if (i == R.id.myStatusBtn) {
+        }*/ else if (i == R.id.myStatusBtn) {
 
             Intent intentToUsing = new Intent(getApplicationContext(), usingactivity.class);
             intentToUsing.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -91,7 +91,9 @@ public class MainActivity extends BaseActivity implements
             finish();
         } else if (i == R.id.reportBtn) {
             Intent intentToChat = new Intent(getApplicationContext(), ChatActivity.class);
+            intentToChat.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intentToChat);
+            finish();
         } else if (i == R.id.logout_textBtn) {
             Log.d(TAG, "LOGOUT"); // test
             mAuth.signOut();

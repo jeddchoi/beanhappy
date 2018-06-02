@@ -34,6 +34,7 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".usingactivity" />
+        <activity android:name=".ChatActivity" />
         <activity android:name=".ReserveActivity" />
         <activity android:name=".timeoutactivity" />
         <activity android:name=".AfterRegisterActivity"></activity>
