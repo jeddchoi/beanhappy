@@ -11,6 +11,7 @@ import android.os.CountDownTimer;
         import android.widget.Button;
         import android.widget.ProgressBar;
         import android.widget.TextView;
+import android.widget.Toast;
 
 public class AfterRegisterActivity extends AppCompatActivity {
 
@@ -34,7 +35,7 @@ public class AfterRegisterActivity extends AppCompatActivity {
         myCountDownTimer = new MyCountDownTimer(endTime * 1000, 1000);
         myCountDownTimer.start();
 
-
+        //+유저의 type 예약 전에서 예약중 타입으로 변경
         btn_return.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,6 +51,12 @@ public class AfterRegisterActivity extends AppCompatActivity {
             }
         });
 
+    }
+    /*뒤로가기를 눌렀을 때 작동되는 함수*/
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        Toast.makeText(AfterRegisterActivity.this,"뒤로가기는 제한됩니다.", Toast.LENGTH_SHORT).show();
     }
 
     public class MyCountDownTimer extends CountDownTimer {
@@ -103,13 +110,14 @@ public class AfterRegisterActivity extends AppCompatActivity {
 
         @Override
         public void onFinish() {    //타이머가 종료될때 실행됨
-            //getout();
+            myCountDownTimer.cancel();
             finish();
         }
     }
     /*자리반납하는 함수*/
     public void getout(){
         Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
+        intentToActivitymain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intentToActivitymain);
         //activity 넘어갈때 FLAG로 해야함 일단은 startActivity로 만들었음
         myCountDownTimer.cancel();  //ontick()(=타이머) 정지
@@ -119,8 +127,11 @@ public class AfterRegisterActivity extends AppCompatActivity {
 
     /*비콘에 들어오는 경우 실행되는 함수*/
     public void beaconin(){
-        Intent intentToActivityusing = new Intent(mContext, usingactivity.class);
-        startActivity(intentToActivityusing);
+//        Intent intentToActivityusing = new Intent(mContext, usingactivity.class);
+//        startActivity(intentToActivityusing);
+        Intent intentToUsing = new Intent(getApplicationContext(), usingactivity.class);
+        intentToUsing.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intentToUsing);
         //activity 넘어갈때 FLAG로 해야함 일단은 startActivity로 만들었음
         myCountDownTimer.cancel();  //ontick()(=타이머) 정지
         finish();   //해당 activity종료
