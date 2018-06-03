@@ -16,11 +16,19 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
 public class usingactivity extends Activity {
+
     private int limit_usingtime = 40;
     private int limit_leavingtime = 10;
+    /*피크타임 시작과 끝 그리고 피크타임 여부 설정*/
+    private int peak_starthour = 15;
+    private int peak_endhour = 19;
+    private boolean isnotpeak = true;
+
     private Context mContext = this;
     private  TextView txtView;
     private  Button btn_away;
@@ -37,7 +45,9 @@ public class usingactivity extends Activity {
     int endTime = 250;
     int extendtime;
     boolean isextended = false;
-
+    Calendar t = Calendar.getInstance();
+    String hh = Integer.toString(t.get(Calendar.HOUR_OF_DAY));
+    int H = Integer.parseInt(hh);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,13 +75,15 @@ public class usingactivity extends Activity {
         progressBarView.setProgress(0);
 
         btn_extend.setVisibility(View.INVISIBLE);
-        fn_countdown(0);
+
+            fn_countdown(0);
 
 
         btn_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
+                intentToActivitymain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intentToActivitymain);
             }
         });
@@ -84,8 +96,7 @@ public class usingactivity extends Activity {
         btn_timeout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentToActivitytimeout = new Intent(mContext, timeoutactivity.class);
-                startActivity(intentToActivitytimeout);
+                timeout();
             }
         });
         btn_away.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +111,12 @@ public class usingactivity extends Activity {
                 extend();
             }
         });
+    }
+    /*뒤로가기를 눌렀을 때 작동되는 함수*/
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        Toast.makeText(usingactivity.this,"뒤로가기는 제한됩니다.", Toast.LENGTH_SHORT).show();
     }
 
     private void fn_countdown(int pausetime) {
@@ -133,19 +150,22 @@ public class usingactivity extends Activity {
                     setProgress(progress, endTime);
                     progress = progress + 1;
 
-                    if((user.getType() == 4) & (pauseprogress + progress) == limit_usingtime){
-                        Intent intentToActivitytimeout = new Intent(mContext, timeoutactivity.class);
-                        startActivity(intentToActivitytimeout);
-                        countDownTimer.cancel();
-                        finish();
+
+                    if((user.getType() == 3) & (endTime - progress == 0)){
+                        timeout();
+                    }
+
+
+                    if((user.getType() == 4) & (pauseprogress + progress == limit_usingtime)){
+                        timeout();
                     }
                     if((user.getType() == 4) & (endTime - progress == 0)){
                         getout();
-                        countDownTimer.cancel();
                     }
 
+
                     if((progress >= limit_leavingtime/2)&(user.getType() == 4)){
-                        if(isextended == true){
+                        if(isextended){
                             btn_extend.setEnabled(false);
                         }
                         else{
@@ -193,22 +213,21 @@ public class usingactivity extends Activity {
                 public void onFinish() {
                     setProgress(progress, endTime);
 
-                    if((endTime - progress) == 0){  //타이머 시간이 다 지난 경우
-                        if(user.getType() == 3){    //시간 다되면 타임아웃 엑티비티로
-                            Intent intentToActivitytimeout = new Intent(mContext, timeoutactivity.class);
-                            startActivity(intentToActivitytimeout);
-                            countDownTimer.cancel();
-                            finish();
-                        }
-                        if(user.getType() == 4){    //자리비운상태로 시간 다되면 자리 반납
-                            getout();
-                            countDownTimer.cancel();
-                        }
+                    //if((endTime - progress) == 0){  //타이머 시간이 다 지난 경우
+                    if(user.getType() == 3){    //시간 다되면 타임아웃 엑티비티로
+                        timeout();
                     }
+                    if(user.getType() == 4){    //자리비운상태로 시간 다되면 자리 반납
+                        getout();
+                    }
+                    //}
 
                 }
             };
-            countDownTimer.start();
+
+            if(peak_starthour < H & H < peak_endhour | isnotpeak) {
+                countDownTimer.start();
+            }
 
     }
 
@@ -221,8 +240,10 @@ public class usingactivity extends Activity {
 
     public void getout(){
         Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
+        intentToActivitymain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intentToActivitymain);
-        checkusingbeanbag.using_beanbag = 0;
+        //checkusingbeanbag.using_beanbag = 0;
+        countDownTimer.cancel();
         finish();
         //+자리 반납. 타이머 종료. activity 종료
     }
@@ -240,7 +261,7 @@ public class usingactivity extends Activity {
             else{
                 pauseprogress = pauseprogress + progress;
             }
-
+            countDownTimer.cancel();
             fn_countdown(pauseprogress);
         }
         else if(user.getType() == 3){
@@ -250,14 +271,22 @@ public class usingactivity extends Activity {
             btn_extend.setVisibility(View.VISIBLE);
             pauseprogress = progress;
             isextended = false;
+            countDownTimer.cancel();
             fn_countdown(0);
         }
         //+자리 반납. 타이머 종료. activity 종료
     }
     public void extend(){
         extendtime = progress - limit_leavingtime/2;
+        countDownTimer.cancel();
         fn_countdown(extendtime);
         isextended = true;
+    }
+    public void timeout(){
+        Intent intentToActivitytimeout = new Intent(mContext, timeoutactivity.class);
+        startActivity(intentToActivitytimeout);
+        countDownTimer.cancel();
+        finish();
     }
 
 }
