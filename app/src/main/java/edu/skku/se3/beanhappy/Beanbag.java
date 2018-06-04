@@ -26,5 +26,8 @@ public class Beanbag {
     public int getBcount(){
         return Bcount;
     }
+    public String getBid() { return Bid; }
+
+    public Beanbag A1 = new Beanbag("A1");
 }
 
