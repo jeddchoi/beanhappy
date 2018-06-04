@@ -27,7 +27,7 @@ public class usingactivity extends Activity {
     /*피크타임 시작과 끝 그리고 피크타임 여부 설정*/
     private int peak_starthour = 15;
     private int peak_endhour = 19;
-    private boolean isnotpeak = true;
+    private boolean isnotpeak = false;
 
     private Context mContext = this;
     private  TextView txtView;
@@ -45,9 +45,14 @@ public class usingactivity extends Activity {
     int endTime = 250;
     int extendtime;
     boolean isextended = false;
+//<<<<<<< Updated upstream
     Calendar t = Calendar.getInstance();
     String hh = Integer.toString(t.get(Calendar.HOUR_OF_DAY));
     int H = Integer.parseInt(hh);
+//=======
+
+
+//>>>>>>> Stashed changes
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +70,7 @@ public class usingactivity extends Activity {
         btn_away = (Button)findViewById(R.id.away);
         txtView = findViewById(R.id.textView);
         user = new User("minki");
-        user.setType(3);
+        user.setType("Using");
 
         /*Animation*/
         RotateAnimation makeVertical = new RotateAnimation(0, -90, RELATIVE_TO_SELF, 0.5f, RELATIVE_TO_SELF, 0.5f);
@@ -135,10 +140,10 @@ public class usingactivity extends Activity {
 
             progress = pausetime;
             //endTime = Integer.parseInt(timeInterval); // up to finish time
-            if (user.getType() == 3){
+            if (user.getType() == "Using"){
                 endTime = limit_usingtime; // up to finish time
             }
-            if (user.getType() == 4){
+            if (user.getType() == "Out"){
                 endTime = limit_leavingtime;
             }
 
@@ -151,20 +156,20 @@ public class usingactivity extends Activity {
                     progress = progress + 1;
 
 
-                    if((user.getType() == 3) & (endTime - progress == 0)){
+                    if((user.getType() == "Using") & (endTime - progress == 0)){
                         timeout();
                     }
 
 
-                    if((user.getType() == 4) & (pauseprogress + progress == limit_usingtime)){
+                    if((user.getType() == "Out") & (pauseprogress + progress == limit_usingtime)){
                         timeout();
                     }
-                    if((user.getType() == 4) & (endTime - progress == 0)){
+                    if((user.getType() == "Out") & (endTime - progress == 0)){
                         getout();
                     }
 
 
-                    if((progress >= limit_leavingtime/2)&(user.getType() == 4)){
+                    if((progress >= limit_leavingtime/2)&(user.getType() == "Out")){
                         if(isextended){
                             btn_extend.setEnabled(false);
                         }
@@ -214,10 +219,10 @@ public class usingactivity extends Activity {
                     setProgress(progress, endTime);
 
                     //if((endTime - progress) == 0){  //타이머 시간이 다 지난 경우
-                    if(user.getType() == 3){    //시간 다되면 타임아웃 엑티비티로
+                    if(user.getType() == "Using"){    //시간 다되면 타임아웃 엑티비티로
                         timeout();
                     }
-                    if(user.getType() == 4){    //자리비운상태로 시간 다되면 자리 반납
+                    if(user.getType() == "Out"){    //자리비운상태로 시간 다되면 자리 반납
                         getout();
                     }
                     //}
@@ -250,10 +255,10 @@ public class usingactivity extends Activity {
     public void beaconout(){
         //Intent intentToActivityaway = new Intent(mContext, awaybeacon.class);
         //startActivity(intentToActivityaway);
-        if (user.getType() == 4){
+        if (user.getType() == "Out"){
             txtView.setText("사용중인 좌석은 //입니다");
             btn_away.setText("beacon out");
-            user.setType(3);
+            user.setType("Using");
             btn_extend.setVisibility(View.INVISIBLE);
             if(isextended){
                 pauseprogress = pauseprogress + progress + limit_leavingtime/2;
@@ -264,10 +269,10 @@ public class usingactivity extends Activity {
             countDownTimer.cancel();
             fn_countdown(pauseprogress);
         }
-        else if(user.getType() == 3){
+        else if(user.getType() == "Using"){
             txtView.setText("자리를 비우셨습니다.");
             btn_away.setText("beacon in");
-            user.setType(4);
+            user.setType("Out");
             btn_extend.setVisibility(View.VISIBLE);
             pauseprogress = progress;
             isextended = false;
