@@ -45,8 +45,8 @@
         android:layout_marginBottom="13dp"
         android:indeterminate="false"
         android:max="100"
-        android:progress="90"
-        android:progressDrawable="@drawable/progressbar"
+        android:progress="80"
+        android:progressDrawable="@drawable/timeout_circularprogressbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
