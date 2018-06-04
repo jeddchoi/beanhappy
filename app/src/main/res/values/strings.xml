@@ -101,6 +101,10 @@
     <string name="e4">e4</string>
     <string name="multimedia">multimedia</string>
     <string name="_0_4__1">0/4</string>
+    <string name="반납">반납하기</string>
+    <string name="사용중인빈백">사용중인 빈백은</string>
+    <string name="입니다">입니다</string>
+    <string name="연장">연장하기</string>
 
 
 </resources>
