@@ -143,7 +143,11 @@ public class timeoutactivity extends Activity {
 
     }
 
-
+    @Override
+    protected void onDestroy() {
+        //자리를 반납하는 함수 넣기
+        super.onDestroy();
+    }
 
     public void setProgress(int startTime, int endTime) {
         progressBarView.setMax(endTime);
