@@ -158,7 +158,9 @@ public class timeoutactivity extends Activity {
         //checkusingbeanbag.using_beanbag = 0;
         countDownTimer.cancel();
         vide.cancel();
+        Toast.makeText(timeoutactivity.this,"자리가 반납되었습니다", Toast.LENGTH_SHORT).show();
         finish();
+
 
         //+자리 반납
     }
