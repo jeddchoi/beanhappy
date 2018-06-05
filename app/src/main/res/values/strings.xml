@@ -42,6 +42,7 @@
         행위 \n(소음,식사 등)</string>
     <string name="rule_title">주의사항</string>
     <string name="map_title">빈백 지도</string>
+    <string name="back_button">뒤로가기</string>
     <string name="showmap_button">맵보기</string>
     <string name="showrule_button">주의사항</string>
 
