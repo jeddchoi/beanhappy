@@ -1,9 +1,12 @@
 package edu.skku.se3.beanhappy;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -31,10 +34,35 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        findViewById(R.id.chat_ruleBtn).setOnClickListener(this);
+        findViewById(R.id.chat_mapBtn).setOnClickListener(this);
+        findViewById(R.id.chat_backBtn).setOnClickListener(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         initViews();
         initFirebaseDatabase();
         initValues();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mDatabaseReference.removeEventListener(mChildEventListener);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
 
     private void initViews() {
         mListView = (ListView) findViewById(R.id.list_message);
@@ -88,22 +116,34 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         userName = "Guest" + new Random().nextInt(5000);
     }
 
-    /*@Override
-    protected void onDestory() {
-        super.onDestory();
-        mDatabaseReference.removeEventListener(mChildEventListener);
-    }*/
-
     @Override
     public void onClick(View v) {
-        String message = mEdtMessage.getText().toString();
-        if (!TextUtils.isEmpty(message)) {
-            mEdtMessage.setText("");
-            ChatData chatData = new ChatData();
-            chatData.userName = userName;
-            chatData.message = message;
-            chatData.time = System.currentTimeMillis();
-            mDatabaseReference.push().setValue(chatData);
+        int i = v.getId();
+        if (i == R.id.chat_ruleBtn) {
+            Intent intentToShowrule = new Intent(getApplicationContext(), Showrule.class);
+            startActivity(intentToShowrule);
+            finish();
+        }
+        else if (i == R.id.chat_mapBtn) {
+            Intent intentToshowmap = new Intent(getApplicationContext(), Showmap.class);
+            startActivity(intentToshowmap);
+            finish();
+        }
+        else if (i == R.id.chat_backBtn) {
+            Intent intentToBack = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intentToBack);
+            finish();
+        }
+        else{
+            String message = mEdtMessage.getText().toString();
+            if (!TextUtils.isEmpty(message)) {
+                mEdtMessage.setText("");
+                ChatData chatData = new ChatData();
+                chatData.userName = userName;
+                chatData.message = message;
+                chatData.time = System.currentTimeMillis();
+                mDatabaseReference.push().setValue(chatData);
+            }
         }
     }
 }
