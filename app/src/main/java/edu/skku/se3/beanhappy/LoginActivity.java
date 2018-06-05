@@ -1,15 +1,15 @@
 package edu.skku.se3.beanhappy;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -32,7 +32,7 @@ public class LoginActivity extends BaseActivity {
     private EditText email_edit,pw_edit; // 사용자 id, 사용자 pw
     private CheckBox autologin_ChkBox;
     private boolean loginChecked;
-
+    private Context mContext = this;
     private Button login_button; // 로그인 버튼
     private Button register_button; //등록버튼
     private FirebaseAuth mAuth;
@@ -58,28 +58,6 @@ public class LoginActivity extends BaseActivity {
 
         pref = getSharedPreferences("pref", 0);
         editor = pref.edit();
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        Intent intent = getIntent();
-        String email = intent.getStringExtra("email");
-        String password = intent.getStringExtra("password");
-
-        if(email != null)
-            email_edit.setText(email);
-
-        if(password != null)
-            pw_edit.setText(password);
 
         /* -- 회원가입 클릭시 -- */
         register_button.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +98,28 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Intent intent = getIntent();
+        String email = intent.getStringExtra("email");
+        String password = intent.getStringExtra("password");
+
+        if(email != null)
+            email_edit.setText(email);
+
+        if(password != null)
+            pw_edit.setText(password);
+
+
         if (pref.getBoolean("autoLogin", false)) {
             email_edit.setText(pref.getString("id", ""));
             pw_edit.setText(pref.getString("pw", ""));
@@ -154,6 +154,10 @@ public class LoginActivity extends BaseActivity {
         boolean cancel = false;
         View focusView = null;
 
+        if(IsTablet(mContext)) {
+            Toast.makeText(LoginActivity.this, R.string.reject_tablet, Toast.LENGTH_LONG).show();
+            return;
+        }
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             pw_edit.setError(getString(R.string.error_invalid_password_register));
@@ -172,8 +176,6 @@ public class LoginActivity extends BaseActivity {
             focusView = email_edit;
             cancel = true;
         }
-
-
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -245,15 +247,25 @@ public class LoginActivity extends BaseActivity {
                                     Toast.LENGTH_SHORT).show();
                         }
 
-                        // [START_EXCLUDE]
-//                        if (!task.isSuccessful()) {
-//                            Toast.makeText(getApplicationContext(), R.string.auth_failed, Toast.LENGTH_LONG).show();
-//                        }
                         hideProgressDialog();
                         // [END_EXCLUDE]
                     }
                 });
         // [END sign_in_with_email]
     }
+
+    public static boolean IsTablet(Context context)
+    {
+        Display display = ((Activity)context).getWindowManager().getDefaultDisplay();
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        display.getMetrics(displayMetrics);
+
+        double wInches = displayMetrics.widthPixels / (double)displayMetrics.densityDpi;
+        double hInches = displayMetrics.heightPixels / (double)displayMetrics.densityDpi;
+
+        double screenDiagonal = Math.sqrt(Math.pow(wInches, 2) + Math.pow(hInches, 2));
+        return (screenDiagonal >= 7.0);
+    }
+
 }
 

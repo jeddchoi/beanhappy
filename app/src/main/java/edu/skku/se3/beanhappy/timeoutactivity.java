@@ -143,7 +143,11 @@ public class timeoutactivity extends Activity {
 
     }
 
-
+    @Override
+    protected void onDestroy() {
+        //자리를 반납하는 함수 넣기
+        super.onDestroy();
+    }
 
     public void setProgress(int startTime, int endTime) {
         progressBarView.setMax(endTime);
@@ -158,7 +162,9 @@ public class timeoutactivity extends Activity {
         //checkusingbeanbag.using_beanbag = 0;
         countDownTimer.cancel();
         vide.cancel();
+        Toast.makeText(timeoutactivity.this,"자리가 반납되었습니다", Toast.LENGTH_SHORT).show();
         finish();
+
 
         //+자리 반납
     }
