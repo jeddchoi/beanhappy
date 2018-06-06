@@ -34,7 +34,8 @@
     <string name="loading">로딩중 입니다.</string>
     <string name="action_verify">이메일 인증하기</string>
     <string name="auth_failed">인증이 실패하였습니다.</string>
-
+    <string name="please_check_permission">권한사용을 동의해주셔야 이용이 가능합니다.</string>
+    <string name="reject_bad_uuid">죄송합니다. 처음에 로그인한 기록이 있는 기기로 로그인하셔야 합니다.</string>
 
     <string name="logout">&lt; 로그아웃</string>
     <string name="pushAlarm">1시간 내 푸시알람받기</string>

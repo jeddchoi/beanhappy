@@ -139,6 +139,103 @@ public class ReserveActivity extends BaseActivity implements
             }
         });
 
+        mB.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int sum = 0;
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Log.d(TAG, "datasnapshot.getchildren key = " + ds.getKey());
+                    if(ds.getKey().equals("bb_NumAvail"))
+                        continue;
+                    Map<String, Object> map = (Map<String, Object>) ds.getValue();
+                    Object count = map.get("state");
+                    if(Integer.parseInt(String.valueOf(count)) == 0)
+                        sum += 1;
+                }
+                mB.child("bb_NumAvail").setValue(sum);
+                String buf = String.format(getString(R.string.B_AvailNum), sum);
+                B_AvailTextView.setText(buf);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mC.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int sum = 0;
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Log.d(TAG, "datasnapshot.getchildren key = " + ds.getKey());
+                    if(ds.getKey().equals("bb_NumAvail"))
+                        continue;
+                    Map<String, Object> map = (Map<String, Object>) ds.getValue();
+                    Object count = map.get("state");
+                    if(Integer.parseInt(String.valueOf(count)) == 0)
+                        sum += 1;
+                }
+                mC.child("bb_NumAvail").setValue(sum);
+                String buf = String.format(getString(R.string.C_AvailNum), sum);
+                C_AvailTextView.setText(buf);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mD.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int sum = 0;
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Log.d(TAG, "datasnapshot.getchildren key = " + ds.getKey());
+                    if(ds.getKey().equals("bb_NumAvail"))
+                        continue;
+                    Map<String, Object> map = (Map<String, Object>) ds.getValue();
+                    Object count = map.get("state");
+                    if(Integer.parseInt(String.valueOf(count)) == 0)
+                        sum += 1;
+                }
+                mD.child("bb_NumAvail").setValue(sum);
+                String buf = String.format(getString(R.string.D_AvailNum), sum);
+                D_AvailTextView.setText(buf);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mE.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int sum = 0;
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Log.d(TAG, "datasnapshot.getchildren key = " + ds.getKey());
+                    if(ds.getKey().equals("bb_NumAvail"))
+                        continue;
+                    Map<String, Object> map = (Map<String, Object>) ds.getValue();
+                    Object count = map.get("state");
+                    if(Integer.parseInt(String.valueOf(count)) == 0)
+                        sum += 1;
+                }
+                mE.child("bb_NumAvail").setValue(sum);
+                String buf = String.format(getString(R.string.E_AvailNum), sum);
+                E_AvailTextView.setText(buf);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+
         mA1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -157,6 +254,41 @@ public class ReserveActivity extends BaseActivity implements
             }
         });
 
+        mA2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if(state >= 1) {
+                    bA2Btn.setClickable(false);
+                    bA2Btn.setImageResource(R.drawable.a2_occupied);
+                } else {
+                    bA2Btn.setClickable(true);
+                    bA2Btn.setImageResource(R.drawable.a2);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mA3.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if(state >= 1) {
+                    bA3Btn.setClickable(false);
+                    bA3Btn.setImageResource(R.drawable.a3_occupied);
+                } else {
+                    bA3Btn.setClickable(true);
+                    bA3Btn.setImageResource(R.drawable.a3);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
     }
 
 
@@ -173,10 +305,12 @@ public class ReserveActivity extends BaseActivity implements
                             @RequiresApi(api = Build.VERSION_CODES.N)
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mA1.child("state").setValue(2);
+                                mA1.child("state").setValue(1);
                                 Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
                                 Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                                intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 startActivity(intentToAfter);
+                                finish();
                             }
                         });
                 builder.setPositiveButton("아니요",

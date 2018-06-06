@@ -1,19 +1,15 @@
 package edu.skku.se3.beanhappy;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.app.Activity;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.Message;
+import android.view.View;
 import android.view.animation.RotateAnimation;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
@@ -69,8 +65,8 @@ public class usingactivity extends Activity {
         btn_away = (Button)findViewById(R.id.away);
 
         txtView_beanbagseat = findViewById(R.id.beanbagnum);
-        user = new User("minki");
-        user.setType(3);
+//        user = new User("minki");
+//        user.setType(3);
         //user.setType("Using");
 
         /*Animation*/
