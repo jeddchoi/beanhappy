@@ -52,13 +52,16 @@ public class RangingActivity extends Activity implements BeaconConsumer {
     @Override
     public void onBeaconServiceConnect() {
         beaconManager.setRangeNotifier(new RangeNotifier() {
+
            @Override
            public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
-              if (beacons.size() > 0) {
+              if (beacons.size() <2.0) {
                  //EditText editText = (EditText)RangingActivity.this.findViewById(R.id.rangingText);
                  Beacon firstBeacon = beacons.iterator().next();
                  logToDisplay("The first beacon " + firstBeacon.toString() + " is about " + firstBeacon.getDistance() + " meters away.");
+
               }
+
            }
 
         });
@@ -67,6 +70,7 @@ public class RangingActivity extends Activity implements BeaconConsumer {
             beaconManager.startRangingBeaconsInRegion(new Region("myRangingUniqueId", null, null, null));
         } catch (RemoteException e) {   }
     }
+
 
     private void logToDisplay(final String line) {
         runOnUiThread(new Runnable() {
