@@ -34,6 +34,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Map;
+import java.util.UUID;
 
 public class ReserveActivity extends BaseActivity implements
         View.OnClickListener {
@@ -64,6 +65,8 @@ public class ReserveActivity extends BaseActivity implements
     private DatabaseReference mE1 = mB.child("bb_E1"); private DatabaseReference mE2 = mB.child("bb_E2");
     private DatabaseReference mE3 = mB.child("bb_E3"); private DatabaseReference mE4 = mB.child("bb_E4");
 
+    private DeviceUuidFactory device;
+    private String uuid;
 
     TextView A_AvailTextView, B_AvailTextView, C_AvailTextView, D_AvailTextView, E_AvailTextView;
     ImageButton bA1Btn, bA2Btn, bA3Btn, bA4Btn;
@@ -107,7 +110,8 @@ public class ReserveActivity extends BaseActivity implements
         bD5Btn.setOnClickListener(this); bD6Btn.setOnClickListener(this);
         bE1Btn.setOnClickListener(this); bE2Btn.setOnClickListener(this); bE3Btn.setOnClickListener(this); bE4Btn.setOnClickListener(this);
 
-
+        device = new DeviceUuidFactory(this);
+        uuid = device.getDeviceUuid().toString();
     }
 
 
@@ -240,12 +244,12 @@ public class ReserveActivity extends BaseActivity implements
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Long state = dataSnapshot.child("state").getValue(Long.class);
-                if(state >= 1) {
-                    bA1Btn.setClickable(false);
-                    bA1Btn.setImageResource(R.drawable.a1_occupied);
-                } else {
+                if (state == null || state < 1) {
                     bA1Btn.setClickable(true);
                     bA1Btn.setImageResource(R.drawable.a1);
+                } else {
+                    bA1Btn.setClickable(false);
+                    bA1Btn.setImageResource(R.drawable.a1_occupied);
                 }
             }
             @Override
@@ -258,12 +262,12 @@ public class ReserveActivity extends BaseActivity implements
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Long state = dataSnapshot.child("state").getValue(Long.class);
-                if(state >= 1) {
-                    bA2Btn.setClickable(false);
-                    bA2Btn.setImageResource(R.drawable.a2_occupied);
-                } else {
+                if (state == null || state < 1) {
                     bA2Btn.setClickable(true);
                     bA2Btn.setImageResource(R.drawable.a2);
+                } else {
+                    bA2Btn.setClickable(false);
+                    bA2Btn.setImageResource(R.drawable.a2_occupied);
                 }
             }
             @Override
@@ -276,12 +280,446 @@ public class ReserveActivity extends BaseActivity implements
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Long state = dataSnapshot.child("state").getValue(Long.class);
-                if(state >= 1) {
-                    bA3Btn.setClickable(false);
-                    bA3Btn.setImageResource(R.drawable.a3_occupied);
-                } else {
+                if (state == null || state < 1) {
                     bA3Btn.setClickable(true);
                     bA3Btn.setImageResource(R.drawable.a3);
+                } else {
+                    bA3Btn.setClickable(false);
+                    bA3Btn.setImageResource(R.drawable.a3_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mA4.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if (state == null || state < 1) {
+                    bA4Btn.setClickable(true);
+                    bA4Btn.setImageResource(R.drawable.a4);
+                } else {
+                    bA4Btn.setClickable(false);
+                    bA4Btn.setImageResource(R.drawable.a4_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mB1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if (state == null || state < 1) {
+                    bB1Btn.setClickable(true);
+                    bB1Btn.setImageResource(R.drawable.b1);
+                } else {
+                    bB1Btn.setClickable(false);
+                    bB1Btn.setImageResource(R.drawable.b1_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mB2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if (state == null || state < 1) {
+                    bB2Btn.setClickable(true);
+                    bB2Btn.setImageResource(R.drawable.b2);
+                } else {
+                    bB2Btn.setClickable(false);
+                    bB2Btn.setImageResource(R.drawable.b2_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mB3.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if (state == null || state < 1) {
+                    bB3Btn.setClickable(true);
+                    bB3Btn.setImageResource(R.drawable.b3);
+                } else {
+                    bB3Btn.setClickable(false);
+                    bB3Btn.setImageResource(R.drawable.b3_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mB4.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if (state == null || state < 1) {
+                    bB4Btn.setClickable(true);
+                    bB4Btn.setImageResource(R.drawable.b4);
+                } else {
+                    bB4Btn.setClickable(false);
+                    bB4Btn.setImageResource(R.drawable.b4_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mB5.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if (state == null || state < 1) {
+                    bB5Btn.setClickable(true);
+                    bB5Btn.setImageResource(R.drawable.b5);
+                } else {
+                    bB5Btn.setClickable(false);
+                    bB5Btn.setImageResource(R.drawable.b5_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mB6.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if (state == null || state < 1) {
+                    bB6Btn.setClickable(true);
+                    bB6Btn.setImageResource(R.drawable.b6);
+                } else {
+                    bB6Btn.setClickable(false);
+                    bB6Btn.setImageResource(R.drawable.b6_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mB7.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if (state == null || state < 1) {
+                    bB7Btn.setClickable(true);
+                    bB7Btn.setImageResource(R.drawable.b7);
+                } else {
+                    bB7Btn.setClickable(false);
+                    bB7Btn.setImageResource(R.drawable.b7_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mB8.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+
+                if (state == null || state < 1) {
+                    bB8Btn.setClickable(true);
+                    bB8Btn.setImageResource(R.drawable.b8);
+                } else {
+                    bB8Btn.setClickable(false);
+                    bB8Btn.setImageResource(R.drawable.b8_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mC1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+
+                if (state == null || state < 1) {
+                    bC1Btn.setClickable(true);
+                    bC1Btn.setImageResource(R.drawable.c1);
+                } else {
+                    bC1Btn.setClickable(false);
+                    bC1Btn.setImageResource(R.drawable.c1_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mC2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if (state == null || state < 1) {
+                    bC2Btn.setClickable(true);
+                    bC2Btn.setImageResource(R.drawable.c2);
+                } else {
+                    bC2Btn.setClickable(false);
+                    bC2Btn.setImageResource(R.drawable.c2_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mC3.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if (state == null || state < 1) {
+                    bC3Btn.setClickable(true);
+                    bC3Btn.setImageResource(R.drawable.c3);
+                } else {
+                    bC3Btn.setClickable(false);
+                    bC3Btn.setImageResource(R.drawable.c3_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mC4.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if (state == null || state < 1) {
+                    bC4Btn.setClickable(true);
+                    bC4Btn.setImageResource(R.drawable.c4);
+                } else {
+                    bC4Btn.setClickable(false);
+                    bC4Btn.setImageResource(R.drawable.c4_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mC5.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if (state == null || state < 1) {
+                    bC5Btn.setClickable(true);
+                    bC5Btn.setImageResource(R.drawable.c5);
+                } else {
+                    bC5Btn.setClickable(false);
+                    bC5Btn.setImageResource(R.drawable.c5_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mD1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if (state == null || state < 1) {
+                    bD1Btn.setClickable(true);
+                    bD1Btn.setImageResource(R.drawable.d1);
+                } else {
+                    bD1Btn.setClickable(false);
+                    bD1Btn.setImageResource(R.drawable.d1_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mD2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if (state == null || state < 1) {
+                    bD2Btn.setClickable(true);
+                    bD2Btn.setImageResource(R.drawable.d2);
+                } else {
+                    bD2Btn.setClickable(false);
+                    bD2Btn.setImageResource(R.drawable.d2_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mD3.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if (state == null || state < 1) {
+                    bD3Btn.setClickable(true);
+                    bD3Btn.setImageResource(R.drawable.d3);
+                } else {
+                    bD3Btn.setClickable(false);
+                    bD3Btn.setImageResource(R.drawable.d3_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mD4.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if (state == null || state < 1) {
+                    bD4Btn.setClickable(true);
+                    bD4Btn.setImageResource(R.drawable.d4);
+                } else {
+                    bD4Btn.setClickable(false);
+                    bD4Btn.setImageResource(R.drawable.d4_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mD5.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if (state == null || state < 1) {
+                    bD5Btn.setClickable(true);
+                    bD5Btn.setImageResource(R.drawable.d5);
+                } else {
+                    bD5Btn.setClickable(false);
+                    bD5Btn.setImageResource(R.drawable.d5_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mD6.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if (state == null || state < 1) {
+                    bD6Btn.setClickable(true);
+                    bD6Btn.setImageResource(R.drawable.d6);
+                } else {
+                    bD6Btn.setClickable(false);
+                    bD6Btn.setImageResource(R.drawable.d6_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mE1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if (state == null || state < 1) {
+                    bE1Btn.setClickable(true);
+                    bE1Btn.setImageResource(R.drawable.e1);
+                } else {
+                    bE1Btn.setClickable(false);
+                    bE1Btn.setImageResource(R.drawable.e1_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mE2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if (state == null || state < 1) {
+                    bE2Btn.setClickable(true);
+                    bE2Btn.setImageResource(R.drawable.e2);
+                } else {
+                    bE2Btn.setClickable(false);
+                    bE2Btn.setImageResource(R.drawable.e2_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mE3.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if (state == null || state < 1) {
+                    bE3Btn.setClickable(true);
+                    bE3Btn.setImageResource(R.drawable.e3);
+                } else {
+                    bE3Btn.setClickable(false);
+                    bE3Btn.setImageResource(R.drawable.e3_occupied);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mE4.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long state = dataSnapshot.child("state").getValue(Long.class);
+                if (state == null || state < 1) {
+                    bE4Btn.setClickable(true);
+                    bE4Btn.setImageResource(R.drawable.e4);
+                } else {
+                    bE4Btn.setClickable(false);
+                    bE4Btn.setImageResource(R.drawable.e4_occupied);
                 }
             }
             @Override
@@ -305,7 +743,12 @@ public class ReserveActivity extends BaseActivity implements
                             @RequiresApi(api = Build.VERSION_CODES.N)
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mA1.child("state").setValue(1);
+                                mA1.child("state").setValue(2);
+                                mA1.child("last_reserve_time").setValue(System.currentTimeMillis());
+
+                                mRootRef.child("users").child(uuid).child("state").setValue(2);
+                                mRootRef.child("users").child(uuid).child("seatNum").setValue("A1");
+
                                 Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
                                 Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
                                 intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
