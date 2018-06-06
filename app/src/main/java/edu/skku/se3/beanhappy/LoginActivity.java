@@ -1,11 +1,16 @@
 package edu.skku.se3.beanhappy;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -22,13 +27,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LoginActivity extends BaseActivity {
     public static final String TAG = "BeanHappy";
-
+    public static final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 999;
     private EditText email_edit,pw_edit; // 사용자 id, 사용자 pw
     private CheckBox autologin_ChkBox;
     private boolean loginChecked;
@@ -36,8 +46,8 @@ public class LoginActivity extends BaseActivity {
     private Button login_button; // 로그인 버튼
     private Button register_button; //등록버튼
     private FirebaseAuth mAuth;
-
-
+    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    private DeviceUuidFactory device;
     SharedPreferences pref;
     SharedPreferences.Editor editor;
 
@@ -56,8 +66,9 @@ public class LoginActivity extends BaseActivity {
         autologin_ChkBox = (CheckBox)findViewById(R.id.autologinChk);
         mAuth = FirebaseAuth.getInstance();
 
-        pref = getSharedPreferences("pref", 0);
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
         editor = pref.edit();
+        device = new DeviceUuidFactory(this);
 
         /* -- 회원가입 클릭시 -- */
         register_button.setOnClickListener(new View.OnClickListener() {
@@ -189,7 +200,23 @@ public class LoginActivity extends BaseActivity {
                 editor.putBoolean("autoLogin", true);
                 editor.commit();
             }
-            signIn(email, password);
+            if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
+            } else {
+                signIn(email, password);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == MY_PERMISSIONS_REQUEST_READ_PHONE_STATE) {
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            } else {
+                Toast.makeText(LoginActivity.this, R.string.please_check_permission, Toast.LENGTH_LONG).show();
+                return;
+            }
         }
     }
 
@@ -236,6 +263,28 @@ public class LoginActivity extends BaseActivity {
                                 return;
                             }
 
+                            String uuid = device.getDeviceUuid().toString();
+
+                            mRootRef.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                    if(!dataSnapshot.hasChild(uuid)) {
+                                        writeNewUser(uuid, email);
+                                    } else if(!email.equals(dataSnapshot.child(uuid).child("email").getValue(String.class))) {
+                                        Toast.makeText(LoginActivity.this, R.string.reject_bad_uuid, Toast.LENGTH_LONG).show();
+                                        Log.d(TAG, "mRootRef_" + dataSnapshot.child(uuid).child("email").getValue(String.class));
+                                        return;
+                                    } else {
+                                        writeNewUser(uuid, email);
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+                                }
+                            });
+
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(intent);
@@ -267,5 +316,9 @@ public class LoginActivity extends BaseActivity {
         return (screenDiagonal >= 7.0);
     }
 
+    private void writeNewUser(String userId, String email) {
+        User user = new User(email, device.getDeviceUuid());
+        mRootRef.child("users").child(userId).setValue(user);
+    }
 }
 

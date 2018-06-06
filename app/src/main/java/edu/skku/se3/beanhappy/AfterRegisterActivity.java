@@ -43,6 +43,7 @@ public class AfterRegisterActivity extends AppCompatActivity {
 
             }
         });
+
         /*테스트용 임시 버튼*/
         btn_beaconin.setOnClickListener(new View.OnClickListener() {
             @Override

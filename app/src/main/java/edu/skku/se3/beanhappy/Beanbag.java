@@ -1,8 +1,8 @@
 package edu.skku.se3.beanhappy;
-//type 1: 예약전
+//type 0: 예약전
+//type 1: 이용중
 //type 2: 예약중
-//type 3: 이용중
-//type 4: 자리비움
+//type 3: 자리비움
 public class Beanbag {
     private String Bid; // 빈백 자리 번호
     private int Btype; // 빈백 상태
