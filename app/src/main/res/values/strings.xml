@@ -106,6 +106,6 @@
     <string name="입니다">입니다</string>
     <string name="연장">연장하기</string>
     <string name="main">MAIN</string>
-
-
+    <string name="Monitor">Monitoring Events:</string>
+    <string name="Range">Start Ranging</string>
 </resources>
