@@ -18,11 +18,11 @@
         android:textSize="20sp"
         android:fontFamily="@font/hanna"
         android:text="@string/agreement"
-        app:layout_constraintBottom_toTopOf="@+id/map_OKBtn"
+        app:layout_constraintBottom_toTopOf="@+id/OKBtn"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/map_OKBtn"
+        android:id="@+id/OKBtn"
         android:layout_height="wrap_content"
         android:layout_marginBottom="128dp"
         android:layout_marginEnd="8dp"
