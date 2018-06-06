@@ -89,8 +89,7 @@
             android:layout_margin="20dp"
             android:gravity="end"
             android:textSize="25sp"
-            android:textColor="#ffffff"
-            android:text="@string/사용현황숫자" />
+            android:textColor="#ffffff" />
     </LinearLayout>
 
     <LinearLayout

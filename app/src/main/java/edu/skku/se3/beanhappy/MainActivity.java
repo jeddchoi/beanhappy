@@ -11,6 +11,13 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Map;
 
 
 public class MainActivity extends BaseActivity implements
@@ -18,6 +25,8 @@ public class MainActivity extends BaseActivity implements
 
     public static final String TAG = "BeanHappy";
     private FirebaseAuth mAuth;
+    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference mNumAvailTotal = mRootRef.child("NumAvailTotal");
     TextView logout_textBtn;
     Switch pushAlarmSwitch;
     Button quickReserveBtn, reserveBtn, myStatusBtn, reportBtn;
@@ -48,6 +57,30 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onStart() {
         super.onStart();
+
+
+        mRootRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int sum = 0;
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    if(ds.getKey().startsWith("bb_")) {
+                        Log.d(TAG, "MAINACTIVITY = " + ds.getKey() + sum);
+                        Map<String, Object> map = (Map<String, Object>) ds.getValue();
+                        Object count = map.get("bb_NumAvail");
+                        sum += Integer.parseInt(String.valueOf(count));
+                    }
+                }
+                mNumAvailTotal.setValue(sum);
+                String buf = String.format(getString(R.string.AllCount), sum);
+                seatNum.setText(buf);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
     }
 
 
