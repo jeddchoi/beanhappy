@@ -8,32 +8,45 @@
     tools:context=".AgreementActivity">
 
     <TextView
-        android:id="@+id/agreementText"
+        android:id="@+id/주의사항_제목"
+        android:paddingTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/rule_title"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/주의사항_내용"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:textSize="20sp"
         android:fontFamily="@font/hanna"
-        android:text="@string/agreement"
+        android:gravity="left"
+        android:text="@string/rule_content"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/map_OKBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/map_OKBtn"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="128dp"
+        android:layout_marginBottom="36dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:fontFamily="@font/hanna"
-        android:textColor="#000000"
-        android:text="@string/OK"
         android:backgroundTint="#45464f"
+        android:fontFamily="@font/hanna"
+        android:text="@string/OK"
+        android:textColor="#000000"
         android:textSize="40sp"
-        android:layout_width="150dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
