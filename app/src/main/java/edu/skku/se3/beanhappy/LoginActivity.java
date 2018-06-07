@@ -298,7 +298,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void writeNewUser(String userId, String email) {
-        User user = new User(email, device.getDeviceUuid(), System.currentTimeMillis());
+        User user = new User(email, device.getDeviceUuid().toString(), System.currentTimeMillis());
         mRootRef.child("users").child(userId).setValue(user);
     }
 }
