@@ -1,10 +1,10 @@
 package edu.skku.se3.beanhappy;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
@@ -12,11 +12,23 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.Calendar;
 
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
-public class usingactivity extends Activity {
+public class usingactivity extends BaseActivity implements
+        View.OnClickListener{
+    public static final String TAG = "BeanHappy";
+    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    private DeviceUuidFactory device;
+    private String uuid;
+    private DatabaseReference currentUser;
 
     private int limit_usingtime = 40;
     private int limit_leavingtime = 10;
@@ -29,9 +41,12 @@ public class usingactivity extends Activity {
     private  TextView txtView_beanbagseat;
     private TextView txtView1;
     private TextView txtView2;
+
+    private Button btn_main;
+    private Button btn_return;
     private  Button btn_away;
-    private  User user;
     private  Button btn_extend;
+
     int pauseprogress = 0;
     int myProgress = 0;
     ProgressBar progressBarView;
@@ -53,21 +68,20 @@ public class usingactivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usingactivity);
 
+        device = new DeviceUuidFactory(this);
+        uuid = device.getDeviceUuid().toString();
+
         progressBarView = (ProgressBar) findViewById(R.id.view_progress_bar);
         tv_time= (TextView)findViewById(R.id.tv_timer);
         txtView1=(TextView)findViewById(R.id.text1);
         txtView2=(TextView)findViewById(R.id.text2);
 
-        Button btn_main = (Button)findViewById(R.id.to_main);
-        Button btn_return = (Button)findViewById(R.id.wakeup);
-//        Button btn_timeout = (Button)findViewById(R.id.timeout);
-        btn_extend = (Button)findViewById(R.id.btn_extend);
-        btn_away = (Button)findViewById(R.id.away);
+        btn_main.setOnClickListener(this);
+        btn_return.setOnClickListener(this);
+        btn_away.setOnClickListener(this);
+        btn_extend.setOnClickListener(this);
 
         txtView_beanbagseat = findViewById(R.id.beanbagnum);
-//        user = new User("minki");
-//        user.setType(3);
-        //user.setType("Using");
 
         /*Animation*/
         RotateAnimation makeVertical = new RotateAnimation(0, -90, RELATIVE_TO_SELF, 0.5f, RELATIVE_TO_SELF, 0.5f);
@@ -76,45 +90,61 @@ public class usingactivity extends Activity {
         progressBarView.setSecondaryProgress(endTime);
         progressBarView.setProgress(0);
 
-        btn_extend.setVisibility(View.INVISIBLE);
-        txtView_beanbagseat.setText("A-4(함수X)");
-
-            fn_countdown(0);
 
 
-        btn_main.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+
+        fn_countdown(0);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        int i = v.getId();
+        switch(i) {
+            case R.id.to_main :
                 Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
                 intentToActivitymain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intentToActivitymain);
-            }
-        });
-        btn_return.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                break;
+            case R.id.wakeup:
                 getout();
-            }
-        });
-//        btn_timeout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                timeout();
-//            }
-//        });
-        btn_away.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    beaconout();
-                }
-        });
-        btn_extend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                break;
+            case R.id.btn_extend:
                 extend();
+                btn_extend.setVisibility(View.INVISIBLE);
+                break;
+            default :
+                break;
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        currentUser = mRootRef.child("users").child(uuid).getRef();
+
+        currentUser.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String bb_location = dataSnapshot.child("seatNum").getValue(String.class);
+                txtView_beanbagseat.setText(bb_location);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "seatNum ");
             }
         });
+
+
     }
+
     /*뒤로가기를 눌렀을 때 작동되는 함수*/
     @Override
     public void onBackPressed() {
@@ -125,7 +155,7 @@ public class usingactivity extends Activity {
     private void fn_countdown(int pausetime) {
         //if (et_timer.getText().toString().length()>0) {
 
-            myProgress = 0;
+        myProgress = 0;
 
             try {
                 countDownTimer.cancel();
@@ -303,6 +333,7 @@ public class usingactivity extends Activity {
         }
         //+자리 반납. 타이머 종료. activity 종료
     }
+
     public void extend(){
         extendtime = progress - limit_leavingtime/2;
         countDownTimer.cancel();
