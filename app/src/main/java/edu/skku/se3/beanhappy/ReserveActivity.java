@@ -17,7 +17,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
+
+//import sun.java2d.pipe.SpanShapeRenderer;
 
 public class ReserveActivity extends BaseActivity implements
         View.OnClickListener {
@@ -26,6 +30,9 @@ public class ReserveActivity extends BaseActivity implements
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    private Date today;
+    private User CurrentUser;
+    private DatabaseReference mUsers = mRootRef.child("users");
 
     private DatabaseReference mA = mRootRef.child("bb_A");
     private DatabaseReference mA1 = mA.child("bb_A1"); private DatabaseReference mA2 = mA.child("bb_A2");
@@ -51,6 +58,7 @@ public class ReserveActivity extends BaseActivity implements
     private DeviceUuidFactory device;
     private String uuid;
     private DatabaseReference currentUser;
+    private String TodayDate;
 
     TextView A_AvailTextView, B_AvailTextView, C_AvailTextView, D_AvailTextView, E_AvailTextView;
     ImageButton bA1Btn, bA2Btn, bA3Btn, bA4Btn;
@@ -96,7 +104,22 @@ public class ReserveActivity extends BaseActivity implements
 
         device = new DeviceUuidFactory(this);
         uuid = device.getDeviceUuid().toString();
+        SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");
+        today = new Date();
+        TodayDate = date.format(today);
+        final Long[] time = new Long[1];
+        mRootRef.child("users").child(TodayDate).child(uuid).child("last_login_time").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                time[0] = dataSnapshot.getValue(Long.class);
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        CurrentUser = new User(user.getEmail(), uuid, time[0]);
     }
 
 
@@ -743,13 +766,20 @@ public class ReserveActivity extends BaseActivity implements
         int i = v.getId();
         switch(i) {
             case R.id.bA1 :
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("예약 확인");
-                builder.setMessage("자리를 예약 하시겠습니까?");
-                builder.setNegativeButton("예",
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+                builder1.setTitle("예약 확인");
+                builder1.setMessage("자리를 예약 하시겠습니까?");
+                builder1.setNegativeButton("예",
                         (dialog, which) -> {
                             mA1.child("state").setValue(2);
+                            mA1.child("user").setValue(CurrentUser);
+                            mA1.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mA1.child("user").child("status").setValue(2);
 
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("A1");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
 
                             Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
                             Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
@@ -757,11 +787,29 @@ public class ReserveActivity extends BaseActivity implements
                             startActivity(intentToAfter);
                             finish();
                         });
-                builder.setPositiveButton("아니요",
+                builder1.setPositiveButton("아니요",
                         (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
-                builder.show();
+                builder1.show();
                 break;
             case R.id.bA2 :
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+                builder2.setTitle("예약 확인");
+                builder2.setMessage("자리를 예약 하시겠습니까?");
+                builder2.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mA2.child("state").setValue(2);
+                            mA2.child("user").setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder2.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder2.show();
                 break;
         }
     }

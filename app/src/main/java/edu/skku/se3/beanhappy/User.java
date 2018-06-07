@@ -20,14 +20,14 @@ public class User {
     public Long last_start_time;
     public Long last_login_time;
     public boolean isExtended;
-    public UUID uuid;
+    public String uuid;
 
 
-    public User() {
+    public User(String email, String uuid, long time) {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    User(String email, UUID uuid, Long last_login_time) {
+    User(String email, String uuid, Long last_login_time) {
         this.email = email;
         this.status = 0;
         this.seatNum = null;

@@ -5,7 +5,8 @@ import android.content.Intent;
 import android.os.CountDownTimer;
         import android.support.v7.app.AppCompatActivity;
         import android.os.Bundle;
-        import android.view.Menu;
+import android.util.Log;
+import android.view.Menu;
         import android.view.MenuItem;
         import android.view.View;
         import android.widget.Button;
@@ -13,8 +14,14 @@ import android.os.CountDownTimer;
         import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class AfterRegisterActivity extends AppCompatActivity {
 
@@ -22,6 +29,9 @@ public class AfterRegisterActivity extends AppCompatActivity {
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     private DeviceUuidFactory device;
     private String uuid;
+    private String TodayDate;
+    private Date today;
+
 
     private Context mContext = this;
     ProgressBar progressBar;
@@ -51,7 +61,6 @@ public class AfterRegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getout();
-
             }
         });
 
@@ -62,6 +71,10 @@ public class AfterRegisterActivity extends AppCompatActivity {
                 beaconin();
             }
         });
+
+        SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");
+        today = new Date();
+        TodayDate = date.format(today);
 
     }
     /*뒤로가기를 눌렀을 때 작동되는 함수*/
@@ -130,8 +143,22 @@ public class AfterRegisterActivity extends AppCompatActivity {
     /*자리반납하는 함수*/
     public void getout(){
 
-        mRootRef.child("users").child(uuid).child("state").setValue(0);
-        mRootRef.child("users").child(uuid).child("seatNum").setValue(null);
+        mRootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String seatNum = dataSnapshot.child("users").child(TodayDate).child(uuid).child("seatNum").getValue(String.class);
+                mRootRef.child("bb_"+seatNum.charAt(0)).child("bb_"+seatNum).child("state").setValue(0);
+                mRootRef.child("bb_"+seatNum.charAt(0)).child("bb_"+seatNum).child("user").removeValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mRootRef.child("users").child(TodayDate).child(uuid).child("status").setValue(0);
+        mRootRef.child("users").child(TodayDate).child(uuid).child("seatNum").setValue(null);
         Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
         intentToActivitymain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intentToActivitymain);
@@ -144,17 +171,33 @@ public class AfterRegisterActivity extends AppCompatActivity {
 
     /*비콘에 들어오는 경우 실행되는 함수*/
     public void beaconin(){
-//        Intent intentToActivityusing = new Intent(mContext, usingactivity.class);
-//        startActivity(intentToActivityusing);
+       // Intent intentToActivityusing = new Intent(mContext, usingactivity.class);
+       // startActivity(intentToActivityusing);
+        mRootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String seatNum = dataSnapshot.child("users").child(TodayDate).child(uuid).child("seatNum").getValue(String.class);
+                mRootRef.child("bb_"+seatNum.charAt(0)).child("bb_"+seatNum).child("state").setValue(3);
+                mRootRef.child("bb_"+seatNum.charAt(0)).child("bb_"+seatNum).child("user").child("last_start_time").setValue(System.currentTimeMillis());
+                mRootRef.child("bb_"+seatNum.charAt(0)).child("bb_"+seatNum).child("user").child("status").setValue(3);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        mRootRef.child("users").child(TodayDate).child(uuid).child("status").setValue(3);
+        mRootRef.child("users").child(TodayDate).child(uuid).child("last_start_time").setValue(System.currentTimeMillis());
 
 
-
-//        Intent intentToUsing = new Intent(getApplicationContext(), usingactivity.class);
-//        intentToUsing.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//        startActivity(intentToUsing);
-//        //activity 넘어갈때 FLAG로 해야함 일단은 startActivity로 만들었음
-//        myCountDownTimer.cancel();  //ontick()(=타이머) 정지
-//        finish();   //해당 activity종료
+       // Intent intentToUsing = new Intent(getApplicationContext(), usingactivity.class);
+       // intentToUsing.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        //startActivity(intentToUsing);
+        //activity 넘어갈때 FLAG로 해야함 일단은 startActivity로 만들었음
+        //myCountDownTimer.cancel();  //ontick()(=타이머) 정지
+        //finish();   //해당 activity종료
         //실제로는 버튼으로 하는게 아니라 ontick함수안에 수시로 비콘신호를 확인하는 if문을 넣어놨다가 비콘이 확인되면 beaconin함수가 실행되도록 해야함
     }
 }
