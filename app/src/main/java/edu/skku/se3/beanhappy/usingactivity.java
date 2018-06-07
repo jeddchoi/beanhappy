@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.UUID;
 
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
@@ -21,9 +22,9 @@ public class usingactivity extends Activity {
     private int limit_usingtime = 40;
     private int limit_leavingtime = 10;
     /*피크타임 시작과 끝 그리고 피크타임 여부 설정*/
-    private int peak_starthour = 15;
-    private int peak_endhour = 19;
-    private boolean isnotpeak = true;
+    int peak_starthour = 9;
+    int peak_endhour = 15;
+    boolean isnotpeak = true;
 
     private Context mContext = this;
     private  TextView txtView_beanbagseat;
@@ -43,6 +44,8 @@ public class usingactivity extends Activity {
     int endTime = 250;
     int extendtime;
     boolean isextended = false;
+    boolean isbeacon = true;    //비콘의 유무로 함수 동작을 하기 위한 변수
+    boolean realbeacon = true; //진짜 비콘의 위치 표현   (실제 비콘 구현되면 이거 지우고 함수값 넣자)
 
     Calendar t = Calendar.getInstance();
     String hh = Integer.toString(t.get(Calendar.HOUR_OF_DAY));
@@ -65,8 +68,8 @@ public class usingactivity extends Activity {
         btn_away = (Button)findViewById(R.id.away);
 
         txtView_beanbagseat = findViewById(R.id.beanbagnum);
-//        user = new User("minki");
-//        user.setType(3);
+        user = new User("ddd@skku.edu", UUID.randomUUID());
+        user.setType(1);
         //user.setType("Using");
 
         /*Animation*/
@@ -105,7 +108,11 @@ public class usingactivity extends Activity {
         btn_away.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    beaconout();
+                    if(realbeacon){
+                        realbeacon = false;
+                    }else{
+                        realbeacon = true;
+                    }
                 }
         });
         btn_extend.setOnClickListener(new View.OnClickListener() {
@@ -139,40 +146,43 @@ public class usingactivity extends Activity {
             progress = pausetime;
             //endTime = Integer.parseInt(timeInterval); // up to finish time
             //if (user.getType() == "Using"){
-            if (user.getType() == 3){
+            if (user.getType() == 1){
                 endTime = limit_usingtime; // up to finish time
             }
             //if (user.getType() == "Out"){
-            if (user.getType() == 4){
+            if (user.getType() == 3){
                 endTime = limit_leavingtime;
             }
 
 
             countDownTimer = new CountDownTimer(endTime * 1000, 1000) {
                 @Override
-            //millisUntilFinished는 어디서 받아오려나?
+
                 public void onTick(long millisUntilFinished) {
                     setProgress(progress, endTime);
                     progress = progress + 1;
 
-
+                    if(isbeacon != realbeacon){
+                        beaconact();
+                        isbeacon = realbeacon;
+                    }
 
                     //if((user.getType() == "Using") & (endTime - progress == 0)){
-                    if((user.getType() == 3) & (endTime - progress == 0)){
+                    if((user.getType() == 1) & (endTime - progress == 0)){
                         timeout();
                     }
 
                     //if((user.getType() == "Out") & (pauseprogress + progress == limit_usingtime)){
-                    if((user.getType() == 4) & (pauseprogress + progress == limit_usingtime)){
+                    if((user.getType() == 3) & (pauseprogress + progress == limit_usingtime)){
                         timeout();
                     }
                     //if((user.getType() == "Out") & (endTime - progress == 0)){
-                    if((user.getType() == 4) & (endTime - progress == 0)){
+                    if((user.getType() == 3) & (endTime - progress == 0)){
                         getout();
                     }
 
                     //if((progress >= limit_leavingtime/2)&(user.getType() == "Out")){
-                    if((progress >= limit_leavingtime/2)&(user.getType() == 4)){
+                    if((progress >= limit_leavingtime/2)&(user.getType() == 3)){
                         if(isextended){
                             btn_extend.setEnabled(false);
                         }
@@ -223,11 +233,11 @@ public class usingactivity extends Activity {
 
                     //if((endTime - progress) == 0){  //타이머 시간이 다 지난 경우
                     //if(user.getType() == "Using"){    //시간 다되면 타임아웃 엑티비티로
-                    if(user.getType() == 3){    //시간 다되면 타임아웃 엑티비티로
+                    if(user.getType() == 1){    //시간 다되면 타임아웃 엑티비티로
                         timeout();
                     }
                     //if(user.getType() == "Out"){    //자리비운상태로 시간 다되면 자리 반납
-                    if(user.getType() == 4){    //자리비운상태로 시간 다되면 자리 반납
+                    if(user.getType() == 3){    //자리비운상태로 시간 다되면 자리 반납
                         getout();
                     }
                     //}
@@ -265,16 +275,16 @@ public class usingactivity extends Activity {
 
         //+자리 반납. 타이머 종료. activity 종료
     }
-    public void beaconout(){
+    public void beaconact(){
         //Intent intentToActivityaway = new Intent(mContext, awaybeacon.class);
         //startActivity(intentToActivityaway);
         //if (user.getType() == "Out"){
-        if (user.getType() == 4){
+        if (user.getType() == 3){
             txtView_beanbagseat.setText("A-4(함수X)");
             //빈백 자리 넣는 함수로 채울 예정
             //btn_away.setText("beacon out");
             //user.setType("Using");
-            user.setType(3);
+            user.setType(1);
             btn_extend.setVisibility(View.INVISIBLE);
             txtView1.setVisibility(View.VISIBLE);
             txtView2.setVisibility(View.VISIBLE);
@@ -288,13 +298,13 @@ public class usingactivity extends Activity {
             fn_countdown(pauseprogress);
         }
         //else if(user.getType() == "Using"){
-        else if(user.getType() == 3){
+        else if(user.getType() == 1){
             txtView_beanbagseat.setText("자리를 비우셨습니다.");
             txtView1.setVisibility(View.INVISIBLE);
             txtView2.setVisibility(View.INVISIBLE);
             //btn_away.setText("beacon in");
             //user.setType("Out");
-            user.setType(4);
+            user.setType(3);
             btn_extend.setVisibility(View.VISIBLE);
             pauseprogress = progress;
             isextended = false;

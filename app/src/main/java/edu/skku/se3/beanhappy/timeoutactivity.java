@@ -4,16 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Vibrator;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.Message;
 import android.view.animation.RotateAnimation;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +24,7 @@ public class timeoutactivity extends Activity {
     TextView tv_time;
     int progress;
     CountDownTimer countDownTimer;
-    int endTime = 250;
+    int endTime = 240;
     Vibrator vide;
 
     @Override
@@ -135,7 +130,8 @@ public class timeoutactivity extends Activity {
             @Override
             public void onFinish() {
                 setProgress(progress, endTime);
-
+                //자리반납(다른건 안바꾸기)
+                Toast.makeText(timeoutactivity.this,"자리가 반납되었습니다", Toast.LENGTH_SHORT).show();
 
             }
         };
@@ -146,6 +142,7 @@ public class timeoutactivity extends Activity {
     @Override
     protected void onDestroy() {
         //자리를 반납하는 함수 넣기
+        Toast.makeText(timeoutactivity.this,"자리가 반납되었습니다", Toast.LENGTH_SHORT).show();
         super.onDestroy();
     }
 
