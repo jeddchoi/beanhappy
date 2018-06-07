@@ -119,10 +119,10 @@ public class MainActivity extends BaseActivity implements
             startActivity(intentToReserve);
         } else if (i == R.id.myStatusBtn) {
 
-            Intent intentToUsing = new Intent(getApplicationContext(), usingactivity.class);
-            intentToUsing.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intentToUsing);
-            finish();
+//            Intent intentToUsing = new Intent(getApplicationContext(), usingactivity.class);
+//            intentToUsing.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//            startActivity(intentToUsing);
+//            finish();
         } else if (i == R.id.reportBtn) {
             Intent intentToChat = new Intent(getApplicationContext(), ChatActivity.class);
             startActivity(intentToChat);

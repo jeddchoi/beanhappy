@@ -146,12 +146,15 @@ public class AfterRegisterActivity extends AppCompatActivity {
     public void beaconin(){
 //        Intent intentToActivityusing = new Intent(mContext, usingactivity.class);
 //        startActivity(intentToActivityusing);
-        Intent intentToUsing = new Intent(getApplicationContext(), usingactivity.class);
-        intentToUsing.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intentToUsing);
-        //activity 넘어갈때 FLAG로 해야함 일단은 startActivity로 만들었음
-        myCountDownTimer.cancel();  //ontick()(=타이머) 정지
-        finish();   //해당 activity종료
+
+
+
+//        Intent intentToUsing = new Intent(getApplicationContext(), usingactivity.class);
+//        intentToUsing.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        startActivity(intentToUsing);
+//        //activity 넘어갈때 FLAG로 해야함 일단은 startActivity로 만들었음
+//        myCountDownTimer.cancel();  //ontick()(=타이머) 정지
+//        finish();   //해당 activity종료
         //실제로는 버튼으로 하는게 아니라 ontick함수안에 수시로 비콘신호를 확인하는 if문을 넣어놨다가 비콘이 확인되면 beaconin함수가 실행되도록 해야함
     }
 }
