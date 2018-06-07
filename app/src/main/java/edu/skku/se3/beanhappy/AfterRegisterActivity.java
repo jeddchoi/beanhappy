@@ -13,7 +13,15 @@ import android.os.CountDownTimer;
         import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class AfterRegisterActivity extends AppCompatActivity {
+
+    public static final String TAG = "BeanHappy";
+    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    private DeviceUuidFactory device;
+    private String uuid;
 
     private Context mContext = this;
     ProgressBar progressBar;
@@ -31,6 +39,9 @@ public class AfterRegisterActivity extends AppCompatActivity {
         tv_time= (TextView)findViewById(R.id.tv_timer);
         Button btn_return = (Button)findViewById(R.id.returnseat);
         Button btn_beaconin = (Button)findViewById(R.id.beaconin);
+
+        device = new DeviceUuidFactory(this);
+        uuid = device.getDeviceUuid().toString();
 
         myCountDownTimer = new MyCountDownTimer(endTime * 1000, 1000);
         myCountDownTimer.start();
@@ -115,11 +126,16 @@ public class AfterRegisterActivity extends AppCompatActivity {
             finish();
         }
     }
+
     /*자리반납하는 함수*/
     public void getout(){
+
+        mRootRef.child("users").child(uuid).child("state").setValue(0);
+        mRootRef.child("users").child(uuid).child("seatNum").setValue(null);
         Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
         intentToActivitymain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intentToActivitymain);
+
         //activity 넘어갈때 FLAG로 해야함 일단은 startActivity로 만들었음
         myCountDownTimer.cancel();  //ontick()(=타이머) 정지
         finish();   //해당 activity종료
@@ -130,12 +146,15 @@ public class AfterRegisterActivity extends AppCompatActivity {
     public void beaconin(){
 //        Intent intentToActivityusing = new Intent(mContext, usingactivity.class);
 //        startActivity(intentToActivityusing);
-        Intent intentToUsing = new Intent(getApplicationContext(), usingactivity.class);
-        intentToUsing.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intentToUsing);
-        //activity 넘어갈때 FLAG로 해야함 일단은 startActivity로 만들었음
-        myCountDownTimer.cancel();  //ontick()(=타이머) 정지
-        finish();   //해당 activity종료
+
+
+
+//        Intent intentToUsing = new Intent(getApplicationContext(), usingactivity.class);
+//        intentToUsing.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        startActivity(intentToUsing);
+//        //activity 넘어갈때 FLAG로 해야함 일단은 startActivity로 만들었음
+//        myCountDownTimer.cancel();  //ontick()(=타이머) 정지
+//        finish();   //해당 activity종료
         //실제로는 버튼으로 하는게 아니라 ontick함수안에 수시로 비콘신호를 확인하는 if문을 넣어놨다가 비콘이 확인되면 beaconin함수가 실행되도록 해야함
     }
 }

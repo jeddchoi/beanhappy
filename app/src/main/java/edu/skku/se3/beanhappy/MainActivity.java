@@ -3,6 +3,7 @@ package edu.skku.se3.beanhappy;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -107,7 +108,7 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        Log.d(TAG, "myStatusBtn clicked"); // test
+//        Log.d(TAG, "myStatusBtn clicked"); // test
         if (i == R.id.quickReserveBtn) {
             Intent intentToquick = new Intent(getApplicationContext(), AfterRegisterActivity.class);
             intentToquick.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -118,10 +119,10 @@ public class MainActivity extends BaseActivity implements
             startActivity(intentToReserve);
         } else if (i == R.id.myStatusBtn) {
 
-            Intent intentToUsing = new Intent(getApplicationContext(), usingactivity.class);
-            intentToUsing.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intentToUsing);
-            finish();
+//            Intent intentToUsing = new Intent(getApplicationContext(), usingactivity.class);
+//            intentToUsing.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//            startActivity(intentToUsing);
+//            finish();
         } else if (i == R.id.reportBtn) {
             Intent intentToChat = new Intent(getApplicationContext(), ChatActivity.class);
             startActivity(intentToChat);
@@ -131,7 +132,7 @@ public class MainActivity extends BaseActivity implements
 
             SharedPreferences pref;
             SharedPreferences.Editor editor;
-            pref = getSharedPreferences("pref", 0);
+            pref = PreferenceManager.getDefaultSharedPreferences(this);
             editor = pref.edit();
 
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);

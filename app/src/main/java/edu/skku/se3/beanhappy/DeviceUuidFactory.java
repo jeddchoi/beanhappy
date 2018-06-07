@@ -10,14 +10,12 @@ import android.util.Log;
 import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
-import static java.util.UUID.randomUUID;
-
 public class DeviceUuidFactory {
     public static final String TAG = "BeanHappy";
-    protected static final String PREFS_DEVICE_ID = "device_id";
-    protected volatile static UUID uuid;
+    private static final String PREFS_DEVICE_ID = "device_id";
+    private volatile static UUID uuid;
 
-    public DeviceUuidFactory(Context context) {
+    DeviceUuidFactory(Context context) {
     if (uuid == null) {
         synchronized (DeviceUuidFactory.class) {
             if (uuid == null) {
@@ -48,7 +46,7 @@ public class DeviceUuidFactory {
                         throw new RuntimeException(e);
                     }
                     // Write the value out to the pref file
-                    pref.edit().putString(PREFS_DEVICE_ID, uuid.toString()).commit();
+                    pref.edit().putString(PREFS_DEVICE_ID, uuid.toString()).apply();
                     }
                 }
             }

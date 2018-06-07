@@ -18,13 +18,9 @@ import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -43,8 +39,6 @@ public class LoginActivity extends BaseActivity {
     private CheckBox autologin_ChkBox;
     private boolean loginChecked;
     private Context mContext = this;
-    private Button login_button; // 로그인 버튼
-    private Button register_button; //등록버튼
     private FirebaseAuth mAuth;
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     private DeviceUuidFactory device;
@@ -58,12 +52,15 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        email_edit = (EditText)findViewById(R.id.email_edit);
-        pw_edit = (EditText)findViewById(R.id.pw_edit);
-        login_button = (Button)findViewById(R.id.email_sign_in_button);
-        register_button = (Button)findViewById(R.id.email_sign_up_button);
+        Button login_button; // 로그인 버튼
+        Button register_button; //등록버튼
 
-        autologin_ChkBox = (CheckBox)findViewById(R.id.autologinChk);
+        email_edit = findViewById(R.id.email_edit);
+        pw_edit = findViewById(R.id.pw_edit);
+        login_button = findViewById(R.id.email_sign_in_button);
+        register_button = findViewById(R.id.email_sign_up_button);
+
+        autologin_ChkBox = findViewById(R.id.autologinChk);
         mAuth = FirebaseAuth.getInstance();
 
         pref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -71,41 +68,32 @@ public class LoginActivity extends BaseActivity {
         device = new DeviceUuidFactory(this);
 
         /* -- 회원가입 클릭시 -- */
-        register_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
-                intent.putExtra("email", email_edit.getText().toString()); // 아이디, 비밀번호
-                intent.putExtra("password", pw_edit.getText().toString());
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-            }
+        register_button.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+            intent.putExtra("email", email_edit.getText().toString()); // 아이디, 비밀번호
+            intent.putExtra("password", pw_edit.getText().toString());
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
         });
 
         /* -- 로그인 클릭시 -- */
-        login_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    attemptLogin();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        login_button.setOnClickListener(v -> {
+            try {
+                attemptLogin();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
         /* -- 자동로그인 체크박스 클릭시 -- */
-        autologin_ChkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
-                    loginChecked = true;
-                } else {
-                    // if unChecked, removeAll
-                    loginChecked = false;
-                    editor.clear();
-                    editor.commit();
-                }
+        autologin_ChkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked) {
+                loginChecked = true;
+            } else {
+                // if unChecked, removeAll
+                loginChecked = false;
+                editor.clear();
+                editor.apply();
             }
         });
 
@@ -212,22 +200,19 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if(requestCode == MY_PERMISSIONS_REQUEST_READ_PHONE_STATE) {
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            } else {
+            if (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(LoginActivity.this, R.string.please_check_permission, Toast.LENGTH_LONG).show();
-                return;
             }
         }
     }
 
     private boolean isEmailValid(String email) {
 
-        String regex = "^[_a-zA-Z0-9-\\.]+@skku.edu";
+        String regex = "^[_a-zA-Z0-9-.]+@skku.edu";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(email);
-        boolean isNormal = m.matches();
 
-        return isNormal;
+        return m.matches();
     }
 
     private boolean isPasswordValid(String password) {
@@ -235,9 +220,8 @@ public class LoginActivity extends BaseActivity {
         String regex = "^[a-zA-Z0-9!@.#$%^&*?_~]{8,16}$"; // 8자리 ~ 16자리까지 가능
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(password);
-        boolean isNormal = m.matches();
 
-        return isNormal;
+        return m.matches();
     }
 
     private void signIn(String email, String password) {
@@ -247,58 +231,55 @@ public class LoginActivity extends BaseActivity {
 
         // [START sign_in_with_email]
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithEmail:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
 
-                            // Check for a email verification.
-                            if(!user.isEmailVerified())
-                            {
-                                Toast.makeText(getApplicationContext(), R.string.error_please_verify, Toast.LENGTH_SHORT).show();
-                                hideProgressDialog();
-                                return;
-                            }
-
-                            String uuid = device.getDeviceUuid().toString();
-
-                            mRootRef.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                    if(!dataSnapshot.hasChild(uuid)) {
-                                        writeNewUser(uuid, email);
-                                    } else if(!email.equals(dataSnapshot.child(uuid).child("email").getValue(String.class))) {
-                                        Toast.makeText(LoginActivity.this, R.string.reject_bad_uuid, Toast.LENGTH_LONG).show();
-                                        Log.d(TAG, "mRootRef_" + dataSnapshot.child(uuid).child("email").getValue(String.class));
-                                        return;
-                                    } else {
-                                        writeNewUser(uuid, email);
-                                    }
-                                }
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-                                    Log.e(TAG, "onCancelled: " + databaseError.getMessage());
-                                }
-                            });
-
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                        // Check for a email verification.
+                        assert user != null;
+                        if(!user.isEmailVerified())
+                        {
+                            Toast.makeText(getApplicationContext(), R.string.error_please_verify, Toast.LENGTH_SHORT).show();
+                            hideProgressDialog();
+                            return;
                         }
 
-                        hideProgressDialog();
-                        // [END_EXCLUDE]
+                        String uuid = device.getDeviceUuid().toString();
+
+                        mRootRef.child("users");
+                        mRootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                if (dataSnapshot.hasChild(uuid) && !email.equals(dataSnapshot.child(uuid).child("email").getValue(String.class))) {
+                                        Toast.makeText(LoginActivity.this, R.string.reject_bad_uuid, Toast.LENGTH_LONG).show();
+                                        Log.d(TAG, "mRootRef_" + dataSnapshot.child(uuid).child("email").getValue(String.class));
+                                } else {
+                                    writeNewUser(uuid, email);
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+                            }
+                        });
+
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithEmail:failure", task.getException());
+                        Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
                     }
+
+                    hideProgressDialog();
+                    // [END_EXCLUDE]
                 });
         // [END sign_in_with_email]
     }
@@ -317,7 +298,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void writeNewUser(String userId, String email) {
-        User user = new User(email, device.getDeviceUuid());
+        User user = new User(email, device.getDeviceUuid(), System.currentTimeMillis());
         mRootRef.child("users").child(userId).setValue(user);
     }
 }

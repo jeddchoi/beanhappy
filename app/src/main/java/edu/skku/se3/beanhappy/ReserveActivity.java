@@ -1,40 +1,23 @@
 package edu.skku.se3.beanhappy;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Image;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.MutableData;
-import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Map;
-import java.util.UUID;
 
 public class ReserveActivity extends BaseActivity implements
         View.OnClickListener {
@@ -67,6 +50,7 @@ public class ReserveActivity extends BaseActivity implements
 
     private DeviceUuidFactory device;
     private String uuid;
+    private DatabaseReference currentUser;
 
     TextView A_AvailTextView, B_AvailTextView, C_AvailTextView, D_AvailTextView, E_AvailTextView;
     ImageButton bA1Btn, bA2Btn, bA3Btn, bA4Btn;
@@ -112,6 +96,7 @@ public class ReserveActivity extends BaseActivity implements
 
         device = new DeviceUuidFactory(this);
         uuid = device.getDeviceUuid().toString();
+
     }
 
 
@@ -128,6 +113,7 @@ public class ReserveActivity extends BaseActivity implements
                     if(ds.getKey().equals("bb_NumAvail"))
                         continue;
                     Map<String, Object> map = (Map<String, Object>) ds.getValue();
+                    assert map != null;
                     Object count = map.get("state");
                     if(Integer.parseInt(String.valueOf(count)) == 0)
                         sum += 1;
@@ -152,6 +138,7 @@ public class ReserveActivity extends BaseActivity implements
                     if(ds.getKey().equals("bb_NumAvail"))
                         continue;
                     Map<String, Object> map = (Map<String, Object>) ds.getValue();
+                    assert map != null;
                     Object count = map.get("state");
                     if(Integer.parseInt(String.valueOf(count)) == 0)
                         sum += 1;
@@ -176,6 +163,7 @@ public class ReserveActivity extends BaseActivity implements
                     if(ds.getKey().equals("bb_NumAvail"))
                         continue;
                     Map<String, Object> map = (Map<String, Object>) ds.getValue();
+                    assert map != null;
                     Object count = map.get("state");
                     if(Integer.parseInt(String.valueOf(count)) == 0)
                         sum += 1;
@@ -200,6 +188,7 @@ public class ReserveActivity extends BaseActivity implements
                     if(ds.getKey().equals("bb_NumAvail"))
                         continue;
                     Map<String, Object> map = (Map<String, Object>) ds.getValue();
+                    assert map != null;
                     Object count = map.get("state");
                     if(Integer.parseInt(String.valueOf(count)) == 0)
                         sum += 1;
@@ -224,6 +213,7 @@ public class ReserveActivity extends BaseActivity implements
                     if(ds.getKey().equals("bb_NumAvail"))
                         continue;
                     Map<String, Object> map = (Map<String, Object>) ds.getValue();
+                    assert map != null;
                     Object count = map.get("state");
                     if(Integer.parseInt(String.valueOf(count)) == 0)
                         sum += 1;
@@ -729,6 +719,24 @@ public class ReserveActivity extends BaseActivity implements
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        currentUser = mRootRef.child("users").child(uuid).getRef();
+        currentUser.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Log.d(TAG, "currentUser = " + ds.getKey() + ds.getValue());
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
 
     @Override
     public void onClick(View v) {
@@ -739,30 +747,18 @@ public class ReserveActivity extends BaseActivity implements
                 builder.setTitle("예약 확인");
                 builder.setMessage("자리를 예약 하시겠습니까?");
                 builder.setNegativeButton("예",
-                        new DialogInterface.OnClickListener() {
-                            @RequiresApi(api = Build.VERSION_CODES.N)
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                mA1.child("state").setValue(2);
-                                mA1.child("last_reserve_time").setValue(System.currentTimeMillis());
+                        (dialog, which) -> {
+                            mA1.child("state").setValue(2);
 
-                                mRootRef.child("users").child(uuid).child("state").setValue(2);
-                                mRootRef.child("users").child(uuid).child("seatNum").setValue("A1");
 
-                                Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
-                                Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
-                                intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                startActivity(intentToAfter);
-                                finish();
-                            }
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
                         });
                 builder.setPositiveButton("아니요",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show();
-                            }
-                        });
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
                 builder.show();
                 break;
             case R.id.bA2 :
