@@ -10,10 +10,10 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="133dp"
-        android:layout_height="166dp"
+        android:layout_height="165dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="17dp"
         android:contentDescription="@string/화남"
         android:src="@drawable/angry" />
 
@@ -58,7 +58,7 @@
 
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="215dp"
+        android:layout_marginBottom="189dp"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/view_progress_bar"
         app:layout_constraintEnd_toEndOf="@+id/view_progress_bar"
@@ -69,8 +69,9 @@
         android:id="@+id/timeover"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/view_progress_bar"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="192dp"
         android:fontFamily="@font/hanna"
         android:text="@string/timesup"
         android:textColor="#ffffff"
