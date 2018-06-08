@@ -29,6 +29,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,6 +46,10 @@ public class LoginActivity extends BaseActivity {
     private DeviceUuidFactory device;
     SharedPreferences pref;
     SharedPreferences.Editor editor;
+
+    private String TodayDate;
+    private Date today;
+    private User user;
 
 
 
@@ -97,6 +103,9 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
+        SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");
+        today = new Date();
+        TodayDate = date.format(today);
     }
 
     @Override
@@ -298,8 +307,15 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void writeNewUser(String userId, String email) {
-        User user = new User(email, device.getDeviceUuid().toString(), System.currentTimeMillis());
-        mRootRef.child("users").child(userId).setValue(user);
+        user = new User(email, device.getDeviceUuid().toString(), System.currentTimeMillis());
+        mRootRef.child("users").child(TodayDate).child(userId).child("email").setValue(email);
+        mRootRef.child("users").child(TodayDate).child(userId).child("isExtended").setValue(false);
+        mRootRef.child("users").child(TodayDate).child(userId).child("last_idle_time").setValue(0L);
+        mRootRef.child("users").child(TodayDate).child(userId).child("last_reserve_time").setValue(0L);
+        mRootRef.child("users").child(TodayDate).child(userId).child("last_start_time").setValue(0L);
+        mRootRef.child("users").child(TodayDate).child(userId).child("status").setValue(0);
+        mRootRef.child("users").child(TodayDate).child(userId).child("uuid").setValue(userId);
+        mRootRef.child("users").child(TodayDate).child(userId).child("last_login_time").setValue(System.currentTimeMillis());
     }
 }
 
