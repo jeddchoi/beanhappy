@@ -108,6 +108,7 @@ public class usingactivity extends Activity{
         SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");
         today = new Date();
         TodayDate = date.format(today);
+        Today = today.toString();
 
         /*Animation*/
         RotateAnimation makeVertical = new RotateAnimation(0, -90, RELATIVE_TO_SELF, 0.5f, RELATIVE_TO_SELF, 0.5f);
@@ -118,21 +119,29 @@ public class usingactivity extends Activity{
 
         btn_extend.setVisibility(View.INVISIBLE);
 
-//        currentUser = mRootRef.child("users").child(Today).child(uuid).getRef();
-//
-//        currentUser.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                seat = dataSnapshot.child("seatNum").getValue(String.class);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                Log.e(TAG, "seatNum ");
-//            }
-//        });
-        seat = "eee";
-        txtView_beanbagseat.setText(seat);
+        currentUser = mRootRef.child("users").child(Today).child(uuid).getRef();
+        Log.d(TAG, "currentUser is: " + currentUser);
+        currentUser.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String value = dataSnapshot.child("seatNum").getValue(String.class);
+                Log.d(TAG, "Value1 is: " + value);
+                Log.d(TAG, "Value1 is: " + dataSnapshot.child("seatNum").getChildrenCount());
+                Log.d(TAG, "Value2 is: " + dataSnapshot.child("seatNum").getChildren());
+                Log.d(TAG, "Value2 is: " + dataSnapshot.child("seatNum").getRef());
+                Log.d(TAG, "seatNum is: " + dataSnapshot.child("seatNum"));
+                Log.d(TAG, "eeeee is: " + dataSnapshot);
+//                String seat = dataSnapshot.child("seatNum").getValue(String.class);
+//                txtView_beanbagseat.setText(seat);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
+        //txtView_beanbagseat.setText(seat);
 
         fn_countdown(0);
 
@@ -368,8 +377,8 @@ public class usingactivity extends Activity{
 
     public void getout(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("예약 취소");
-        builder.setMessage("예약을 취소 하시겠습니까?");
+        builder.setTitle("자리 반납");
+        builder.setMessage("자리를 반납 하시겠습니까?");
         builder.setNegativeButton("예",
                 (dialog, which) -> {
                     mRootRef.addListenerForSingleValueEvent(new ValueEventListener() {
