@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Vibrator;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.os.CountDownTimer;
@@ -12,6 +13,15 @@ import android.view.animation.RotateAnimation;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
@@ -26,6 +36,13 @@ public class timeoutactivity extends Activity {
     CountDownTimer countDownTimer;
     int endTime = 240;
     Vibrator vide;
+
+    //getout 에 들어갈 변수들
+    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    private String TodayDate;
+    private Date today;
+    private String uuid;
+    private DeviceUuidFactory device;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +79,12 @@ public class timeoutactivity extends Activity {
                 getout();
             }
         });
+        device = new DeviceUuidFactory(this);
+        uuid = device.getDeviceUuid().toString();
+
+        SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");
+        today = new Date();
+        TodayDate = date.format(today);
     }
 
     /*뒤로가기를 눌렀을 때 작동되는 함수*/
@@ -154,6 +177,22 @@ public class timeoutactivity extends Activity {
     }
 
     public void getout(){
+        mRootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String seatNum = dataSnapshot.child("users").child(TodayDate).child(uuid).child("seatNum").getValue(String.class);
+                mRootRef.child("bb_"+seatNum.charAt(0)).child("bb_"+seatNum).child("state").setValue(0);
+                mRootRef.child("bb_"+seatNum.charAt(0)).child("bb_"+seatNum).child("user").removeValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        mRootRef.child("users").child(TodayDate).child(uuid).child("status").setValue(0);
+        mRootRef.child("users").child(TodayDate).child(uuid).child("seatNum").setValue(null);
         Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
         startActivity(intentToActivitymain);
         //checkusingbeanbag.using_beanbag = 0;

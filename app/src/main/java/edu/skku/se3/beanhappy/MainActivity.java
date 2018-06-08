@@ -1,5 +1,7 @@
 package edu.skku.se3.beanhappy;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.Map;
 
@@ -39,6 +43,7 @@ public class MainActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
 
         // top ui
         logout_textBtn = (TextView) findViewById(R.id.logout_textBtn);
@@ -109,6 +114,22 @@ public class MainActivity extends BaseActivity implements
     public void onClick(View v) {
         int i = v.getId();
 //        Log.d(TAG, "myStatusBtn clicked"); // test
+        mNumAvailTotal.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int num = dataSnapshot.getValue(int.class);
+                if(i == R.id.quickReserveBtn && num == 0)
+                    Toast.makeText(getApplicationContext(),"예약할 수 있는 좌석이 없습니다.", Toast.LENGTH_LONG).show();
+                else if(i == R.id.quickReserveBtn && num != 0){
+                  //  reserving();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         if (i == R.id.quickReserveBtn) {
             Intent intentToquick = new Intent(getApplicationContext(), AfterRegisterActivity.class);
             intentToquick.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -143,4 +164,33 @@ public class MainActivity extends BaseActivity implements
             finish();
         }
     }
+   /* public void reserving() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("빠른 예약");
+        builder.setMessage("빠른 예약을 하시겠습니까?");
+        builder.setNegativeButton("예",
+                (dialog, which) -> {
+
+                        });
+                    });
+
+                    mRootRef.child("users").child(TodayDate).child(uuid).child("status").setValue(0);
+                    mRootRef.child("users").child(TodayDate).child(uuid).child("seatNum").setValue(null);
+                    Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
+                    intentToActivitymain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intentToActivitymain);
+
+                    //activity 넘어갈때 FLAG로 해야함 일단은 startActivity로 만들었음
+                    myCountDownTimer.cancel();  //ontick()(=타이머) 정지
+                    finish();   //해당 activity종료
+                    //+자리 반납
+                });
+        builder.setPositiveButton("아니요", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }*/
 }

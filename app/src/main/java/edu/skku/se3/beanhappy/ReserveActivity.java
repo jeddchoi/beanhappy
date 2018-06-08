@@ -44,16 +44,16 @@ public class ReserveActivity extends BaseActivity implements
     private DatabaseReference mB7 = mB.child("bb_B7"); private DatabaseReference mB8 = mB.child("bb_B8");
 
     private DatabaseReference mC = mRootRef.child("bb_C");
-    private DatabaseReference mC1 = mB.child("bb_C1"); private DatabaseReference mC2 = mB.child("bb_C2"); private DatabaseReference mC3 = mB.child("bb_C3");
-    private DatabaseReference mC4 = mB.child("bb_C4"); private DatabaseReference mC5 = mB.child("bb_C5");
+    private DatabaseReference mC1 = mC.child("bb_C1"); private DatabaseReference mC2 = mC.child("bb_C2"); private DatabaseReference mC3 = mC.child("bb_C3");
+    private DatabaseReference mC4 = mC.child("bb_C4"); private DatabaseReference mC5 = mC.child("bb_C5");
 
     private DatabaseReference mD = mRootRef.child("bb_D");
-    private DatabaseReference mD1 = mB.child("bb_D1"); private DatabaseReference mD2 = mB.child("bb_D2"); private DatabaseReference mD3 = mB.child("bb_D3");
-    private DatabaseReference mD4 = mB.child("bb_D4"); private DatabaseReference mD5 = mB.child("bb_D5"); private DatabaseReference mD6 = mB.child("bb_D6");
+    private DatabaseReference mD1 = mD.child("bb_D1"); private DatabaseReference mD2 = mD.child("bb_D2"); private DatabaseReference mD3 = mD.child("bb_D3");
+    private DatabaseReference mD4 = mD.child("bb_D4"); private DatabaseReference mD5 = mD.child("bb_D5"); private DatabaseReference mD6 = mD.child("bb_D6");
 
     private DatabaseReference mE = mRootRef.child("bb_E");
-    private DatabaseReference mE1 = mB.child("bb_E1"); private DatabaseReference mE2 = mB.child("bb_E2");
-    private DatabaseReference mE3 = mB.child("bb_E3"); private DatabaseReference mE4 = mB.child("bb_E4");
+    private DatabaseReference mE1 = mE.child("bb_E1"); private DatabaseReference mE2 = mE.child("bb_E2");
+    private DatabaseReference mE3 = mE.child("bb_E3"); private DatabaseReference mE4 = mE.child("bb_E4");
 
     private DeviceUuidFactory device;
     private String uuid;
@@ -799,7 +799,13 @@ public class ReserveActivity extends BaseActivity implements
                         (dialog, which) -> {
                             mA2.child("state").setValue(2);
                             mA2.child("user").setValue(CurrentUser);
+                            mA2.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mA2.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
                             mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("A2");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
 
                             Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
                             Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
@@ -810,6 +816,656 @@ public class ReserveActivity extends BaseActivity implements
                 builder2.setPositiveButton("아니요",
                         (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
                 builder2.show();
+                break;
+            case R.id.bA3 :
+                AlertDialog.Builder builder3 = new AlertDialog.Builder(this);
+                builder3.setTitle("예약 확인");
+                builder3.setMessage("자리를 예약 하시겠습니까?");
+                builder3.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mA3.child("state").setValue(2);
+                            mA3.child("user").setValue(CurrentUser);
+                            mA3.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mA3.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("A3");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder3.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder3.show();
+                break;
+            case R.id.bA4 :
+                AlertDialog.Builder builder4 = new AlertDialog.Builder(this);
+                builder4.setTitle("예약 확인");
+                builder4.setMessage("자리를 예약 하시겠습니까?");
+                builder4.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mA4.child("state").setValue(2);
+                            mA4.child("user").setValue(CurrentUser);
+                            mA4.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mA4.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("A4");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder4.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder4.show();
+                break;
+            case R.id.bB1 :
+                AlertDialog.Builder builder5 = new AlertDialog.Builder(this);
+                builder5.setTitle("예약 확인");
+                builder5.setMessage("자리를 예약 하시겠습니까?");
+                builder5.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mB1.child("state").setValue(2);
+                            mB1.child("user").setValue(CurrentUser);
+                            mB1.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mB1.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("B1");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder5.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder5.show();
+                break;
+            case R.id.bB2 :
+                AlertDialog.Builder builder6 = new AlertDialog.Builder(this);
+                builder6.setTitle("예약 확인");
+                builder6.setMessage("자리를 예약 하시겠습니까?");
+                builder6.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mB2.child("state").setValue(2);
+                            mB2.child("user").setValue(CurrentUser);
+                            mB2.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mB2.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("B2");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder6.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder6.show();
+                break;
+            case R.id.bB3 :
+                AlertDialog.Builder builder7 = new AlertDialog.Builder(this);
+                builder7.setTitle("예약 확인");
+                builder7.setMessage("자리를 예약 하시겠습니까?");
+                builder7.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mB3.child("state").setValue(2);
+                            mB3.child("user").setValue(CurrentUser);
+                            mB3.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mB3.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("B3");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder7.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder7.show();
+                break;
+            case R.id.bB4 :
+                AlertDialog.Builder builder8 = new AlertDialog.Builder(this);
+                builder8.setTitle("예약 확인");
+                builder8.setMessage("자리를 예약 하시겠습니까?");
+                builder8.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mB4.child("state").setValue(2);
+                            mB4.child("user").setValue(CurrentUser);
+                            mB4.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mB4.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("B4");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder8.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder8.show();
+                break;
+            case R.id.bB5 :
+                AlertDialog.Builder builder9 = new AlertDialog.Builder(this);
+                builder9.setTitle("예약 확인");
+                builder9.setMessage("자리를 예약 하시겠습니까?");
+                builder9.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mB5.child("state").setValue(2);
+                            mB5.child("user").setValue(CurrentUser);
+                            mB5.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mB5.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("B5");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder9.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder9.show();
+                break;
+            case R.id.bB6 :
+                AlertDialog.Builder builder10 = new AlertDialog.Builder(this);
+                builder10.setTitle("예약 확인");
+                builder10.setMessage("자리를 예약 하시겠습니까?");
+                builder10.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mB6.child("state").setValue(2);
+                            mB6.child("user").setValue(CurrentUser);
+                            mB6.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mB6.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("B6");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder10.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder10.show();
+                break;
+            case R.id.bB7 :
+                AlertDialog.Builder builder11 = new AlertDialog.Builder(this);
+                builder11.setTitle("예약 확인");
+                builder11.setMessage("자리를 예약 하시겠습니까?");
+                builder11.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mB7.child("state").setValue(2);
+                            mB7.child("user").setValue(CurrentUser);
+                            mB7.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mB7.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("B7");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder11.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder11.show();
+                break;
+            case R.id.bB8 :
+                AlertDialog.Builder builder12 = new AlertDialog.Builder(this);
+                builder12.setTitle("예약 확인");
+                builder12.setMessage("자리를 예약 하시겠습니까?");
+                builder12.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mB8.child("state").setValue(2);
+                            mB8.child("user").setValue(CurrentUser);
+                            mB8.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mB8.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("B8");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder12.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder12.show();
+                break;
+            case R.id.bC1 :
+                AlertDialog.Builder builder13 = new AlertDialog.Builder(this);
+                builder13.setTitle("예약 확인");
+                builder13.setMessage("자리를 예약 하시겠습니까?");
+                builder13.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mC1.child("state").setValue(2);
+                            mC1.child("user").setValue(CurrentUser);
+                            mC1.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mC1.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("C1");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder13.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder13.show();
+                break;
+            case R.id.bC2 :
+                AlertDialog.Builder builder14 = new AlertDialog.Builder(this);
+                builder14.setTitle("예약 확인");
+                builder14.setMessage("자리를 예약 하시겠습니까?");
+                builder14.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mC2.child("state").setValue(2);
+                            mC2.child("user").setValue(CurrentUser);
+                            mC2.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mC2.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("C2");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder14.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder14.show();
+                break;
+            case R.id.bC3 :
+                AlertDialog.Builder builder15 = new AlertDialog.Builder(this);
+                builder15.setTitle("예약 확인");
+                builder15.setMessage("자리를 예약 하시겠습니까?");
+                builder15.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mC3.child("state").setValue(2);
+                            mC3.child("user").setValue(CurrentUser);
+                            mC3.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mC3.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("C3");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder15.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder15.show();
+                break;
+            case R.id.bC4 :
+                AlertDialog.Builder builder16 = new AlertDialog.Builder(this);
+                builder16.setTitle("예약 확인");
+                builder16.setMessage("자리를 예약 하시겠습니까?");
+                builder16.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mC1.child("state").setValue(2);
+                            mC1.child("user").setValue(CurrentUser);
+                            mC1.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mC1.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("C4");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder16.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder16.show();
+                break;
+            case R.id.bC5 :
+                AlertDialog.Builder builder17 = new AlertDialog.Builder(this);
+                builder17.setTitle("예약 확인");
+                builder17.setMessage("자리를 예약 하시겠습니까?");
+                builder17.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mC1.child("state").setValue(2);
+                            mC1.child("user").setValue(CurrentUser);
+                            mC1.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mC1.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("C5");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder17.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder17.show();
+                break;
+            case R.id.bD1 :
+                AlertDialog.Builder builder18 = new AlertDialog.Builder(this);
+                builder18.setTitle("예약 확인");
+                builder18.setMessage("자리를 예약 하시겠습니까?");
+                builder18.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mD1.child("state").setValue(2);
+                            mD1.child("user").setValue(CurrentUser);
+                            mD1.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mD1.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("D1");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder18.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder18.show();
+                break;
+            case R.id.bD2 :
+                AlertDialog.Builder builder19 = new AlertDialog.Builder(this);
+                builder19.setTitle("예약 확인");
+                builder19.setMessage("자리를 예약 하시겠습니까?");
+                builder19.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mD2.child("state").setValue(2);
+                            mD2.child("user").setValue(CurrentUser);
+                            mD2.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mD2.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("D2");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder19.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder19.show();
+                break;
+            case R.id.bD3 :
+                AlertDialog.Builder builder20 = new AlertDialog.Builder(this);
+                builder20.setTitle("예약 확인");
+                builder20.setMessage("자리를 예약 하시겠습니까?");
+                builder20.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mD3.child("state").setValue(2);
+                            mD3.child("user").setValue(CurrentUser);
+                            mD3.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mD3.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("D3");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder20.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder20.show();
+                break;
+            case R.id.bD4 :
+                AlertDialog.Builder builder21 = new AlertDialog.Builder(this);
+                builder21.setTitle("예약 확인");
+                builder21.setMessage("자리를 예약 하시겠습니까?");
+                builder21.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mD3.child("state").setValue(2);
+                            mD3.child("user").setValue(CurrentUser);
+                            mD3.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mD3.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("D4");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder21.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder21.show();
+                break;
+            case R.id.bD5 :
+                AlertDialog.Builder builder22 = new AlertDialog.Builder(this);
+                builder22.setTitle("예약 확인");
+                builder22.setMessage("자리를 예약 하시겠습니까?");
+                builder22.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mD5.child("state").setValue(2);
+                            mD5.child("user").setValue(CurrentUser);
+                            mD5.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mD5.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("D5");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder22.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder22.show();
+                break;
+            case R.id.bD6 :
+                AlertDialog.Builder builder23 = new AlertDialog.Builder(this);
+                builder23.setTitle("예약 확인");
+                builder23.setMessage("자리를 예약 하시겠습니까?");
+                builder23.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mD6.child("state").setValue(2);
+                            mD6.child("user").setValue(CurrentUser);
+                            mD6.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mD6.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("D6");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder23.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder23.show();
+                break;
+            case R.id.bE1 :
+                AlertDialog.Builder builder24 = new AlertDialog.Builder(this);
+                builder24.setTitle("예약 확인");
+                builder24.setMessage("자리를 예약 하시겠습니까?");
+                builder24.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mE1.child("state").setValue(2);
+                            mE1.child("user").setValue(CurrentUser);
+                            mE1.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mE1.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("E1");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder24.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder24.show();
+                break;
+            case R.id.bE2 :
+                AlertDialog.Builder builder25 = new AlertDialog.Builder(this);
+                builder25.setTitle("예약 확인");
+                builder25.setMessage("자리를 예약 하시겠습니까?");
+                builder25.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mE2.child("state").setValue(2);
+                            mE2.child("user").setValue(CurrentUser);
+                            mE2.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mE2.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("E2");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder25.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder25.show();
+                break;
+            case R.id.bE3 :
+                AlertDialog.Builder builder26 = new AlertDialog.Builder(this);
+                builder26.setTitle("예약 확인");
+                builder26.setMessage("자리를 예약 하시겠습니까?");
+                builder26.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mE3.child("state").setValue(2);
+                            mE3.child("user").setValue(CurrentUser);
+                            mE3.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mE3.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("E3");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder26.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder26.show();
+                break;
+            case R.id.bE4 :
+                AlertDialog.Builder builder27 = new AlertDialog.Builder(this);
+                builder27.setTitle("예약 확인");
+                builder27.setMessage("자리를 예약 하시겠습니까?");
+                builder27.setNegativeButton("예",
+                        (dialog, which) -> {
+                            mE4.child("state").setValue(2);
+                            mE4.child("user").setValue(CurrentUser);
+                            mE4.child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mE4.child("user").child("status").setValue(2);
+
+                            mUsers.child(TodayDate).child(uuid).setValue(CurrentUser);
+                            mUsers.child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                            mUsers.child(TodayDate).child(uuid).child("seatNum").setValue("E4");
+                            mUsers.child(TodayDate).child(uuid).child("status").setValue(2);
+
+                            Toast.makeText(getApplicationContext(), "자리가 예약되었습니다.", Toast.LENGTH_LONG).show();
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        });
+                builder27.setPositiveButton("아니요",
+                        (dialog, which) -> Toast.makeText(getApplicationContext(), "자리 예약이 취소되었습니다.", Toast.LENGTH_LONG).show());
+                builder27.show();
                 break;
         }
     }
