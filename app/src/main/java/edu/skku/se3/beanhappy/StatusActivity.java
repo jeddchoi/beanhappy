@@ -23,7 +23,7 @@ import java.util.Map;
 
 //import sun.java2d.pipe.SpanShapeRenderer;
 
-public class ReserveActivity extends BaseActivity implements
+public class StatusActivity extends BaseActivity implements
         View.OnClickListener {
 
     public static final String TAG = "BeanHappy";
@@ -763,6 +763,11 @@ public class ReserveActivity extends BaseActivity implements
 
     @Override
     public void onClick(View v) {
+
+    }
+
+    /*@Override
+    public void onClick(View v) {
         int i = v.getId();
         switch(i) {
             case R.id.bA1 :
@@ -1468,7 +1473,7 @@ public class ReserveActivity extends BaseActivity implements
                 builder27.show();
                 break;
         }
-    }
+    }*/
     //
 //    void Ashow(String An){ // 눌렀을 때 자리 "Usable"이면 다이얼로그 표시, 그 외 "이용 중", 예약하면 Using, Reserving으로 변경
 //
