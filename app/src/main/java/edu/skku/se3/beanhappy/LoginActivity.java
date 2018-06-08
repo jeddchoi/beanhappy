@@ -307,7 +307,21 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void writeNewUser(String userId, String email) {
+        mRootRef.child("users").child(TodayDate).child(userId).child("email").setValue(email);
+        mRootRef.child("users").child(TodayDate).child(userId).child("uuid").setValue(userId);
+        mRootRef.child("users").child(TodayDate).child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.hasChild("status")){
+                    mRootRef.child("users").child(TodayDate).child(userId).child("status").setValue(0);
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }
 

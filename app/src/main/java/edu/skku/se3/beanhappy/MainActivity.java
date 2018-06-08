@@ -153,7 +153,7 @@ public class MainActivity extends BaseActivity implements
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         int num = dataSnapshot.getValue(int.class);
-                        if(i == R.id.quickReserveBtn && num == 0 )
+                        if(i == R.id.quickReserveBtn && (num == 0 ))
                             Toast.makeText(getApplicationContext(),"예약할 수 있는 좌석이 없습니다.", Toast.LENGTH_LONG).show();
                         else if(i == R.id.quickReserveBtn && num != 0 && status == 0){
                             reserving();
