@@ -8,6 +8,22 @@
     android:layout_height="match_parent"
     tools:context=".usingactivity">
 
+    <Button
+        android:id="@+id/to_main"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="#596069"
+        android:fontFamily="@font/hanna"
+        android:text="@string/main"
+        android:textSize="30sp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,23 +60,49 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-
             android:fontFamily="@font/hanna"
             android:text="@string/입니다"
             android:textColor="#ffffff"
             android:textSize="35sp" />
-    </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/view_progress_bar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:progressDrawable="@drawable/drawable_circularprogressbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <ProgressBar
+            android:id="@+id/view_progress_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:progressDrawable="@drawable/drawable_circularprogressbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btn_extend"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginEnd="80dp"
+            android:layout_marginBottom="9dp"
+            android:background="#596069"
+            android:fontFamily="@font/hanna"
+            android:text="@string/연장"
+            android:textSize="35sp" />
+
+        <Button
+            android:id="@+id/wakeup"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginEnd="80dp"
+            android:layout_marginBottom="89dp"
+            android:background="#596069"
+            android:fontFamily="@font/hanna"
+            android:text="@string/반납"
+            android:textSize="35sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_progress_bar" />
+
+    </LinearLayout>
 
 
     <TextView
@@ -70,52 +112,8 @@
         android:layout_centerInParent="true"
         android:fontFamily="@font/hanna"
         android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/view_progress_bar"
-        app:layout_constraintEnd_toEndOf="@+id/view_progress_bar"
-        app:layout_constraintStart_toStartOf="@+id/view_progress_bar"
-        app:layout_constraintTop_toTopOf="@+id/view_progress_bar" />
+        />
 
-    <Button
-        android:id="@+id/wakeup"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="#596069"
-        android:fontFamily="@font/hanna"
-        android:textSize="35sp"
-        android:layout_marginBottom="89dp"
-        android:text="@string/반납"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view_progress_bar" />
-
-
-    <Button
-        android:id="@+id/away"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:text="비콘아웃"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/to_main"
-        android:layout_width="60dp"
-        android:layout_height="30dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:text="@string/main"
-        android:background="#596069"
-        android:fontFamily="@font/hanna"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <!--<Button-->
         <!--android:id="@+id/timeout"-->
@@ -130,17 +128,18 @@
         <!--app:layout_constraintStart_toStartOf="parent" />-->
 
     <Button
-        android:id="@+id/btn_extend"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
+        android:id="@+id/away"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="32dp"
-        android:background="#596069"
+        android:layout_alignParentStart="true"
         android:fontFamily="@font/hanna"
-        android:text="@string/연장"
-        android:textSize="35sp"/>
-
+        android:text="@string/비콘아웃"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </RelativeLayout>

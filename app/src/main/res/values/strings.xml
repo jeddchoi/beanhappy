@@ -107,5 +107,7 @@
     <string name="C_AvailNum">%1$d/5</string>
     <string name="D_AvailNum">%1$d/6</string>
     <string name="E_AvailNum">%1$d/4</string>
+    <string name="비콘아웃">비콘아웃</string>
+    <string name="returnseat">반납하기</string>
 
 </resources>
