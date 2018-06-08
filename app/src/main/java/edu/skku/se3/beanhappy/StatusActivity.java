@@ -70,7 +70,7 @@ public class StatusActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reserve);
+        setContentView(R.layout.activity_status);
 
 
         mAuth = FirebaseAuth.getInstance();

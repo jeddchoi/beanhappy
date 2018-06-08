@@ -307,15 +307,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void writeNewUser(String userId, String email) {
-        user = new User(email, device.getDeviceUuid().toString(), System.currentTimeMillis());
-        mRootRef.child("users").child(TodayDate).child(userId).child("email").setValue(email);
-        mRootRef.child("users").child(TodayDate).child(userId).child("isExtended").setValue(false);
-        mRootRef.child("users").child(TodayDate).child(userId).child("last_idle_time").setValue(0L);
-        mRootRef.child("users").child(TodayDate).child(userId).child("last_reserve_time").setValue(0L);
-        mRootRef.child("users").child(TodayDate).child(userId).child("last_start_time").setValue(0L);
-        mRootRef.child("users").child(TodayDate).child(userId).child("status").setValue(0);
-        mRootRef.child("users").child(TodayDate).child(userId).child("uuid").setValue(userId);
-        mRootRef.child("users").child(TodayDate).child(userId).child("last_login_time").setValue(System.currentTimeMillis());
+
     }
 }
 
