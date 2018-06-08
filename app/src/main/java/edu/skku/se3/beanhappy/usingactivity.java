@@ -33,7 +33,6 @@ public class usingactivity extends Activity{
     DeviceUuidFactory device;
     private String uuid;
     DatabaseReference currentUser;
-    public static String Today;
     public String seat;
     private String TodayDate;
     Date today;
@@ -108,7 +107,6 @@ public class usingactivity extends Activity{
         SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");
         today = new Date();
         TodayDate = date.format(today);
-        Today = today.toString();
 
         /*Animation*/
         RotateAnimation makeVertical = new RotateAnimation(0, -90, RELATIVE_TO_SELF, 0.5f, RELATIVE_TO_SELF, 0.5f);
@@ -120,18 +118,10 @@ public class usingactivity extends Activity{
         btn_extend.setVisibility(View.INVISIBLE);
 
         currentUser = mRootRef.child("users").child(TodayDate).child(uuid).getRef();
-        Log.d(TAG, "currentUser is: " + currentUser);
         currentUser.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                /* value = dataSnapshot.child("seatNum").getValue(String.class);
-                Log.d(TAG, "Value1 is: " + value);
-                Log.d(TAG, "Value1 is: " + dataSnapshot.child("seatNum").getChildrenCount());
-                Log.d(TAG, "Value2 is: " + dataSnapshot.child("seatNum").getChildren());
-                Log.d(TAG, "Value2 is: " + dataSnapshot.child("seatNum").getRef());
-                Log.d(TAG, "seatNum is: " + dataSnapshot.child("seatNum"));
-                Log.d(TAG, "eeeee is: " + dataSnapshot);*/
-                String seat = dataSnapshot.child("seatNum").getValue(String.class);
+                seat = dataSnapshot.child("seatNum").getValue(String.class);
                 txtView_beanbagseat.setText(seat);
             }
 
@@ -151,6 +141,7 @@ public class usingactivity extends Activity{
             public void onClick(View v) {
                 Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
                 intentToActivitymain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                istimeout= false;
                 startActivity(intentToActivitymain);
             }
         });
@@ -207,14 +198,6 @@ public class usingactivity extends Activity{
 //                break;
 //        }
 //    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-
-
-    }
 
     @Override
     public void onBackPressed() {
