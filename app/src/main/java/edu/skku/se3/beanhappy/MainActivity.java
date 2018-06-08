@@ -22,6 +22,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 
@@ -36,6 +38,12 @@ public class MainActivity extends BaseActivity implements
     Switch pushAlarmSwitch;
     Button quickReserveBtn, reserveBtn, myStatusBtn, reportBtn;
     TextView seatNum;
+    private String uuid;
+    private String TodayDate;
+    private Date today;
+    private DeviceUuidFactory device;
+    private User CurrentUser;
+    private FirebaseUser user;
 
 
     @Override
@@ -58,6 +66,27 @@ public class MainActivity extends BaseActivity implements
         findViewById(R.id.reportBtn).setOnClickListener(this);
 
 
+        SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");
+        today = new Date();
+        TodayDate = date.format(today);
+        device = new DeviceUuidFactory(this);
+        uuid = device.getDeviceUuid().toString();
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
+        final Long[] time = new Long[1];
+        mRootRef.child("users").child(TodayDate).child(uuid).child("last_login_time").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                time[0] = dataSnapshot.getValue(Long.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        CurrentUser = new User(user.getEmail(), uuid, time[0]);
     }
 
     @Override
@@ -121,7 +150,7 @@ public class MainActivity extends BaseActivity implements
                 if(i == R.id.quickReserveBtn && num == 0)
                     Toast.makeText(getApplicationContext(),"예약할 수 있는 좌석이 없습니다.", Toast.LENGTH_LONG).show();
                 else if(i == R.id.quickReserveBtn && num != 0){
-                  //  reserving();
+                    reserving();
                 }
             }
 
@@ -130,13 +159,14 @@ public class MainActivity extends BaseActivity implements
 
             }
         });
-        if (i == R.id.quickReserveBtn) {
+       /* if (i == R.id.quickReserveBtn) {
             Intent intentToquick = new Intent(getApplicationContext(), AfterRegisterActivity.class);
             intentToquick.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intentToquick);
             finish();
-        }  else if (i == R.id.reserveBtn) {
+        } */if (i == R.id.reserveBtn) {
             Intent intentToReserve = new Intent(getApplicationContext(), ReserveActivity.class);
+            intentToReserve.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intentToReserve);
         } else if (i == R.id.myStatusBtn) {
 
@@ -164,26 +194,54 @@ public class MainActivity extends BaseActivity implements
             finish();
         }
     }
-   /* public void reserving() {
+    public void reserving() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("빠른 예약");
         builder.setMessage("빠른 예약을 하시겠습니까?");
         builder.setNegativeButton("예",
                 (dialog, which) -> {
+                    mRootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            outerLoop :
+                            for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                                if(ds.getKey().startsWith("bb_")){
+                                    for(DataSnapshot ds2 : ds.getChildren()){
+                                        if(!ds2.getKey().equals("bb_NumAvail")){
+                                            if(ds2.child("state").getValue(int.class) == 0){
+                                                String seatNumber = ds2.getKey().substring(3, 5);
+                                                mRootRef.child(ds.getKey()).child(ds2.getKey()).child("state").setValue(2);
+                                                mRootRef.child(ds.getKey()).child(ds2.getKey()).child("user").setValue(CurrentUser);
+                                                mRootRef.child(ds.getKey()).child(ds2.getKey()).child("user").child("last_reserve_time").setValue(System.currentTimeMillis());
+                                                mRootRef.child(ds.getKey()).child(ds2.getKey()).child("user").child("status").setValue(2);
 
-                        });
+                                                mRootRef.child("users").child(TodayDate).child(uuid).setValue(CurrentUser);
+                                                mRootRef.child("users").child(TodayDate).child(uuid).child("last_reserve_time").setValue(System.currentTimeMillis());
+                                                mRootRef.child("users").child(TodayDate).child(uuid).child("seatNum").setValue(seatNumber);
+                                                mRootRef.child("users").child(TodayDate).child(uuid).child("status").setValue(2);
+
+                                                Toast.makeText(getApplicationContext(), seatNumber+" 자리가 예약 되었습니다.", Toast.LENGTH_LONG).show();
+                                                break outerLoop;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            Intent intentToAfter = new Intent(getApplicationContext(), AfterRegisterActivity.class);
+                            intentToAfter.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToAfter);
+                            finish();
+                        }
+
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
                     });
-
-                    mRootRef.child("users").child(TodayDate).child(uuid).child("status").setValue(0);
-                    mRootRef.child("users").child(TodayDate).child(uuid).child("seatNum").setValue(null);
-                    Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
-                    intentToActivitymain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivity(intentToActivitymain);
-
-                    //activity 넘어갈때 FLAG로 해야함 일단은 startActivity로 만들었음
-                    myCountDownTimer.cancel();  //ontick()(=타이머) 정지
-                    finish();   //해당 activity종료
-                    //+자리 반납
+                    //Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
+                    //intentToActivitymain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    //startActivity(intentToActivitymain);
                 });
         builder.setPositiveButton("아니요", new DialogInterface.OnClickListener() {
             @Override
@@ -192,5 +250,5 @@ public class MainActivity extends BaseActivity implements
             }
         });
         builder.show();
-    }*/
+    }
 }

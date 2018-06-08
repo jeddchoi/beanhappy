@@ -6,8 +6,9 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Map;
 
-public class MyFirebaseMessagingService extends FirebaseInstanceIdService {
-    public void onMessagingReceived(RemoteMessage remoteMessage){
-        Map<String, String> bundle = remoteMessage.getData();
+public class MyFirebaseMessagingService extends FirebaseMessagingService {
+    @Override
+    public void onMessageReceived(RemoteMessage remoteMessage) {
+        System.out.println(remoteMessage.getNotification().getBody());
     }
 }

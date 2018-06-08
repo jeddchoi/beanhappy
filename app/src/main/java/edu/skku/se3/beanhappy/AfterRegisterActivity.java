@@ -108,7 +108,7 @@ public class AfterRegisterActivity extends AppCompatActivity {
 
             if (newtime.equals("0:0:0")) {
                 tv_time.setText("00:00:00");
-                getout();   //원래는 onFinish에 써야하는건데 이상하게 중간에 계속 나가져서 일단 여기에 적어둠. 자리반납하는 함수
+                onFinish();   //원래는 onFinish에 써야하는건데 이상하게 중간에 계속 나가져서 일단 여기에 적어둠. 자리반납하는 함수
             } else if ((String.valueOf(hours).length() == 1) && (String.valueOf(minutes).length() == 1) && (String.valueOf(seconds).length() == 1)) {
                 tv_time.setText("0" + hours + ":0" + minutes + ":0" + seconds);
             } else if ((String.valueOf(hours).length() == 1) && (String.valueOf(minutes).length() == 1)) {
@@ -137,6 +137,25 @@ public class AfterRegisterActivity extends AppCompatActivity {
 
         @Override
         public void onFinish() {    //타이머가 종료될때 실행됨
+            mRootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String seatNum = dataSnapshot.child("users").child(TodayDate).child(uuid).child("seatNum").getValue(String.class);
+                    mRootRef.child("bb_"+seatNum.charAt(0)).child("bb_"+seatNum).child("state").setValue(0);
+                    mRootRef.child("bb_"+seatNum.charAt(0)).child("bb_"+seatNum).child("user").removeValue();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+                }
+            });
+            mRootRef.child("users").child(TodayDate).child(uuid).child("status").setValue(0);
+            mRootRef.child("users").child(TodayDate).child(uuid).child("seatNum").setValue(null);
+            Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
+            intentToActivitymain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intentToActivitymain);
+            Toast.makeText(getApplicationContext(), "예약이 취소되었습니다.", Toast.LENGTH_LONG).show();
             myCountDownTimer.cancel();
             finish();
         }
