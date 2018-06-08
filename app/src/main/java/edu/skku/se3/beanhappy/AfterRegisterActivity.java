@@ -225,12 +225,12 @@ public class AfterRegisterActivity extends AppCompatActivity {
         mRootRef.child("users").child(TodayDate).child(uuid).child("last_start_time").setValue(System.currentTimeMillis());
 
 
-        Intent intentToMain = new Intent(getApplicationContext(), MainActivity.class);
-        intentToMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intentToMain);
-       //Intent intentToUsing = new Intent(getApplicationContext(), usingactivity.class);
-       //intentToUsing.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        //startActivity(intentToUsing);
+//        Intent intentToMain = new Intent(getApplicationContext(), MainActivity.class);
+//        intentToMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        startActivity(intentToMain);
+        Intent intentToUsing = new Intent(getApplicationContext(), usingactivity.class);
+        intentToUsing.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intentToUsing);
         //activity 넘어갈때 FLAG로 해야함 일단은 startActivity로 만들었음
         myCountDownTimer.cancel();//ontick()(=타이머) 정지
         finish();   //해당 activity종료
