@@ -36,6 +36,7 @@ public class timeoutactivity extends Activity {
     CountDownTimer countDownTimer;
     int endTime = 240;
     Vibrator vide;
+    Boolean isreturn = true;
 
     //getout 에 들어갈 변수들
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
@@ -164,8 +165,24 @@ public class timeoutactivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        //자리를 반납하는 함수 넣기
-        Toast.makeText(timeoutactivity.this,"자리가 반납되었습니다", Toast.LENGTH_SHORT).show();
+        if(isreturn) {
+            mRootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String seatNum = dataSnapshot.child("users").child(TodayDate).child(uuid).child("seatNum").getValue(String.class);
+                    mRootRef.child("bb_" + seatNum.charAt(0)).child("bb_" + seatNum).child("state").setValue(0);
+                    mRootRef.child("bb_" + seatNum.charAt(0)).child("bb_" + seatNum).child("user").removeValue();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+
+            mRootRef.child("users").child(TodayDate).child(uuid).child("status").setValue(0);
+            mRootRef.child("users").child(TodayDate).child(uuid).child("seatNum").setValue(null);
+            Toast.makeText(timeoutactivity.this, "자리가 반납되었습니다", Toast.LENGTH_SHORT).show();
+        }
         super.onDestroy();
     }
 
@@ -199,9 +216,8 @@ public class timeoutactivity extends Activity {
         countDownTimer.cancel();
         vide.cancel();
         Toast.makeText(timeoutactivity.this,"자리가 반납되었습니다", Toast.LENGTH_SHORT).show();
+        isreturn = false;
         finish();
 
-
-        //+자리 반납
     }
 }
