@@ -61,6 +61,7 @@
     <string name="보내기">SEND</string>
     <string name="일어날게요">일어날게요</string>
     <string name="화남">화남</string>
+    <string name="timesup">시간이 지났어요!</string>
     <string name="B구역">B구역</string>
     <string name="A구역">A구역</string>
     <string name="예약하기">예약하기</string>
