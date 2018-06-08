@@ -162,6 +162,11 @@ public class MainActivity extends BaseActivity implements
                             Toast.makeText(getApplicationContext(), "이미 이용중 입니다.", Toast.LENGTH_LONG).show();
                         else if (i == R.id.myStatusBtn && status == 0)
                             Toast.makeText(getApplicationContext(), "아직 이용중이지 않습니다.", Toast.LENGTH_LONG).show();
+                        else if ( i == R.id.myStatusBtn && (status == 3 || status == 4)){
+                            Intent intentToUsing = new Intent(getApplicationContext(), usingactivity.class);
+                            intentToUsing.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToUsing);
+                        }
                         else if (i == R.id.reserveBtn && status == 0){
                             Intent intentToReserve = new Intent(getApplicationContext(), ReserveActivity.class);
                             intentToReserve.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);

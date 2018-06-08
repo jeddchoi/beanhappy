@@ -119,20 +119,20 @@ public class usingactivity extends Activity{
 
         btn_extend.setVisibility(View.INVISIBLE);
 
-        currentUser = mRootRef.child("users").child(Today).child(uuid).getRef();
+        currentUser = mRootRef.child("users").child(TodayDate).child(uuid).getRef();
         Log.d(TAG, "currentUser is: " + currentUser);
         currentUser.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String value = dataSnapshot.child("seatNum").getValue(String.class);
+                /* value = dataSnapshot.child("seatNum").getValue(String.class);
                 Log.d(TAG, "Value1 is: " + value);
                 Log.d(TAG, "Value1 is: " + dataSnapshot.child("seatNum").getChildrenCount());
                 Log.d(TAG, "Value2 is: " + dataSnapshot.child("seatNum").getChildren());
                 Log.d(TAG, "Value2 is: " + dataSnapshot.child("seatNum").getRef());
                 Log.d(TAG, "seatNum is: " + dataSnapshot.child("seatNum"));
-                Log.d(TAG, "eeeee is: " + dataSnapshot);
-//                String seat = dataSnapshot.child("seatNum").getValue(String.class);
-//                txtView_beanbagseat.setText(seat);
+                Log.d(TAG, "eeeee is: " + dataSnapshot);*/
+                String seat = dataSnapshot.child("seatNum").getValue(String.class);
+                txtView_beanbagseat.setText(seat);
             }
 
             @Override
