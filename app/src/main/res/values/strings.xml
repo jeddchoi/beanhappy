@@ -51,7 +51,7 @@
 
     <string name="logout">&lt; 로그아웃</string>
     <string name="pushAlarm">1시간 내 푸시알람받기</string>
-    <string name="showSeatNum">사용 현황</string>
+    <string name="showSeatNum">남은 자리</string>
     <string name="quickReserve">빠른 예약</string>
     <string name="reserve">예약하기 / 현황보기</string>
     <string name="myStatus">내 이용 현황</string>
