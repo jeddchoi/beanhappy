@@ -10,7 +10,7 @@
         android:layout_height="36dp">
 
         <LinearLayout
-            android:layout_width="72dp"
+            android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:layout_gravity="left">
 

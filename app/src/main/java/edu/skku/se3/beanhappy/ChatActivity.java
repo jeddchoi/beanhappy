@@ -128,8 +128,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intentToshowmap);
         }
         else if (i == R.id.chat_backBtn) {
-            Intent intentToBack = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intentToBack);
             finish();
         }
         else{
