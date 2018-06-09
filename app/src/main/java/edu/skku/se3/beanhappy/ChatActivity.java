@@ -128,9 +128,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intentToshowmap);
         }
         else if (i == R.id.chat_backBtn) {
-            Intent intentToActivitymain = new Intent(getApplicationContext(), MainActivity.class);
-            intentToActivitymain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intentToActivitymain);
             finish();
         }
         else{
