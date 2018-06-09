@@ -17,8 +17,6 @@ public class Showmap extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentToOK = new Intent(getApplicationContext(), ChatActivity.class);
-                startActivity(intentToOK);
                 finish();
             }
         });

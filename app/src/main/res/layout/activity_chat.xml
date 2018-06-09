@@ -16,7 +16,7 @@
 
             <Button
                 android:id="@+id/chat_backBtn"
-                android:layout_width="72dp"
+                android:layout_width="wrap_content"
                 android:layout_height="36dp"
                 android:fontFamily="@font/hanna"
                 android:text="@string/back_button" />
@@ -30,7 +30,7 @@
 
             <Button
                 android:id="@+id/chat_ruleBtn"
-                android:layout_width="72dp"
+                android:layout_width="wrap_content"
                 android:layout_height="36dp"
                 android:layout_gravity="right"
                 android:fontFamily="@font/hanna"
@@ -38,7 +38,7 @@
 
             <Button
                 android:id="@+id/chat_mapBtn"
-                android:layout_width="72dp"
+                android:layout_width="wrap_content"
                 android:layout_height="36dp"
                 android:layout_marginEnd="10dp"
                 android:fontFamily="@font/hanna"
