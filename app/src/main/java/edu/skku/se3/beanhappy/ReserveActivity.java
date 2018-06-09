@@ -122,6 +122,14 @@ public class ReserveActivity extends BaseActivity implements
         CurrentUser = new User(user.getEmail(), uuid, time[0]);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intentToActivitymain = new Intent(getApplicationContext(), MainActivity.class);
+        intentToActivitymain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intentToActivitymain);
+        finish();
+    }
 
     @Override
     protected void onStart() {
