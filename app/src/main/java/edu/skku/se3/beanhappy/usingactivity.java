@@ -409,9 +409,6 @@ public class usingactivity extends Activity{
 
     }
     public void beaconact(){
-        //Intent intentToActivityaway = new Intent(mContext, awaybeacon.class);
-        //startActivity(intentToActivityaway);
-        //if (user.getType() == "Out"){
         if (localuserstate == 3){
             txtView_beanbagseat.setText(seat);
             //빈백 자리 넣는 함수로 채울 예정
@@ -430,7 +427,6 @@ public class usingactivity extends Activity{
             countDownTimer.cancel();
             fn_countdown(pauseprogress);
         }
-        //else if(user.getType() == "Using"){
         else if(localuserstate == 1){
             txtView_beanbagseat.setText("자리를 비우셨습니다.");
             txtView1.setVisibility(View.INVISIBLE);
