@@ -99,8 +99,8 @@ public class MonitoringActivity extends Activity {
 		try {
 			if (!BeaconManager.getInstanceForApplication(this).checkAvailability()) {
 				final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				builder.setTitle("Bluetooth not enabled");			
-				builder.setMessage("Please enable bluetooth in settings and restart this application.");
+				builder.setTitle("Bluetooth 사용을 동의하지 않으셨습니다");
+				builder.setMessage("Bluetooth 사용을 허용하고 이 어플을 restart 해주세요");
 				builder.setPositiveButton(android.R.string.ok, null);
 				builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
 					@Override
@@ -114,8 +114,8 @@ public class MonitoringActivity extends Activity {
 		}
 		catch (RuntimeException e) {
 			final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle("Bluetooth LE not available");			
-			builder.setMessage("Sorry, this device does not support Bluetooth LE.");
+			builder.setTitle("Bluetooth LE 이용 불가능");
+			builder.setMessage("이 기기는 Bluetooth LE를 지원하지 않습니다");
 			builder.setPositiveButton(android.R.string.ok, null);
 			builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
 

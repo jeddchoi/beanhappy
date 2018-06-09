@@ -3,11 +3,14 @@ package edu.skku.se3.beanhappy;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.util.Log;
 import android.widget.EditText;
 
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
 import org.altbeacon.beacon.BeaconManager;
+import org.altbeacon.beacon.BeaconParser;
+import org.altbeacon.beacon.Identifier;
 import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
 
@@ -22,10 +25,9 @@ public class RangingActivity extends Activity implements BeaconConsumer {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ranging);
         beaconManager = BeaconManager.getInstanceForApplication(this);
-        // To detect proprietary beacons, you must add a line like below corresponding to your beacon
-        // type.  Do a web search for "setBeaconLayout" to get the proper expression.
-        // beaconManager.getBeaconParsers().add(new BeaconParser().
-        //        setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
+        beaconManager.getBeaconParsers().add(new BeaconParser().
+                setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
+
         beaconManager.bind(this);
     }
 
@@ -51,23 +53,24 @@ public class RangingActivity extends Activity implements BeaconConsumer {
 
     @Override
     public void onBeaconServiceConnect() {
-        beaconManager.setRangeNotifier(new RangeNotifier() {
-
-           @Override
-           public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
-              if (beacons.size() <2.0) {
-                 //EditText editText = (EditText)RangingActivity.this.findViewById(R.id.rangingText);
-                 Beacon firstBeacon = beacons.iterator().next();
-                 logToDisplay("The first beacon " + firstBeacon.toString() + " is about " + firstBeacon.getDistance() + " meters away.");
-
-              }
-
-           }
+        beaconManager.setRangeNotifier(new RangeNotifier(){
+            @Override
+            public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
+                for (Beacon beacon: beacons) {
+                    if (beacon.getDistance() < 2.0) {
+                        Log.d(TAG, "비콘이 2미터 안에 들어왔습니다");
+                        // Perform distance-specific action here
+                    }
+                }
+            }
 
         });
 
         try {
-            beaconManager.startRangingBeaconsInRegion(new Region("myRangingUniqueId", null, null, null));
+            beaconManager.startRangingBeaconsInRegion(new Region("myRangingUniqueId",
+                    null, null, null));
+            beaconManager.startMonitoringBeaconsInRegion(new Region("myRangingUniqueId",
+                    null, null, null));
         } catch (RemoteException e) {   }
     }
 

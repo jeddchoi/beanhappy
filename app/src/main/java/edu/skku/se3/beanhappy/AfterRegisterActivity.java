@@ -49,7 +49,7 @@ public class AfterRegisterActivity extends AppCompatActivity {
 
         progressBar=(ProgressBar)findViewById(R.id.progressBar);
         tv_time= (TextView)findViewById(R.id.tv_timer);
-        Button btn_return = (Button)findViewById(R.id.returnseat);
+        //Button btn_return = (Button)findViewById(R.id.returnseat);
         Button btn_beaconin = (Button)findViewById(R.id.beaconin);
 
         device = new DeviceUuidFactory(this);
@@ -59,12 +59,12 @@ public class AfterRegisterActivity extends AppCompatActivity {
         myCountDownTimer.start();
 
         //+유저의 type 예약 전에서 예약중 타입으로 변경
-        btn_return.setOnClickListener(new View.OnClickListener() {
+        /*btn_return.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getout();
             }
-        });
+        });*/
 
         /*테스트용 임시 버튼*/
         btn_beaconin.setOnClickListener(new View.OnClickListener() {

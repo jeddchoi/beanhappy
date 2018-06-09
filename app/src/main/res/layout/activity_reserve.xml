@@ -482,7 +482,7 @@
                 android:background="#d79bb6"
                 android:clickable="true"
                 android:contentDescription="@string/a3"
-                app:srcCompat="@drawable/a3" />
+                app:srcCompat="@drawable/a3" android:focusable="true"/>
 
             <ImageButton
                 android:id="@+id/bA4"

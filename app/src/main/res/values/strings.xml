@@ -123,5 +123,6 @@
     <string name="E_AvailNum">%1$d/4</string>
     <string name="비콘아웃">비콘아웃</string>
     <string name="returnseat">반납하기</string>
+    <string name="in">비콘in</string>
 
 </resources>
