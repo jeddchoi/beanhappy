@@ -359,53 +359,32 @@ public class usingactivity extends Activity{
     }
 
     public void getout(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("자리 반납");
-        builder.setMessage("자리를 반납 하시겠습니까?");
-        builder.setNegativeButton("예",
-                (dialog, which) -> {
-                    mRootRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            String seatNum = dataSnapshot.child("users").child(TodayDate).child(uuid).child("seatNum").getValue(String.class);
-                            mRootRef.child("bb_"+seatNum.charAt(0)).child("bb_"+seatNum).child("state").setValue(0);
-                            mRootRef.child("bb_"+seatNum.charAt(0)).child("bb_"+seatNum).child("user").removeValue();
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            Log.e(TAG, "onCancelled: " + databaseError.getMessage());
-                        }
-                    });
-
-                    mRootRef.child("users").child(TodayDate).child(uuid).child("status").setValue(0);
-                    mRootRef.child("users").child(TodayDate).child(uuid).child("seatNum").setValue(null);
-                    Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
-                    intentToActivitymain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivity(intentToActivitymain);
-
-                    //activity 넘어갈때 FLAG로 해야함 일단은 startActivity로 만들었음
-                    countDownTimer.cancel();  //ontick()(=타이머) 정지
-                    Toast.makeText(usingactivity.this,"자리가 반납되었습니다", Toast.LENGTH_SHORT).show();
-                    istimeout = false;
-                    finish();   //해당 activity종료
-                    //+자리 반납
-                });
-        builder.setPositiveButton("아니요", new DialogInterface.OnClickListener() {
+        mRootRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String seatNum = dataSnapshot.child("users").child(TodayDate).child(uuid).child("seatNum").getValue(String.class);
+                mRootRef.child("bb_"+seatNum.charAt(0)).child("bb_"+seatNum).child("state").setValue(0);
+                mRootRef.child("bb_"+seatNum.charAt(0)).child("bb_"+seatNum).child("user").removeValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled: " + databaseError.getMessage());
             }
         });
-        builder.show();
+        mRootRef.child("users").child(TodayDate).child(uuid).child("status").setValue(0);
+        mRootRef.child("users").child(TodayDate).child(uuid).child("seatNum").setValue(null);
+        Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
+        intentToActivitymain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intentToActivitymain);
 
-//        Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
-//        intentToActivitymain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//        startActivity(intentToActivitymain);
-//        //checkusingbeanbag.using_beanbag = 0;
-//        countDownTimer.cancel();
-//        Toast.makeText(usingactivity.this,"자리가 반납되었습니다", Toast.LENGTH_SHORT).show();
-//        finish();
+        //activity 넘어갈때 FLAG로 해야함 일단은 startActivity로 만들었음
+        countDownTimer.cancel();  //ontick()(=타이머) 정지
+        Toast.makeText(usingactivity.this,"자리가 반납되었습니다", Toast.LENGTH_SHORT).show();
+        istimeout = false;
+        finish();   //해당 activity종료
+        //+자리 반납
+        //+자리 반납
 
     }
     public void beaconact(){
