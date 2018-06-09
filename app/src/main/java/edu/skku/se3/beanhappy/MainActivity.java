@@ -142,6 +142,16 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(Intent.ACTION_MAIN); //태스크의 첫 액티비티로 시작
+        intent.addCategory(Intent.CATEGORY_HOME);   //홈화면 표시
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //새로운 태스크를 생성하여 그 태스크안에서 액티비티 추가
+        finish();
+        startActivity(intent);
+    }
+
+    @Override
     public void onClick(View v) {
         int i = v.getId();
        // Log.d(TAG, "myStatusBtn clicked"); // test
@@ -171,6 +181,7 @@ public class MainActivity extends BaseActivity implements
                             Intent intentToReserve = new Intent(getApplicationContext(), ReserveActivity.class);
                             intentToReserve.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(intentToReserve);
+                            finish();
                         }
                         else if (i == R.id.reserveBtn && status != 0){
                             Intent intentToStatus = new Intent(getApplicationContext(), StatusActivity.class);
