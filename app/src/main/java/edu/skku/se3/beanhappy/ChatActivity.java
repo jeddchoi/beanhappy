@@ -122,12 +122,10 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         if (i == R.id.chat_ruleBtn) {
             Intent intentToShowrule = new Intent(getApplicationContext(), Showrule.class);
             startActivity(intentToShowrule);
-            finish();
         }
         else if (i == R.id.chat_mapBtn) {
             Intent intentToshowmap = new Intent(getApplicationContext(), Showmap.class);
             startActivity(intentToshowmap);
-            finish();
         }
         else if (i == R.id.chat_backBtn) {
             Intent intentToBack = new Intent(getApplicationContext(), MainActivity.class);
