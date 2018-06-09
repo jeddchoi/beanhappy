@@ -64,15 +64,16 @@
             android:progressDrawable="@drawable/timeout_circularprogressbar" />
 
         <Button
+            android:id="@+id/returnseat"
             android:layout_width="match_parent"
             android:layout_height="65dp"
-            android:layout_marginStart="80dp"
-            android:layout_marginEnd="80dp"
             android:layout_marginBottom="9dp"
+            android:layout_marginEnd="80dp"
+            android:layout_marginStart="80dp"
             android:background="#596069"
             android:fontFamily="@font/hanna"
-            android:textSize="35sp"
-            android:text="@string/returnseat" />
+            android:text="@string/returnseat"
+            android:textSize="35sp" />
 
         <Button
             android:id="@+id/beaconin"

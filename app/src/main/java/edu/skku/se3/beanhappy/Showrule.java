@@ -17,10 +17,14 @@ public class Showrule extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentToOK = new Intent(getApplicationContext(), ChatActivity.class);
-                startActivity(intentToOK);
                 finish();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

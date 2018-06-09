@@ -35,6 +35,7 @@ public class MainActivity extends BaseActivity implements
     private FirebaseAuth mAuth;
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference mNumAvailTotal = mRootRef.child("NumAvailTotal");
+    private DatabaseReference mUserState;
     TextView logout_textBtn;
     Switch pushAlarmSwitch;
     Button quickReserveBtn, reserveBtn, myStatusBtn, reportBtn;
@@ -90,6 +91,7 @@ public class MainActivity extends BaseActivity implements
             }
         });
         CurrentUser = new User(user.getEmail(), uuid, time[0]);
+        mUserState = mRootRef.child("users").child(TodayDate).child(uuid).child("status");
     }
 
     @Override
@@ -143,18 +145,59 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(Intent.ACTION_MAIN); //태스크의 첫 액티비티로 시작
+        intent.addCategory(Intent.CATEGORY_HOME);   //홈화면 표시
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //새로운 태스크를 생성하여 그 태스크안에서 액티비티 추가
+        finish();
+        startActivity(intent);
+    }
+
+    @Override
     public void onClick(View v) {
         int i = v.getId();
-//        Log.d(TAG, "myStatusBtn clicked"); // test
-        mNumAvailTotal.addListenerForSingleValueEvent(new ValueEventListener() {
+       // Log.d(TAG, "myStatusBtn clicked"); // test
+        mUserState.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                int num = dataSnapshot.getValue(int.class);
-                if(i == R.id.quickReserveBtn && num == 0)
-                    Toast.makeText(getApplicationContext(),"예약할 수 있는 좌석이 없습니다.", Toast.LENGTH_LONG).show();
-                else if(i == R.id.quickReserveBtn && num != 0){
-                    reserving();
-                }
+                int status = dataSnapshot.getValue(int.class);
+                mNumAvailTotal.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        int num = dataSnapshot.getValue(int.class);
+                        if(i == R.id.quickReserveBtn && (num == 0 ))
+                            Toast.makeText(getApplicationContext(),"예약할 수 있는 좌석이 없습니다.", Toast.LENGTH_LONG).show();
+                        else if(i == R.id.quickReserveBtn && num != 0 && status == 0){
+                            reserving();
+                        }
+                        else if (i == R.id.quickReserveBtn && num != 0 && status != 0)
+                            Toast.makeText(getApplicationContext(), "이미 이용중 입니다.", Toast.LENGTH_LONG).show();
+                        else if (i == R.id.myStatusBtn && status == 0)
+                            Toast.makeText(getApplicationContext(), "아직 이용중이지 않습니다.", Toast.LENGTH_LONG).show();
+                        else if ( i == R.id.myStatusBtn && (status == 3 || status == 4)){
+                            Intent intentToUsing = new Intent(getApplicationContext(), usingactivity.class);
+                            intentToUsing.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToUsing);
+                        }
+                        else if (i == R.id.reserveBtn && status == 0){
+                            Intent intentToReserve = new Intent(getApplicationContext(), ReserveActivity.class);
+                            intentToReserve.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToReserve);
+                            finish();
+                        }
+                        else if (i == R.id.reserveBtn && status != 0){
+                            Intent intentToStatus = new Intent(getApplicationContext(), StatusActivity.class);
+                            intentToStatus.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intentToStatus);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
 
             @Override
@@ -167,7 +210,7 @@ public class MainActivity extends BaseActivity implements
             intentToquick.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intentToquick);
             finish();
-        } */if (i == R.id.reserveBtn) {
+        } if (i == R.id.reserveBtn) {
             Intent intentToReserve = new Intent(getApplicationContext(), ReserveActivity.class);
             intentToReserve.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intentToReserve);
@@ -176,8 +219,8 @@ public class MainActivity extends BaseActivity implements
 //            Intent intentToUsing = new Intent(getApplicationContext(), usingactivity.class);
 //            intentToUsing.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 //            startActivity(intentToUsing);
-//            finish();
-        } else if (i == R.id.reportBtn) {
+//            finish();*/
+         if (i == R.id.reportBtn) {
             Intent intentToChat = new Intent(getApplicationContext(), ChatActivity.class);
             startActivity(intentToChat);
         } else if (i == R.id.logout_textBtn) {

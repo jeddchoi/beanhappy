@@ -23,7 +23,7 @@ import java.util.Map;
 
 //import sun.java2d.pipe.SpanShapeRenderer;
 
-public class ReserveActivity extends BaseActivity implements
+public class StatusActivity extends BaseActivity implements
         View.OnClickListener {
 
     public static final String TAG = "BeanHappy";
@@ -70,7 +70,7 @@ public class ReserveActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reserve);
+        setContentView(R.layout.activity_status);
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -122,14 +122,6 @@ public class ReserveActivity extends BaseActivity implements
         CurrentUser = new User(user.getEmail(), uuid, time[0]);
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intentToActivitymain = new Intent(getApplicationContext(), MainActivity.class);
-        intentToActivitymain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intentToActivitymain);
-        finish();
-    }
 
     @Override
     protected void onStart() {
@@ -770,6 +762,11 @@ public class ReserveActivity extends BaseActivity implements
     }
 
     @Override
+    public void onClick(View v) {
+
+    }
+
+    /*@Override
     public void onClick(View v) {
         int i = v.getId();
         switch(i) {
@@ -1476,7 +1473,7 @@ public class ReserveActivity extends BaseActivity implements
                 builder27.show();
                 break;
         }
-    }
+    }*/
     //
 //    void Ashow(String An){ // 눌렀을 때 자리 "Usable"이면 다이얼로그 표시, 그 외 "이용 중", 예약하면 Using, Reserving으로 변경
 //

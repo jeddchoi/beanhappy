@@ -40,6 +40,7 @@
         <activity android:name=".Showrule" />
         <activity android:name=".ReserveActivity" />
         <activity android:name=".timeoutactivity" />
+        <activity android:name=".StatusActivity"/>
         <activity android:name=".AfterRegisterActivity" />
 
         <service android:name=".MyFirebaseMessagingService">

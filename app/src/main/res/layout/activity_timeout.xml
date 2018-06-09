@@ -9,12 +9,12 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:contentDescription="@string/화남"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="133dp"
+        android:layout_height="165dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="29dp"
+        android:layout_marginTop="17dp"
+        android:contentDescription="@string/화남"
         android:src="@drawable/angry" />
 
     <Button
@@ -23,10 +23,10 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="27dp"
-        android:text="@string/일어날게요"
+        android:layout_marginBottom="22dp"
         android:background="#596069"
         android:fontFamily="@font/hanna"
+        android:text="@string/일어날게요"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,11 +38,10 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:layout_above="@+id/wakeup"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:layout_marginBottom="13dp"
+        android:layout_marginBottom="74dp"
         android:indeterminate="false"
         android:max="100"
         android:progress="80"
@@ -59,12 +58,24 @@
 
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="215dp"
+        android:layout_marginBottom="189dp"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/view_progress_bar"
         app:layout_constraintEnd_toEndOf="@+id/view_progress_bar"
         app:layout_constraintStart_toStartOf="@+id/view_progress_bar"
         app:layout_constraintTop_toTopOf="@+id/view_progress_bar" />
+
+    <TextView
+        android:id="@+id/timeover"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="192dp"
+        android:fontFamily="@font/hanna"
+        android:text="@string/timesup"
+        android:textColor="#ffffff"
+        android:textSize="35sp" />
 
 
 </RelativeLayout>
