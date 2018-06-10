@@ -42,6 +42,8 @@ public class Showmap extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intentToChat = new Intent(getApplicationContext(), ChatActivity.class);
+                startActivity(intentToChat);
                 finish();
             }
         });
@@ -50,6 +52,8 @@ public class Showmap extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent intentToChat = new Intent(getApplicationContext(), ChatActivity.class);
+        startActivity(intentToChat);
         finish();
     }
 }
