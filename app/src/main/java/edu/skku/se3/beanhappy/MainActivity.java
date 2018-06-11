@@ -24,12 +24,23 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.text.SimpleDateFormat;
+//import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
 
 public class MainActivity extends BaseActivity implements
         View.OnClickListener {
+
+
+    /*피크타임 시작과 끝 그리고 피크타임 여부 설정*/
+//    int peak_starthour = 9;
+//    int peak_endhour = 15;
+
+    /*현재시간(시) 계산*/
+//    Calendar t = Calendar.getInstance();
+//    String hh = Integer.toString(t.get(Calendar.HOUR_OF_DAY));
+//    int H = Integer.parseInt(hh);
 
     public static final String TAG = "BeanHappy";
     private FirebaseAuth mAuth;
@@ -92,6 +103,8 @@ public class MainActivity extends BaseActivity implements
         });
         CurrentUser = new User(user.getEmail(), uuid, time[0]);
         mUserState = mRootRef.child("users").child(TodayDate).child(uuid).child("status");
+        /*피크타임 이용을 한번으로 제한시*/
+        //mUserState = mRootRef.child("users").child(TodayDate).child(uuid);
     }
 
     @Override
@@ -162,12 +175,27 @@ public class MainActivity extends BaseActivity implements
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int status = dataSnapshot.getValue(int.class);
+                /*피크타임 한번 이용으로 제한시*/
+//                int status = dataSnapshot.child("status").getValue(int.class);
+//                long lastreservetime = dataSnapshot.child("last_reserve_time").getValue(int.class);
+//                long lastreservehour = lastreservetime / (1000 * 60 * 60);
+//                Boolen is_peaktime = false;
+//                Boolen is_curentpeaktime = false;
+//                if(peak_starthour <= lastreservehour & lastreservehour <= peak_endhour){
+//                  is_peaktime = true;
+//                }
+//                if(peak_starthour <= lastreservehour & lastreservehour <= peak_endhour){
+//                    is_curentpeaktime = true;
+//                }
                 mNumAvailTotal.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         int num = dataSnapshot.getValue(int.class);
                         if(i == R.id.quickReserveBtn && (num == 0 ))
                             Toast.makeText(getApplicationContext(),"예약할 수 있는 좌석이 없습니다.", Toast.LENGTH_LONG).show();
+//                      else if(i == R.id.quickReserveBtn && is_peaktime && is_curentpeaktime){
+//                          Toast.makeText(getApplicationContext(),"이미 피크타임에 이용하셨습니다.", Toast.LENGTH_LONG).show();
+//                      }
                         else if(i == R.id.quickReserveBtn && num != 0 && status == 0){
                             reserving();
                         }
@@ -186,6 +214,12 @@ public class MainActivity extends BaseActivity implements
                             startActivity(intentToReserve);
                             finish();
                         }
+//                        else if (i == R.id.reserveBtn && is_peaktime && is_curentpeaktime){
+//                            Toast.makeText(getApplicationContext(),"이미 피크타임에 이용하셨습니다. 예약은 불가합니다.", Toast.LENGTH_LONG).show();
+//                            Intent intentToStatus = new Intent(getApplicationContext(), StatusActivity.class);
+//                            intentToStatus.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//                            startActivity(intentToStatus);
+//                        }
                         else if (i == R.id.reserveBtn && status != 0){
                             Intent intentToStatus = new Intent(getApplicationContext(), StatusActivity.class);
                             intentToStatus.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
