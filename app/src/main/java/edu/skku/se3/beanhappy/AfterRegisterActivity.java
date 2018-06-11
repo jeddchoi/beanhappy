@@ -187,16 +187,18 @@ public class AfterRegisterActivity extends AppCompatActivity implements BeaconCo
                     Log.i(BeaconsEverywhere, "The first beacon I see is about " + beacons.iterator().next().getDistance() + " meters away.");
                     for(Beacon beacon: beacons){
                         if(beacon.getDistance()<2.0){
-                            //비콘이 2미터 안으로 들어왔을 경우
+                            realbeacon = true;
                             Log.d(BeaconsEverywhere, "I see a beacon that in inside the 2.0 range");
                             //특정한 액션을 여기에 쓰면 됩니다
                         }
                         else{
+                            realbeacon = false;
                             Log.d(BeaconsEverywhere, "I see a beacon that in outside the 2.0 range");
                         }
                     }
                 }
                 else{
+                    realbeacon = false;
                     Log.d(BeaconsEverywhere, "Where is beacon...");
                 }
             }
