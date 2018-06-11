@@ -1,22 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:background="#2f3843"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/tv_timer"
-        android:layout_centerHorizontal="true"
-        android:indeterminate="false"
-        android:max="10"
-        android:minHeight="50dp"
-        android:minWidth="200dp"
-        android:progress="0" />
 
     <!--<Button-->
         <!--android:layout_width="wrap_content"-->
@@ -36,33 +25,67 @@
         <!--android:layout_marginBottom="216dp"-->
         <!--android:text="Stop Timer" />-->
 
+
     <TextView
         android:id="@+id/tv_timer"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginBottom="133dp"
         android:textAlignment="center" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/returnseat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="70dp"
-        android:text="반납하기" />
+        <TextView
+            android:id="@+id/빈백으로"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/app_name_kor"
+            android:textColor="#ffffff"
+            android:textSize="45sp"
+            android:fontFamily="@font/hanna"
+            android:layout_marginTop="20dp"
+            tools:text="빈백으로 가세요" />
 
-    <Button
-        android:id="@+id/beaconin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/to_main"
-        android:layout_marginBottom="22dp"
-        android:text="비콘in" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="230dp"
+            android:layout_height="230dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="13dp"
+            android:indeterminate="false"
+            android:max="100"
+            android:progress="80"
+            android:progressDrawable="@drawable/timeout_circularprogressbar" />
+
+        <Button
+            android:id="@+id/returnseat"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginBottom="9dp"
+            android:layout_marginEnd="80dp"
+            android:layout_marginStart="80dp"
+            android:background="#596069"
+            android:fontFamily="@font/hanna"
+            android:text="@string/returnseat"
+            android:textSize="35sp" />
+
+        <Button
+            android:id="@+id/beaconin"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="9dp"
+            android:background="#596069"
+            android:fontFamily="@font/hanna"
+            android:text="@string/in"
+            android:textSize="25sp" />
+
+    </LinearLayout>
+
 
 </RelativeLayout>

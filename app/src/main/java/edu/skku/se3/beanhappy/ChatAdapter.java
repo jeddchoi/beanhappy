@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 public class ChatAdapter extends ArrayAdapter<ChatData> {
-    private final SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("a h:mm", Locale.getDefault());
+    private final SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("MM월 dd일 HH:mm", Locale.getDefault());
 
     public ChatAdapter(Context context, int resource) {
         super(context, resource);

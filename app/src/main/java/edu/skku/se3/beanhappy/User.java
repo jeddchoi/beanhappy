@@ -1,29 +1,41 @@
 package edu.skku.se3.beanhappy;
-//type 1: 예약전
+
+import com.google.firebase.database.IgnoreExtraProperties;
+
+import java.util.UUID;
+
+//type 0: 비어있음
+//type 1: 이용중
 //type 2: 예약중
-//type 3: 이용중
-//type 4: 자리비움
+//type 3: 자리비움
+
+@IgnoreExtraProperties
 public class User {
-    String name;
-    private static int type, seatNum;
 
-    public User(String name) {
-        this.name = name;
-        this.type = 1;
+    public String email;
+    public int status;
+    public String seatNum;
+    public Long last_idle_time;
+    public Long last_reserve_time;
+    public Long last_start_time;
+    public Long last_login_time;
+    public boolean isExtended;
+    public String uuid;
+
+
+    public User(String email, String uuid, long time) {
+        // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public void setType(int type){
-        this.type = type;
-    }
-
-    public int getType(){
-        return this.type;
-    }
-
-    public void setSeatNum(int seatNum){
-        this.seatNum = seatNum;
-    }
-    public int getSeatNum(){
-        return this.seatNum;
+    User(String email, String uuid, Long last_login_time) {
+        this.email = email;
+        this.status = 0;
+        this.seatNum = null;
+        this.last_idle_time = 0L;
+        this.last_reserve_time = 0L;
+        this.last_start_time = 0L;
+        this.last_login_time = last_login_time;
+        this.isExtended = false;
+        this.uuid = uuid;
     }
 }

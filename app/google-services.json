@@ -15,19 +15,19 @@
       },
       "oauth_client": [
         {
+          "client_id": "454393854080-5t5m58un6dhln0vcjv92mjvhe0o62g9e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.skku.se3.beanhappy",
+            "certificate_hash": "86e7ddb02fb3250ee5a28f592771478f7186f871"
+          }
+        },
+        {
           "client_id": "454393854080-8fuv78ionkfebdpcgeqllqkqm4bg6s39.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "edu.skku.se3.beanhappy",
             "certificate_hash": "b18311e26d3bf384c809d41c72319a5428fe67d1"
-          }
-        },
-        {
-          "client_id": "454393854080-tva4anhf51m3r62qhjro78nbv7h95dc8.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "edu.skku.se3.beanhappy",
-            "certificate_hash": "86e7ddb02fb3250ee5a28f592771478f7186f871"
           }
         },
         {

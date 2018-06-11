@@ -2,21 +2,14 @@ package edu.skku.se3.beanhappy;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -45,12 +38,12 @@ public class RegisterActivity extends BaseActivity implements
         setContentView(R.layout.activity_register);
 
         // EditTexts
-        email_edit = (EditText)findViewById(R.id.register_email_edit);
-        pw_edit = (EditText)findViewById(R.id.register_pw_edit);
-        pw_edit_check = (EditText)findViewById(R.id.register_pw_edit_check);
+        email_edit = findViewById(R.id.register_email_edit);
+        pw_edit = findViewById(R.id.register_pw_edit);
+        pw_edit_check = findViewById(R.id.register_pw_edit_check);
 
         // CheckBox
-        register_check = (CheckBox)findViewById(R.id.register_check);
+        register_check = findViewById(R.id.register_check);
 
         // Buttons
         findViewById(R.id.register_layout).setOnClickListener(this);
@@ -146,12 +139,11 @@ public class RegisterActivity extends BaseActivity implements
 
     private boolean isEmailValid(String email) {
 
-        String regex = "^[_a-zA-Z0-9-\\.]+@skku.edu";
+        String regex = "^[_a-zA-Z0-9-.]+@skku.edu";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(email);
-        boolean isNormal = m.matches();
 
-        return isNormal;
+        return m.matches();
     }
 
     private boolean isPasswordValid(String password) {
@@ -159,9 +151,8 @@ public class RegisterActivity extends BaseActivity implements
         String regex = "^[a-zA-Z0-9!@.#$%^&*?_~]{8,16}$"; // 8자리 ~ 16자리까지 가능
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(password);
-        boolean isNormal = m.matches();
 
-        return isNormal;
+        return m.matches();
     }
 
     @Override
@@ -181,26 +172,23 @@ public class RegisterActivity extends BaseActivity implements
 
         // [START create_user_with_email]
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(RegisterActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            updateUI(null);
-                        }
-
-                        // [START_EXCLUDE]
-                        hideProgressDialog();
-                        // [END_EXCLUDE]
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "createUserWithEmail:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        updateUI(user);
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                        Toast.makeText(RegisterActivity.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
+                        updateUI(null);
                     }
+
+                    // [START_EXCLUDE]
+                    hideProgressDialog();
+                    // [END_EXCLUDE]
                 });
         // [END create_user_with_email]
     }
@@ -212,30 +200,28 @@ public class RegisterActivity extends BaseActivity implements
         // Send verification email
         // [START send_email_verification]
         final FirebaseUser user = mAuth.getCurrentUser();
+        assert user != null;
         user.sendEmailVerification()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // [START_EXCLUDE]
-                        // Re-enable button
-                        findViewById(R.id.register_button).setEnabled(true);
+                .addOnCompleteListener(this, task -> {
+                    // [START_EXCLUDE]
+                    // Re-enable button
+                    findViewById(R.id.register_button).setEnabled(true);
 
-                        if (task.isSuccessful()) {
-                            Toast.makeText(RegisterActivity.this,
-                                    "Verification email sent to " + user.getEmail(),
-                                    Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            Log.e(TAG, "sendEmailVerification", task.getException());
-                            Toast.makeText(RegisterActivity.this,
-                                    "Failed to send verification email.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                        // [END_EXCLUDE]
+                    if (task.isSuccessful()) {
+                        Toast.makeText(RegisterActivity.this,
+                                "Verification email sent to " + user.getEmail(),
+                                Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Log.e(TAG, "sendEmailVerification", task.getException());
+                        Toast.makeText(RegisterActivity.this,
+                                "Failed to send verification email.",
+                                Toast.LENGTH_SHORT).show();
                     }
+                    // [END_EXCLUDE]
                 });
         // [END send_email_verification]
     }

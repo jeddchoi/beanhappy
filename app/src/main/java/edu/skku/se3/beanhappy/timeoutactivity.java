@@ -4,19 +4,24 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Vibrator;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.Message;
 import android.view.animation.RotateAnimation;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
@@ -29,8 +34,16 @@ public class timeoutactivity extends Activity {
     TextView tv_time;
     int progress;
     CountDownTimer countDownTimer;
-    int endTime = 250;
+    int endTime = 240;
     Vibrator vide;
+    Boolean isreturn = true;
+
+    //getout 에 들어갈 변수들
+    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    private String TodayDate;
+    private Date today;
+    private String uuid;
+    private DeviceUuidFactory device;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +80,12 @@ public class timeoutactivity extends Activity {
                 getout();
             }
         });
+        device = new DeviceUuidFactory(this);
+        uuid = device.getDeviceUuid().toString();
+
+        SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");
+        today = new Date();
+        TodayDate = date.format(today);
     }
 
     /*뒤로가기를 눌렀을 때 작동되는 함수*/
@@ -135,7 +154,8 @@ public class timeoutactivity extends Activity {
             @Override
             public void onFinish() {
                 setProgress(progress, endTime);
-
+                //자리반납(다른건 안바꾸기)
+                Toast.makeText(timeoutactivity.this,"자리가 반납되었습니다", Toast.LENGTH_SHORT).show();
 
             }
         };
@@ -143,7 +163,28 @@ public class timeoutactivity extends Activity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        if(isreturn) {
+            mRootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String seatNum = dataSnapshot.child("users").child(TodayDate).child(uuid).child("seatNum").getValue(String.class);
+                    mRootRef.child("bb_" + seatNum.charAt(0)).child("bb_" + seatNum).child("state").setValue(0);
+                    mRootRef.child("bb_" + seatNum.charAt(0)).child("bb_" + seatNum).child("user").removeValue();
+                }
 
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+
+            mRootRef.child("users").child(TodayDate).child(uuid).child("status").setValue(0);
+            mRootRef.child("users").child(TodayDate).child(uuid).child("seatNum").setValue(null);
+            Toast.makeText(timeoutactivity.this, "자리가 반납되었습니다", Toast.LENGTH_SHORT).show();
+        }
+        super.onDestroy();
+    }
 
     public void setProgress(int startTime, int endTime) {
         progressBarView.setMax(endTime);
@@ -153,13 +194,30 @@ public class timeoutactivity extends Activity {
     }
 
     public void getout(){
+        mRootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String seatNum = dataSnapshot.child("users").child(TodayDate).child(uuid).child("seatNum").getValue(String.class);
+                mRootRef.child("bb_"+seatNum.charAt(0)).child("bb_"+seatNum).child("state").setValue(0);
+                mRootRef.child("bb_"+seatNum.charAt(0)).child("bb_"+seatNum).child("user").removeValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        mRootRef.child("users").child(TodayDate).child(uuid).child("status").setValue(0);
+        mRootRef.child("users").child(TodayDate).child(uuid).child("seatNum").setValue(null);
         Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
         startActivity(intentToActivitymain);
         //checkusingbeanbag.using_beanbag = 0;
         countDownTimer.cancel();
         vide.cancel();
+        Toast.makeText(timeoutactivity.this,"자리가 반납되었습니다", Toast.LENGTH_SHORT).show();
+        isreturn = false;
         finish();
 
-        //+자리 반납
     }
 }

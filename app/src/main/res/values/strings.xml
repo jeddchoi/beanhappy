@@ -25,7 +25,7 @@
     <string name="show_agreement"><u>이용약관 보기</u></string>
     <string name="agreement">1. 하나의 계정과 하나의 기기로만 이용할 수 있습니다.(매일 초기화)</string>
     <string name="copyright">Copyright 2018. BeanHappy All rights reserved.</string>
-
+    <string name="reject_tablet">죄송합니다. 태블릿으로 서비스 이용이 불가합니다.</string>
 
     <string name="register_info">비밀번호는 8~16자리</string>
     <string name="OK">확인</string>
@@ -34,20 +34,34 @@
     <string name="loading">로딩중 입니다.</string>
     <string name="action_verify">이메일 인증하기</string>
     <string name="auth_failed">인증이 실패하였습니다.</string>
+    <string name="please_check_permission">권한사용을 동의해주셔야 이용이 가능합니다.</string>
+    <string name="reject_bad_uuid">죄송합니다. 처음에 로그인한 기록이 있는 기기로 로그인하셔야 합니다.</string>
+
+    <string name="rule_content">1. 신고 양식을 따르지 않거나,신고가 아닌 불필요한 잡담 또는 채팅 내역은
+        삭제되며 반복될 경우 \n제재가 이루어질 수 있습니다. \n\n2. 신고 양식 (시간/자리/내용)\nex)
+        14:23/A1/장시간자리비움\n\n3. 신고 내용\n3-1) 기기를 좌석에 두고 장시간 자리 비움\n3-2)
+        피크타임에 한시간 이상 이용하는 것으로 \n추정되는 인물\n3-3) 기타 다른 이용자에게 불쾌감을 주는
+        행위 \n(소음,식사 등)</string>
+    <string name="rule_title">주의사항</string>
+    <string name="map_title">빈백 지도</string>
+    <string name="back_button">뒤로가기</string>
+    <string name="showmap_button">맵보기</string>
+    <string name="showrule_button">주의사항</string>
 
 
     <string name="logout">&lt; 로그아웃</string>
     <string name="pushAlarm">1시간 내 푸시알람받기</string>
-    <string name="showSeatNum">사용 현황</string>
+    <string name="showSeatNum">남은 자리</string>
     <string name="quickReserve">빠른 예약</string>
     <string name="reserve">예약하기 / 현황보기</string>
     <string name="myStatus">내 이용 현황</string>
     <string name="report">신고 문의</string>
-    <string name="사용현황숫자">25/27</string>
+    <string name="AllCount">%1$d/27</string>
     <string name="go_back">뒤로가기</string>
     <string name="보내기">SEND</string>
     <string name="일어날게요">일어날게요</string>
     <string name="화남">화남</string>
+    <string name="timesup">시간이 지났어요!</string>
     <string name="B구역">B구역</string>
     <string name="A구역">A구역</string>
     <string name="예약하기">예약하기</string>
@@ -55,9 +69,6 @@
     <string name="D구역">D구역</string>
     <string name="E구역">E구역</string>
     <string name="todo">TODO</string>
-    <string name="_0_8">0/8</string>
-    <string name="_0_5">0/5</string>
-    <string name="_0_6">0/6</string>
     <string name="b8">B8</string>
     <string name="b7">B7</string>
     <string name="b6">b6</string>
@@ -84,8 +95,6 @@
     <string name="view8">view8</string>
     <string name="d2">d2</string>
     <string name="d1">d1</string>
-    <string name="_0_4">0/4</string>
-    <string name="_0_4_1">0/4</string>
     <string name="a2">a2</string>
     <string name="a3">a3</string>
     <string name="a4">a4</string>
@@ -100,7 +109,20 @@
     <string name="e3">e3</string>
     <string name="e4">e4</string>
     <string name="multimedia">multimedia</string>
-    <string name="_0_4__1">0/4</string>
+    <string name="반납">반납하기</string>
+    <string name="사용중인빈백">사용중인 빈백은</string>
+    <string name="입니다">입니다</string>
+    <string name="연장">연장하기</string>
+    <string name="main">MAIN</string>
 
+
+    <string name="A_AvailNum">%1$d/4</string>
+    <string name="B_AvailNum">%1$d/8</string>
+    <string name="C_AvailNum">%1$d/5</string>
+    <string name="D_AvailNum">%1$d/6</string>
+    <string name="E_AvailNum">%1$d/4</string>
+    <string name="비콘아웃">비콘아웃</string>
+    <string name="returnseat">반납하기</string>
+    <string name="in">비콘in</string>
 
 </resources>

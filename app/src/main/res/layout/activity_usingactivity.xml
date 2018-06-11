@@ -4,35 +4,65 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#161823"
     android:layout_height="match_parent"
     tools:context=".usingactivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="16dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="83dp"
-        android:text="사용중 빈백"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="34dp"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/hanna"
+            android:text="@string/사용중인빈백"
+            android:textColor="#ffffff"
+            android:textSize="35sp" />
+
+
+        <TextView
+            android:id="@+id/beanbagnum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/hanna"
+            android:text=""
+            android:textColor="#ffffff"
+            android:textSize="40sp" />
+
+        <TextView
+            android:id="@+id/text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+
+            android:fontFamily="@font/hanna"
+            android:text="@string/입니다"
+            android:textColor="#ffffff"
+            android:textSize="35sp" />
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/view_progress_bar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="250dp"
         android:layout_height="250dp"
+        android:max="48"
+        android:progress="20"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="48dp"
-        android:progressDrawable="@drawable/drawable_circularprogressbar"
+        android:progressDrawable="@drawable/circular_progress_bar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <TextView
@@ -40,7 +70,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-
+        android:fontFamily="@font/hanna"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/view_progress_bar"
         app:layout_constraintEnd_toEndOf="@+id/view_progress_bar"
@@ -48,29 +78,20 @@
         app:layout_constraintTop_toTopOf="@+id/view_progress_bar" />
 
     <Button
-        android:id="@+id/returnseat"
-        android:layout_width="wrap_content"
-        android:layout_height="52dp"
+        android:id="@+id/wakeup"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:background="#596069"
+        android:fontFamily="@font/hanna"
+        android:textSize="35sp"
         android:layout_marginBottom="89dp"
-        android:text="반납하기"
+        android:text="@string/반납"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_progress_bar" />
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/app_name"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/returnseat"
-        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/away"
@@ -86,48 +107,30 @@
 
     <Button
         android:id="@+id/to_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:text="main"
+        android:text="@string/main"
+        android:background="#596069"
+        android:fontFamily="@font/hanna"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/timeout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:text="timeout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
         android:id="@+id/btn_extend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="32dp"
-        android:text="연장하기" />
+        android:background="#596069"
+        android:fontFamily="@font/hanna"
+        android:text="@string/연장"
+        android:textSize="35sp"/>
 
-    <!--<Button-->
-        <!--android:id="@+id/btn_start"-->
-        <!--android:layout_width="30dp"-->
-        <!--android:layout_height="30dp"-->
-        <!--android:layout_below="@+id/textView"-->
-        <!--android:layout_marginStart="13dp"-->
-        <!--android:text="S"-->
-        <!--app:layout_constraintBottom_toTopOf="@+id/timeout"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintHorizontal_bias="0.085"-->
-        <!--app:layout_constraintStart_toStartOf="parent" />-->
 
 
 </RelativeLayout>
