@@ -29,18 +29,18 @@
             android:textColor="#ffffff"
             android:textSize="25sp" />
 
-        <Switch
-            android:id="@+id/pushAlarmSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/hanna"
-            android:switchMinWidth="20dp"
-            android:text="@string/pushAlarm"
-            android:textColor="#ffffff"
-            android:textSize="18sp" />
+        <!--<Switch-->
+            <!--android:id="@+id/pushAlarmSwitch"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="end"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:fontFamily="@font/hanna"-->
+            <!--android:switchMinWidth="20dp"-->
+            <!--android:text="@string/pushAlarm"-->
+            <!--android:textColor="#ffffff"-->
+            <!--android:textSize="18sp" />-->
 
     </LinearLayout>
 

@@ -37,7 +37,7 @@ public class MainActivity extends BaseActivity implements
     private DatabaseReference mNumAvailTotal = mRootRef.child("NumAvailTotal");
     private DatabaseReference mUserState;
     TextView logout_textBtn;
-    Switch pushAlarmSwitch;
+    //Switch pushAlarmSwitch;
     Button quickReserveBtn, reserveBtn, myStatusBtn, reportBtn;
     TextView seatNum;
     private String uuid;
@@ -59,7 +59,7 @@ public class MainActivity extends BaseActivity implements
 
         // top ui
         logout_textBtn = (TextView) findViewById(R.id.logout_textBtn);
-        pushAlarmSwitch = (Switch) findViewById(R.id.pushAlarmSwitch);
+        //pushAlarmSwitch = (Switch) findViewById(R.id.pushAlarmSwitch);
         seatNum = (TextView) findViewById(R.id.seatNum);
 
         // Buttons
