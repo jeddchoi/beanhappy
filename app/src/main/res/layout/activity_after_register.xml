@@ -42,13 +42,13 @@
         <TextView
             android:id="@+id/빈백으로"
             android:layout_width="wrap_content"
+
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/app_name_kor"
             android:textColor="#ffffff"
             android:textSize="45sp"
             android:fontFamily="@font/hanna"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="60dp"
             tools:text="빈백으로 가세요" />
 
         <ProgressBar
