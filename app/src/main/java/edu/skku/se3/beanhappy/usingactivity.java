@@ -54,8 +54,8 @@ public class usingactivity extends AppCompatActivity implements BeaconConsumer{
     private String TodayDate;
     Date today;
 
-    public static final int limit_usingtime = 40; // 1 hour
-    public static final int limit_leavingtime = 10; // 5 min
+    public static final int limit_usingtime = 80; // 1 hour
+    public static final int limit_leavingtime = 30; // 5 min
 
     public static final String BeaconsEverywhere = "BeaconsEverywhere";
     private BeaconManager beaconManager;
