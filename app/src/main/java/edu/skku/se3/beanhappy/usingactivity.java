@@ -343,13 +343,13 @@ public class usingactivity extends AppCompatActivity implements BeaconConsumer{
 
                 //if((endTime - progress) == 0){  //타이머 시간이 다 지난 경우
                 //if(user.getType() == "Using"){    //시간 다되면 타임아웃 엑티비티로
-                if(localuserstate == 1){    //시간 다되면 타임아웃 엑티비티로
-                    timeout();
-                }
-                //if(user.getType() == "Out"){    //자리비운상태로 시간 다되면 자리 반납
-                if(localuserstate == 3){    //자리비운상태로 시간 다되면 자리 반납
-                    getout();
-                }
+//                if(localuserstate == 1){    //시간 다되면 타임아웃 엑티비티로
+//                    timeout();
+//                }
+//                //if(user.getType() == "Out"){    //자리비운상태로 시간 다되면 자리 반납
+//                if(localuserstate == 3){    //자리비운상태로 시간 다되면 자리 반납
+//                    getout();
+//                }
                 //}
 
             }

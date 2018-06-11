@@ -75,7 +75,7 @@
             android:indeterminate="false"
             android:max="100"
             android:progress="80"
-            android:progressDrawable="@drawable/timeout_circularprogressbar" />
+            android:progressDrawable="@drawable/circular_progress_bar" />
 
         <Button
             android:id="@+id/returnseat"
