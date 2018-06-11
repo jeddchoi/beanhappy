@@ -20,56 +20,71 @@
             android:contentDescription="@string/화남"
             android:src="@drawable/angry" />
 
-        <ProgressBar
-            android:id="@+id/view_progress_bar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="240dp"
-            android:layout_height="240dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="0dp"
-            android:indeterminate="false"
-            android:max="100"
-            android:progress="80"
-            android:progressDrawable="@drawable/timeout_circularprogressbar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-        <TextView
-            android:id="@+id/tv_timer"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toBottomOf="@+id/view_progress_bar"
-            app:layout_constraintEnd_toEndOf="@+id/view_progress_bar"
-            app:layout_constraintStart_toStartOf="@+id/view_progress_bar"
-            app:layout_constraintTop_toTopOf="@+id/view_progress_bar" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/timeover"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/hanna"
-            android:gravity="center"
-            android:text="@string/timesup"
-            android:textColor="#ffffff"
-            android:textSize="40sp" />
+            <ProgressBar
+                android:id="@+id/view_progress_bar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="240dp"
+                android:layout_height="240dp"
+                android:layout_gravity="center"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="80"
+                android:progressDrawable="@drawable/timeout_circularprogressbar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
 
-        <Button
-            android:id="@+id/wakeup"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="22dp"
-            android:layout_marginEnd="70dp"
-            android:layout_marginStart="70dp"
-            android:background="#596069"
-            android:fontFamily="@font/hanna"
-            android:text="@string/일어날게요"
-            android:textSize="30sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/tv_timer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="@+id/view_progress_bar"
+                app:layout_constraintEnd_toEndOf="@+id/view_progress_bar"
+                app:layout_constraintStart_toStartOf="@+id/view_progress_bar"
+                app:layout_constraintTop_toTopOf="@+id/view_progress_bar" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="250dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/timeover"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:fontFamily="@font/hanna"
+                    android:gravity="center"
+                    android:text="@string/timesup"
+                    android:textColor="#ffffff"
+                    android:textSize="40sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:layout_editor_absoluteY="372dp" />
+
+                <Button
+                    android:id="@+id/wakeup"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="70dp"
+                    android:layout_marginStart="70dp"
+                    android:background="#596069"
+                    android:fontFamily="@font/hanna"
+                    android:text="@string/일어날게요"
+                    android:textSize="30sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.501"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </LinearLayout>
+
+        </android.support.constraint.ConstraintLayout>
 
     </LinearLayout>
 
