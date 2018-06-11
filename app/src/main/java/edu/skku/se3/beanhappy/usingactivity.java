@@ -82,6 +82,7 @@ public class usingactivity extends AppCompatActivity implements BeaconConsumer{
     int progress;
     CountDownTimer countDownTimer;
     int endTime = 250;
+    int real_endTime = 9000;
     int extendtime;
 
     boolean istimeout = true;
@@ -240,7 +241,6 @@ public class usingactivity extends AppCompatActivity implements BeaconConsumer{
     }
 
     private void fn_countdown(int pausetime) {
-        //if (et_timer.getText().toString().length()>0) {
 
         myProgress = 0;
 
@@ -250,59 +250,40 @@ public class usingactivity extends AppCompatActivity implements BeaconConsumer{
         } catch (Exception e) {
 
         }
-        //String timeInterval = "2000";
-        //String timeInterval = et_timer.getText().toString();
 
         progress = pausetime;
-        //endTime = Integer.parseInt(timeInterval); // up to finish time
-        //if (user.getType() == "Using"){
         if (localuserstate == 1){
             endTime = limit_usingtime; // up to finish time
         }
-        //if (user.getType() == "Out"){
         if (localuserstate == 3){
             endTime = limit_leavingtime;
         }
 
-
-        countDownTimer = new CountDownTimer(endTime * 1000, 1000) {
+        countDownTimer = new CountDownTimer(real_endTime * 1000, 1000) {
             @Override
 
             public void onTick(long millisUntilFinished) {
                 setProgress(progress, endTime);
                 progress = progress + 1;
 
-                if(isbeacon != realbeacon){
+                if(isbeacon != realbeacon) {    //비콘인식
                     beaconact();
                     isbeacon = realbeacon;
                 }
-
-                //if((user.getType() == "Using") & (endTime - progress == 0)){
-                if((localuserstate == 1) & (endTime - progress == 0)){
+                if((localuserstate == 1) & (endTime - progress == 0))   //이용중에 시간다되는 경우
                     timeout();
-                }
-
-                //if((user.getType() == "Out") & (pauseprogress + progress == limit_usingtime)){
-                if((localuserstate == 3) & (pauseprogress + progress == limit_usingtime)){
+                if((localuserstate == 3) & (pauseprogress + progress == limit_usingtime))   //자리비움때 이용시간이 다지나는 경우
                     timeout();
-                }
-                //if((user.getType() == "Out") & (endTime - progress == 0)){
-                if((localuserstate == 3) & (endTime - progress == 0)){
+                if((localuserstate == 3) & (endTime - progress == 0))   //자리비움때 이용시간 다지나는 경우
                     getout();
-                }
-
-                //if((progress >= limit_leavingtime/2)&(user.getType() == "Out")){
-                if((progress >= limit_leavingtime/2)&(localuserstate == 3)){
-                    if(isextended){
+                if((progress >= limit_leavingtime/2)&(localuserstate == 3)){    //자리비움때 시간을 절반 쓴 경우
+                    if(isextended)
                         btn_extend.setEnabled(false);
-                    }
-                    else{
+                    else
                         btn_extend.setEnabled(true);
-                    }
                 }
-                else{
+                else
                     btn_extend.setEnabled(false);
-                }
 
 
                 int seconds = (endTime - progress) % 60;
