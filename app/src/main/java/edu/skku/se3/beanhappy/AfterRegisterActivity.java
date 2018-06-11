@@ -6,14 +6,14 @@ import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-        import android.os.Bundle;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-        import android.view.MenuItem;
-        import android.view.View;
-        import android.widget.Button;
-        import android.widget.ProgressBar;
-        import android.widget.TextView;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -33,7 +33,8 @@ public class AfterRegisterActivity extends AppCompatActivity {
     private String uuid;
     private String TodayDate;
     private Date today;
-    Boolean realbeacon = false;     //실제 비콘의 인식여부(ontick안에 true면 beaconin 함수 가동되도록 설정)
+    DatabaseReference currentUser;
+    public String seat;
 
 
     private Context mContext = this;
@@ -41,6 +42,10 @@ public class AfterRegisterActivity extends AppCompatActivity {
     MyCountDownTimer myCountDownTimer;
     TextView tv_time;
     int endTime = 30;
+
+    private  TextView txtView_beanbagseat;
+    private TextView txtView1;
+    private TextView txtView2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +55,9 @@ public class AfterRegisterActivity extends AppCompatActivity {
 
         progressBar=(ProgressBar)findViewById(R.id.progressBar);
         tv_time= (TextView)findViewById(R.id.tv_timer);
-//        Button btn_return = (Button)findViewById(R.id.returnseat);
+        Button btn_return = (Button)findViewById(R.id.returnseat);
         Button btn_beaconin = (Button)findViewById(R.id.beaconin);
+        Button btn_showmap = (Button)findViewById(R.id.showmap);
 
         device = new DeviceUuidFactory(this);
         uuid = device.getDeviceUuid().toString();
@@ -59,19 +65,30 @@ public class AfterRegisterActivity extends AppCompatActivity {
         myCountDownTimer = new MyCountDownTimer(endTime * 1000, 1000);
         myCountDownTimer.start();
 
+        txtView1=(TextView)findViewById(R.id.text1);
+        txtView2=(TextView)findViewById(R.id.text2);
+        txtView_beanbagseat = findViewById(R.id.beanbagnum);
+
         //+유저의 type 예약 전에서 예약중 타입으로 변경
-//        btn_return.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                getout();
-//            }
-//        });
+        btn_return.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getout();
+            }
+        });
 
         /*테스트용 임시 버튼*/
         btn_beaconin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                realbeacon = true;
+                beaconin();
+            }
+        });
+
+        btn_showmap.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                Intent intentToshowmap = new Intent(getApplicationContext(), Aftershowmap.class);
+                startActivity(intentToshowmap);
             }
         });
 
@@ -79,6 +96,19 @@ public class AfterRegisterActivity extends AppCompatActivity {
         today = new Date();
         TodayDate = date.format(today);
 
+        currentUser = mRootRef.child("users").child(TodayDate).child(uuid).getRef();
+        currentUser.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                seat = dataSnapshot.child("seatNum").getValue(String.class);
+                txtView_beanbagseat.setText(seat);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
     }
     /*뒤로가기를 눌렀을 때 작동되는 함수*/
     @Override
@@ -97,9 +127,7 @@ public class AfterRegisterActivity extends AppCompatActivity {
         public void onTick(long millisUntilFinished) {
 
             //비콘에 있나 확인하는 if문 넣기
-            if (realbeacon){
-                beaconin();
-            }
+
             int progress = (int) (millisUntilFinished/1000);
             //progress = 시간이 지난 정도
 
@@ -199,7 +227,7 @@ public class AfterRegisterActivity extends AppCompatActivity {
         builder.setPositiveButton("아니요", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
+                dialog.cancel();
             }
         });
         builder.show();
@@ -207,8 +235,8 @@ public class AfterRegisterActivity extends AppCompatActivity {
 
     /*비콘에 들어오는 경우 실행되는 함수*/
     public void beaconin(){
-       // Intent intentToActivityusing = new Intent(mContext, usingactivity.class);
-       // startActivity(intentToActivityusing);
+        // Intent intentToActivityusing = new Intent(mContext, usingactivity.class);
+        // startActivity(intentToActivityusing);
         mRootRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -239,4 +267,5 @@ public class AfterRegisterActivity extends AppCompatActivity {
         finish();   //해당 activity종료
         //실제로는 버튼으로 하는게 아니라 ontick함수안에 수시로 비콘신호를 확인하는 if문을 넣어놨다가 비콘이 확인되면 beaconin함수가 실행되도록 해야함
     }
+
 }

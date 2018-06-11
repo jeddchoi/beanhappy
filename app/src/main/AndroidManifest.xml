@@ -42,6 +42,7 @@
         <activity android:name=".timeoutactivity" />
         <activity android:name=".StatusActivity"/>
         <activity android:name=".AfterRegisterActivity" />
+        <activity android:name=".Aftershowmap"/>
 
         <service android:name=".MyFirebaseMessagingService">
             <intent-filter>
