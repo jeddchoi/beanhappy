@@ -33,6 +33,7 @@ public class AfterRegisterActivity extends AppCompatActivity {
     private String uuid;
     private String TodayDate;
     private Date today;
+    Boolean realbeacon = false;     //실제 비콘의 인식여부(ontick안에 true면 beaconin 함수 가동되도록 설정)
 
 
     private Context mContext = this;
@@ -49,7 +50,7 @@ public class AfterRegisterActivity extends AppCompatActivity {
 
         progressBar=(ProgressBar)findViewById(R.id.progressBar);
         tv_time= (TextView)findViewById(R.id.tv_timer);
-        //Button btn_return = (Button)findViewById(R.id.returnseat);
+//        Button btn_return = (Button)findViewById(R.id.returnseat);
         Button btn_beaconin = (Button)findViewById(R.id.beaconin);
 
         device = new DeviceUuidFactory(this);
@@ -59,18 +60,18 @@ public class AfterRegisterActivity extends AppCompatActivity {
         myCountDownTimer.start();
 
         //+유저의 type 예약 전에서 예약중 타입으로 변경
-        /*btn_return.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getout();
-            }
-        });*/
+//        btn_return.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                getout();
+//            }
+//        });
 
         /*테스트용 임시 버튼*/
         btn_beaconin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                beaconin();
+                realbeacon = true;
             }
         });
 
@@ -96,7 +97,9 @@ public class AfterRegisterActivity extends AppCompatActivity {
         public void onTick(long millisUntilFinished) {
 
             //비콘에 있나 확인하는 if문 넣기
-
+            if (realbeacon){
+                beaconin();
+            }
             int progress = (int) (millisUntilFinished/1000);
             //progress = 시간이 지난 정도
 
