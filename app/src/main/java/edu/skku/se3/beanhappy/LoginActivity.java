@@ -2,13 +2,17 @@ package edu.skku.se3.beanhappy;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -45,9 +49,14 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LoginActivity extends BaseActivity implements BeaconConsumer{
+public class LoginActivity extends BaseActivity {
     public static final String TAG = "BeanHappy";
-    public static final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 999;
+    private static final int PERMISSION_CALLBACK_CONSTANT = 100;
+    private static final int REQUEST_PERMISSION_SETTING = 101;
+    String[] permissionsRequired = new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+    private boolean sentToSettings = false;
+
+
     private EditText email_edit,pw_edit; // 사용자 id, 사용자 pw
     private CheckBox autologin_ChkBox;
     private boolean loginChecked;
@@ -60,12 +69,8 @@ public class LoginActivity extends BaseActivity implements BeaconConsumer{
 
     private String TodayDate;
     private Date today;
-    private User user;
 
-    /*beacon*/
-    public static final String BeaconsEverywhere = "BeaconsEverywhere";
-    private BeaconManager beaconManager;
-    public static final int MY_PERMISSIONS_ACCESS_FINE_LOCATION = 998;
+
 
 
 
@@ -89,18 +94,6 @@ public class LoginActivity extends BaseActivity implements BeaconConsumer{
         editor = pref.edit();
         device = new DeviceUuidFactory(this);
 
-//        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-//                != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_ACCESS_FINE_LOCATION);
-//        } else {
-//            beaconManager= BeaconManager.getInstanceForApplication(this);
-//            beaconManager.getBeaconParsers().add(new BeaconParser()
-//                    .setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
-//            //이건 알트비콘의 layout 입니다
-//            //2-3/4-19이런 것들은 다 byte position 을 의미합니
-//
-//            beaconManager.bind(this);
-//        }
 
         /* -- 회원가입 클릭시 -- */
         register_button.setOnClickListener(v -> {
@@ -140,7 +133,72 @@ public class LoginActivity extends BaseActivity implements BeaconConsumer{
     @Override
     protected void onStart() {
         super.onStart();
+
+        if(ActivityCompat.checkSelfPermission(LoginActivity.this, permissionsRequired[0]) != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(LoginActivity.this, permissionsRequired[1]) != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(LoginActivity.this, permissionsRequired[2]) != PackageManager.PERMISSION_GRANTED){
+            if(ActivityCompat.shouldShowRequestPermissionRationale(
+                    LoginActivity.this,permissionsRequired[0])
+                    || ActivityCompat.shouldShowRequestPermissionRationale(LoginActivity.this,permissionsRequired[1])
+                    || ActivityCompat.shouldShowRequestPermissionRationale(LoginActivity.this,permissionsRequired[2])){
+                //Show Information about why you need the permission
+                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                builder.setTitle("Need Multiple Permissions");
+                builder.setMessage("This app needs Camera and Location permissions.");
+                builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        ActivityCompat.requestPermissions(LoginActivity.this,permissionsRequired,PERMISSION_CALLBACK_CONSTANT);
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+            } else if (pref.getBoolean(permissionsRequired[0],false)) {
+                //Previously Permission Request was cancelled with 'Dont Ask Again',
+                // Redirect to Settings after showing Information about why you need the permission
+                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                builder.setTitle("Need Multiple Permissions");
+                builder.setMessage("This app needs Camera and Location permissions.");
+                builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        sentToSettings = true;
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", getPackageName(), null);
+                        intent.setData(uri);
+                        startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+                        Toast.makeText(getBaseContext(), "Go to Permissions to Grant  Camera and Location", Toast.LENGTH_LONG).show();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+            }  else {
+                //just request the permission
+                ActivityCompat.requestPermissions(LoginActivity.this,permissionsRequired,PERMISSION_CALLBACK_CONSTANT);
+            }
+
+
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putBoolean(permissionsRequired[0],true);
+            editor.commit();
+        } else {
+            //You already have the permission, just go ahead.
+            proceedAfterPermission();
+        }
     }
+
 
     @Override
     protected void onResume() {
@@ -165,15 +223,9 @@ public class LoginActivity extends BaseActivity implements BeaconConsumer{
             signIn(email_edit.getText().toString(), pw_edit.getText().toString());
 
         }
-
     }
 
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        beaconManager.unbind(this);//위에 bind 가 있으니 여기 unbind 가 필요합니다
-    }
 
     @Override
     protected void onPause() {
@@ -193,10 +245,7 @@ public class LoginActivity extends BaseActivity implements BeaconConsumer{
         boolean cancel = false;
         View focusView = null;
 
-        if(IsTablet(mContext)) {
-            Toast.makeText(LoginActivity.this, R.string.reject_tablet, Toast.LENGTH_LONG).show();
-            return;
-        }
+
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             pw_edit.setError(getString(R.string.error_invalid_password_register));
@@ -216,6 +265,12 @@ public class LoginActivity extends BaseActivity implements BeaconConsumer{
             cancel = true;
         }
 
+
+        if(IsTablet(mContext)) {
+            Toast.makeText(LoginActivity.this, R.string.reject_tablet, Toast.LENGTH_LONG).show();
+            return;
+        }
+
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -228,37 +283,11 @@ public class LoginActivity extends BaseActivity implements BeaconConsumer{
                 editor.putBoolean("autoLogin", true);
                 editor.commit();
             }
-            /*주소록 권한 요청*/
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
-            } else {
-                signIn(email, password);
-            }
-            /*비콘 권한 요청*/
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_ACCESS_FINE_LOCATION);
-            } else {
-                beaconManager= BeaconManager.getInstanceForApplication(this);
-                beaconManager.getBeaconParsers().add(new BeaconParser()
-                        .setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
-                //이건 알트비콘의 layout 입니다
-                //2-3/4-19이런 것들은 다 byte position 을 의미합니
 
-                beaconManager.bind(this);
-            }
+            signIn(email, password);
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == MY_PERMISSIONS_REQUEST_READ_PHONE_STATE) {
-            if (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(LoginActivity.this, R.string.please_check_permission, Toast.LENGTH_LONG).show();
-            }
-        }
-    }
 
     private boolean isEmailValid(String email) {
 
@@ -370,76 +399,72 @@ public class LoginActivity extends BaseActivity implements BeaconConsumer{
     }
 
     @Override
-    public void onBeaconServiceConnect(){
-        //비콘은 UUID/major/minor 넘버로 구별합니다
-
-        //region 이라는 것은 geographical region 을 의미하는 것이 아니라
-        //저희가 관심있는 특정 비콘을 의미합니다 그러므로 비콘의 UUID 를 알아야 합니다
-
-        final Region region = new Region("myBeacons", Identifier.parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), null, null);
-
-        beaconManager.addMonitorNotifier(new MonitorNotifier() {
-            @Override
-            public void didEnterRegion(Region region) {
-                try {
-                    Log.i(BeaconsEverywhere, "I just saw an beacon for the first time! Id1->"+region.getId1()
-                            +" id 2:"+region.getId2()+" id 3:"+region.getId3());
-
-                    //첫번째 아이디는 UUID
-                    //두번째 아이디는 major
-                    //세번째 아이디는 minor
-
-                    beaconManager.startRangingBeaconsInRegion(region);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            @Override
-            public void didExitRegion(Region region) {
-                try {
-                    Log.d(BeaconsEverywhere, "did exit region");
-                    beaconManager.stopRangingBeaconsInRegion(region);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == PERMISSION_CALLBACK_CONSTANT){
+            //check if all permissions are granted
+            boolean allgranted = false;
+            for(int i=0;i<grantResults.length;i++){
+                if(grantResults[i]==PackageManager.PERMISSION_GRANTED){
+                    allgranted = true;
+                } else {
+                    allgranted = false;
+                    break;
                 }
             }
 
-            @Override
-            public void didDetermineStateForRegion(int i, Region region) {
-
-            }
-        });
-
-        beaconManager.addRangeNotifier(new RangeNotifier() {
-            @Override
-            public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
-                Log.i(BeaconsEverywhere,"beacons.size less then 0");
-                if (beacons.size() > 0) {
-                    Log.i(BeaconsEverywhere, "The first beacon I see is about " + beacons.iterator().next().getDistance() + " meters away.");
-                    for(Beacon beacon: beacons){
-                        if(beacon.getDistance()<2.0){
-                            //비콘이 2미터 안으로 들어왔을 경우
-                            Log.d(BeaconsEverywhere, "I see a beacon that in inside the 2.0 range");
-                            //특정한 액션을 여기에 쓰면 됩니다
-                        }
-                        else{
-                            Log.d(BeaconsEverywhere, "Where is beacon...");
-                        }
+            if(allgranted){
+                proceedAfterPermission();
+            } else if(ActivityCompat.shouldShowRequestPermissionRationale(LoginActivity.this,permissionsRequired[0])
+                    || ActivityCompat.shouldShowRequestPermissionRationale(LoginActivity.this,permissionsRequired[1])
+                    || ActivityCompat.shouldShowRequestPermissionRationale(LoginActivity.this,permissionsRequired[2])){
+                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                builder.setTitle("Need Multiple Permissions");
+                builder.setMessage("This app needs Camera and Location permissions.");
+                builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        ActivityCompat.requestPermissions(LoginActivity.this,permissionsRequired,PERMISSION_CALLBACK_CONSTANT);
                     }
-                }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+            } else {
+                Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
             }
-        });
-
-
-        try {
-            beaconManager.startMonitoringBeaconsInRegion(region);
-        } catch (RemoteException e) {
-            e.printStackTrace();
         }
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_PERMISSION_SETTING) {
+            if (ActivityCompat.checkSelfPermission(LoginActivity.this, permissionsRequired[0]) == PackageManager.PERMISSION_GRANTED) {
+                //Got Permission
+                proceedAfterPermission();
+            }
+        }
+    }
 
+    private void proceedAfterPermission() {
+        Toast.makeText(getBaseContext(), "We got All Permissions", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        if (sentToSettings) {
+            if (ActivityCompat.checkSelfPermission(LoginActivity.this, permissionsRequired[0]) == PackageManager.PERMISSION_GRANTED) {
+                //Got Permission
+                proceedAfterPermission();
+            }
+        }
     }
 }
 
