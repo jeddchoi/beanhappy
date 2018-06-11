@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.CountDownTimer;
 import android.os.RemoteException;
+import android.support.annotation.BoolRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -66,6 +67,8 @@ public class AfterRegisterActivity extends AppCompatActivity implements BeaconCo
     private  TextView txtView_beanbagseat;
     private TextView txtView1;
     private TextView txtView2;
+
+    Boolean realbeacon =false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -255,6 +258,9 @@ public class AfterRegisterActivity extends AppCompatActivity implements BeaconCo
         public void onTick(long millisUntilFinished) {
 
             //비콘에 있나 확인하는 if문 넣기
+            if(realbeacon){
+                beaconin();
+            }
 
             int progress = (int) (millisUntilFinished/1000);
             //progress = 시간이 지난 정도
