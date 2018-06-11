@@ -110,9 +110,9 @@ public class timeoutactivity extends Activity {
         //String timeInterval = "2000";
         //String timeInterval = et_timer.getText().toString();
 
-        progress = 240;
+        progress = 13;
         //endTime = Integer.parseInt(timeInterval); // up to finish time
-        endTime = 240;
+        endTime = 13;
 
 
         countDownTimer = new CountDownTimer(endTime * 1000, 1000) {
