@@ -69,6 +69,7 @@ public class AfterRegisterActivity extends AppCompatActivity implements BeaconCo
     private TextView txtView2;
 
     Boolean realbeacon =false;
+    Boolean istimeout = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,6 +161,25 @@ public class AfterRegisterActivity extends AppCompatActivity implements BeaconCo
     @Override
     public void onDestroy(){
         super.onDestroy();
+        if (istimeout) {
+            mRootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String seatNum = dataSnapshot.child("users").child(TodayDate).child(uuid).child("seatNum").getValue(String.class);
+                    mRootRef.child("bb_" + seatNum.charAt(0)).child("bb_" + seatNum).child("state").setValue(0);
+                    mRootRef.child("bb_" + seatNum.charAt(0)).child("bb_" + seatNum).child("user").removeValue();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+                }
+            });
+
+            mRootRef.child("users").child(TodayDate).child(uuid).child("status").setValue(0);
+            mRootRef.child("users").child(TodayDate).child(uuid).child("seatNum").setValue(null);
+            Toast.makeText(AfterRegisterActivity.this, "자리가 반납되었습니다", Toast.LENGTH_SHORT).show();
+        }
         beaconManager.unbind(this);//위에 bind 가 있으니 여기 unbind 가 필요합니다
     }
 
@@ -317,6 +337,7 @@ public class AfterRegisterActivity extends AppCompatActivity implements BeaconCo
             });
             mRootRef.child("users").child(TodayDate).child(uuid).child("status").setValue(0);
             mRootRef.child("users").child(TodayDate).child(uuid).child("seatNum").setValue(null);
+            istimeout = false;
             Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
             intentToActivitymain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intentToActivitymain);
@@ -349,6 +370,7 @@ public class AfterRegisterActivity extends AppCompatActivity implements BeaconCo
 
                     mRootRef.child("users").child(TodayDate).child(uuid).child("status").setValue(0);
                     mRootRef.child("users").child(TodayDate).child(uuid).child("seatNum").setValue(null);
+                    istimeout = false;
                     Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
                     intentToActivitymain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intentToActivitymain);
@@ -393,6 +415,7 @@ public class AfterRegisterActivity extends AppCompatActivity implements BeaconCo
 //        Intent intentToMain = new Intent(getApplicationContext(), MainActivity.class);
 //        intentToMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 //        startActivity(intentToMain);
+        istimeout = false;
         Intent intentToUsing = new Intent(getApplicationContext(), usingactivity.class);
         intentToUsing.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intentToUsing);
