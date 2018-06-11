@@ -128,43 +128,29 @@ public class LoginActivity extends BaseActivity {
         SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");
         today = new Date();
         TodayDate = date.format(today);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
 
         if(ActivityCompat.checkSelfPermission(LoginActivity.this, permissionsRequired[0]) != PackageManager.PERMISSION_GRANTED
                 || ActivityCompat.checkSelfPermission(LoginActivity.this, permissionsRequired[1]) != PackageManager.PERMISSION_GRANTED
                 || ActivityCompat.checkSelfPermission(LoginActivity.this, permissionsRequired[2]) != PackageManager.PERMISSION_GRANTED){
-            if(ActivityCompat.shouldShowRequestPermissionRationale(
-                    LoginActivity.this,permissionsRequired[0])
+            if(ActivityCompat.shouldShowRequestPermissionRationale(LoginActivity.this,permissionsRequired[0])
                     || ActivityCompat.shouldShowRequestPermissionRationale(LoginActivity.this,permissionsRequired[1])
                     || ActivityCompat.shouldShowRequestPermissionRationale(LoginActivity.this,permissionsRequired[2])){
                 //Show Information about why you need the permission
                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                 builder.setTitle("Need Multiple Permissions");
-                builder.setMessage("This app needs Camera and Location permissions.");
-                builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        ActivityCompat.requestPermissions(LoginActivity.this,permissionsRequired,PERMISSION_CALLBACK_CONSTANT);
-                    }
+                builder.setMessage("This app needs Phone state and Location permissions.");
+                builder.setPositiveButton("Grant", (dialog, which) -> {
+                    dialog.cancel();
+                    ActivityCompat.requestPermissions(LoginActivity.this,permissionsRequired,PERMISSION_CALLBACK_CONSTANT);
                 });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+                builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
                 builder.show();
             } else if (pref.getBoolean(permissionsRequired[0],false)) {
                 //Previously Permission Request was cancelled with 'Dont Ask Again',
                 // Redirect to Settings after showing Information about why you need the permission
                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                 builder.setTitle("Need Multiple Permissions");
-                builder.setMessage("This app needs Camera and Location permissions.");
+                builder.setMessage("This app needs Phone state and Location permissions.");
                 builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -174,7 +160,7 @@ public class LoginActivity extends BaseActivity {
                         Uri uri = Uri.fromParts("package", getPackageName(), null);
                         intent.setData(uri);
                         startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
-                        Toast.makeText(getBaseContext(), "Go to Permissions to Grant  Camera and Location", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(), "Go to Permissions to Grant Phone state and Location. ", Toast.LENGTH_LONG).show();
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -186,10 +172,8 @@ public class LoginActivity extends BaseActivity {
                 builder.show();
             }  else {
                 //just request the permission
-                ActivityCompat.requestPermissions(LoginActivity.this,permissionsRequired,PERMISSION_CALLBACK_CONSTANT);
+                ActivityCompat.requestPermissions(LoginActivity.this, permissionsRequired, PERMISSION_CALLBACK_CONSTANT);
             }
-
-
             SharedPreferences.Editor editor = pref.edit();
             editor.putBoolean(permissionsRequired[0],true);
             editor.commit();
@@ -198,6 +182,10 @@ public class LoginActivity extends BaseActivity {
             proceedAfterPermission();
         }
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart(); }
 
 
     @Override
@@ -283,8 +271,10 @@ public class LoginActivity extends BaseActivity {
                 editor.putBoolean("autoLogin", true);
                 editor.commit();
             }
-
-            signIn(email, password);
+            if(ActivityCompat.checkSelfPermission(LoginActivity.this, permissionsRequired[0]) == PackageManager.PERMISSION_GRANTED)
+                signIn(email, password);
+            else
+                Toast.makeText(LoginActivity.this, "권한을 허용해주세요.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -453,7 +443,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void proceedAfterPermission() {
-        Toast.makeText(getBaseContext(), "We got All Permissions", Toast.LENGTH_LONG).show();
+        Log.d(TAG, "We got All Permissions");
     }
 
     @Override
