@@ -1,9 +1,15 @@
 package edu.skku.se3.beanhappy;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.CountDownTimer;
+import android.os.RemoteException;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,10 +28,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.altbeacon.beacon.Beacon;
+import org.altbeacon.beacon.BeaconConsumer;
+import org.altbeacon.beacon.BeaconManager;
+import org.altbeacon.beacon.BeaconParser;
+import org.altbeacon.beacon.Identifier;
+import org.altbeacon.beacon.MonitorNotifier;
+import org.altbeacon.beacon.RangeNotifier;
+import org.altbeacon.beacon.Region;
+
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 
-public class AfterRegisterActivity extends AppCompatActivity {
+public class AfterRegisterActivity extends AppCompatActivity implements BeaconConsumer{
 
     public static final String TAG = "BeanHappy";
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
@@ -43,6 +59,10 @@ public class AfterRegisterActivity extends AppCompatActivity {
     TextView tv_time;
     int endTime = 30;
 
+    public static final String BeaconsEverywhere = "BeaconsEverywhere";
+    private BeaconManager beaconManager;
+    public static final int MY_PERMISSIONS_ACCESS_FINE_LOCATION = 999;
+  
     private  TextView txtView_beanbagseat;
     private TextView txtView1;
     private TextView txtView2;
@@ -52,6 +72,20 @@ public class AfterRegisterActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_after_register);
+
+        /*Beacon permission*/
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_ACCESS_FINE_LOCATION);
+        } else {
+            beaconManager=BeaconManager.getInstanceForApplication(this);
+            beaconManager.getBeaconParsers().add(new BeaconParser()
+                    .setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
+            //이건 알트비콘의 layout 입니다
+            //2-3/4-19이런 것들은 다 byte position 을 의미합니
+
+            beaconManager.bind(this);
+        }
 
         progressBar=(ProgressBar)findViewById(R.id.progressBar);
         tv_time= (TextView)findViewById(R.id.tv_timer);
@@ -110,11 +144,105 @@ public class AfterRegisterActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == MY_PERMISSIONS_ACCESS_FINE_LOCATION) {
+            if (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(AfterRegisterActivity.this, "location!!", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        beaconManager.unbind(this);//위에 bind 가 있으니 여기 unbind 가 필요합니다
+    }
+
     /*뒤로가기를 눌렀을 때 작동되는 함수*/
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
         Toast.makeText(AfterRegisterActivity.this,"뒤로가기는 제한됩니다.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBeaconServiceConnect(){
+        //비콘은 UUID/major/minor 넘버로 구별합니다
+
+        //region 이라는 것은 geographical region 을 의미하는 것이 아니라
+        //저희가 관심있는 특정 비콘을 의미합니다 그러므로 비콘의 UUID 를 알아야 합니다
+
+        final Region region = new Region("myBeacons", Identifier.parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), null, null);
+
+        beaconManager.addMonitorNotifier(new MonitorNotifier() {
+            @Override
+            public void didEnterRegion(Region region) {
+                try {
+                    Log.i(BeaconsEverywhere, "I just saw an beacon for the first time! Id1->"+region.getId1()
+                            +" id 2:"+region.getId2()+" id 3:"+region.getId3());
+
+                    //첫번째 아이디는 UUID
+                    //두번째 아이디는 major
+                    //세번째 아이디는 minor
+
+                    beaconManager.startRangingBeaconsInRegion(region);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void didExitRegion(Region region) {
+                try {
+                    Log.d(BeaconsEverywhere, "did exit region");
+                    beaconManager.stopRangingBeaconsInRegion(region);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void didDetermineStateForRegion(int i, Region region) {
+
+            }
+        });
+
+        beaconManager.addRangeNotifier(new RangeNotifier() {
+            @Override
+            public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
+                Log.i(BeaconsEverywhere,"beacons.size less then 0");
+                if (beacons.size() > 0) {
+                    Log.i(BeaconsEverywhere, "The first beacon I see is about " + beacons.iterator().next().getDistance() + " meters away.");
+                    for(Beacon beacon: beacons){
+                        if(beacon.getDistance()<2.0){
+                            realbeacon = true;
+                            Log.d(BeaconsEverywhere, "I see a beacon that in inside the 2.0 range");
+                            //특정한 액션을 여기에 쓰면 됩니다
+                        }
+                        else{
+                            realbeacon = false;
+                            Log.d(BeaconsEverywhere, "I see a beacon that in outside the 2.0 range");
+                        }
+                    }
+                }
+                else{
+                    realbeacon = false;
+                    Log.d(BeaconsEverywhere, "Where is beacon...");
+                }
+            }
+        });
+
+
+        try {
+            beaconManager.startMonitoringBeaconsInRegion(region);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public class MyCountDownTimer extends CountDownTimer {
