@@ -92,7 +92,6 @@ public class usingactivity extends AppCompatActivity implements BeaconConsumer{
 
     Button btn_main;
     Button btn_return;
-    Button btn_away;
     Button btn_extend;
 
     Calendar t = Calendar.getInstance();
@@ -130,7 +129,7 @@ public class usingactivity extends AppCompatActivity implements BeaconConsumer{
         btn_main = (Button)findViewById(R.id.to_main);
         btn_return = (Button)findViewById(R.id.wakeup);
         btn_extend = (Button)findViewById(R.id.btn_extend);
-        btn_away = (Button)findViewById(R.id.away);
+
 
 
         progressBarView = (ProgressBar) findViewById(R.id.view_progress_bar);
@@ -186,16 +185,7 @@ public class usingactivity extends AppCompatActivity implements BeaconConsumer{
                 getout();
             }
         });
-        btn_away.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(realbeacon){
-                    realbeacon = false;
-                }else{
-                    realbeacon = true;
-                }
-            }
-        });
+        
         btn_extend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
