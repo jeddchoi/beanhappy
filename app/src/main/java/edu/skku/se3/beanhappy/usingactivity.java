@@ -97,7 +97,7 @@ public class usingactivity extends AppCompatActivity implements BeaconConsumer{
 
     Calendar t = Calendar.getInstance();
     String hh = Integer.toString(t.get(Calendar.HOUR_OF_DAY));
-    int H = Integer.parseInt(hh);
+    public int H = Integer.parseInt(hh);
 
 
 
@@ -265,6 +265,10 @@ public class usingactivity extends AppCompatActivity implements BeaconConsumer{
             public void onTick(long millisUntilFinished) {
                 setProgress(progress, endTime);
                 progress = progress + 1;
+                /*시간(시)계산*/
+                Calendar t = Calendar.getInstance();
+                String hh = Integer.toString(t.get(Calendar.HOUR_OF_DAY));
+                H = Integer.parseInt(hh);
 
                 if(isbeacon != realbeacon) {    //비콘인식
                     beaconact();
