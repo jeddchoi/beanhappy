@@ -90,16 +90,6 @@
             android:textSize="35sp" />
 
         <Button
-            android:id="@+id/beaconin"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_marginBottom="9dp"
-            android:background="#00ff0000"
-            android:fontFamily="@font/hanna"
-            android:textSize="25sp" />
-        <!--android:background="#596069"
-        android:text="@string/in"-->
-        <Button
             android:id="@+id/showmap"
             android:layout_width="80dp"
             android:layout_height="40dp"
