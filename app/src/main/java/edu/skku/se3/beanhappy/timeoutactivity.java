@@ -107,11 +107,8 @@ public class timeoutactivity extends Activity {
         } catch (Exception e) {
 
         }
-        //String timeInterval = "2000";
-        //String timeInterval = et_timer.getText().toString();
 
         progress = 13;
-        //endTime = Integer.parseInt(timeInterval); // up to finish time
         endTime = 13;
 
 
@@ -120,9 +117,6 @@ public class timeoutactivity extends Activity {
             public void onTick(long millisUntilFinished) {
                 setProgress(progress, endTime);
                 progress = progress - 1;
-                /*시간이 다 지나면 반납*/
-//                if(progress == 0)
-//                    onFinish();
 
                 int seconds = (endTime - progress) % 60;
                 int minutes =  (((endTime - progress) / 60) % 60);

@@ -82,7 +82,7 @@ public class usingactivity extends AppCompatActivity implements BeaconConsumer{
     int progress;
     CountDownTimer countDownTimer;
     int endTime = 250;
-    int real_endTime = 9000;
+    int real_endTime = 9000;    //ontick함수가 돌아가는 시간
     int extendtime;
 
     boolean istimeout = true;
@@ -116,15 +116,11 @@ public class usingactivity extends AppCompatActivity implements BeaconConsumer{
             beaconManager.getBeaconParsers().add(new BeaconParser()
                     .setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
             //이건 알트비콘의 layout 입니다
-            //2-3/4-19이런 것들은 다 byte position 을 의미합니
+            //2-3/4-19이런 것들은 다 byte position 을 의미합니다
 
             beaconManager.bind(this);
         }
 
-//        btn_main.setOnClickListener(this);
-//        btn_return.setOnClickListener(this);
-//        btn_away.setOnClickListener(this);
-//        btn_extend.setOnClickListener(this);
 
         btn_main = (Button)findViewById(R.id.to_main);
         btn_return = (Button)findViewById(R.id.wakeup);
@@ -165,7 +161,6 @@ public class usingactivity extends AppCompatActivity implements BeaconConsumer{
             }
         });
 
-        //txtView_beanbagseat.setText(seat);
 
         fn_countdown(0);
 
@@ -194,35 +189,7 @@ public class usingactivity extends AppCompatActivity implements BeaconConsumer{
         });
     }
 
-//    @Override
-//    public void onClick(View v) {
-//        int i = v.getId();
-//        switch(i) {
-//            case R.id.to_main :
-//                Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
-//                intentToActivitymain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//                startActivity(intentToActivitymain);
-//                finish();
-//                break;
-//            case R.id.wakeup:
-//                getout();
-//                break;
-//            case R.id.btn_extend:
-//                extend();
-//                btn_extend.setVisibility(View.INVISIBLE);
-//                break;
-//            case R.id.away:
-//                if(realbeacon){
-//                    realbeacon = false;
-//                }
-//                else{
-//                    realbeacon = true;
-//                }
-//                break;
-//            default :
-//                break;
-//        }
-//    }
+
 
     @Override
     public void onBackPressed() {
@@ -283,9 +250,6 @@ public class usingactivity extends AppCompatActivity implements BeaconConsumer{
                 int seconds = (endTime - progress) % 60;
                 int minutes =  (((endTime - progress) / 60) % 60);
                 int hours =  (((endTime - progress) / (60 * 60)) % 24);
-//                    int seconds = (int) (millisUntilFinished / 1000) % 60;
-//                    int minutes = (int) ((millisUntilFinished / (1000 * 60)) % 60);
-//                    int hours = (int) ((millisUntilFinished / (1000 * 60 * 60)) % 24);
                 String newtime = hours + ":" + minutes + ":" + seconds;
 
 
@@ -315,17 +279,6 @@ public class usingactivity extends AppCompatActivity implements BeaconConsumer{
             @Override
             public void onFinish() {
                 setProgress(progress, endTime);
-
-                //if((endTime - progress) == 0){  //타이머 시간이 다 지난 경우
-                //if(user.getType() == "Using"){    //시간 다되면 타임아웃 엑티비티로
-//                if(localuserstate == 1){    //시간 다되면 타임아웃 엑티비티로
-//                    timeout();
-//                }
-//                //if(user.getType() == "Out"){    //자리비운상태로 시간 다되면 자리 반납
-//                if(localuserstate == 3){    //자리비운상태로 시간 다되면 자리 반납
-//                    getout();
-//                }
-                //}
 
             }
         };
@@ -406,6 +359,7 @@ public class usingactivity extends AppCompatActivity implements BeaconConsumer{
         //+자리 반납
 
     }
+    /*비콘 위치 바뀔시 실행되는 함수*/
     public void beaconact(){
         if (localuserstate == 3){
             txtView_beanbagseat.setText(seat);
@@ -429,8 +383,6 @@ public class usingactivity extends AppCompatActivity implements BeaconConsumer{
             txtView_beanbagseat.setText("자리를 비우셨습니다.");
             txtView1.setVisibility(View.INVISIBLE);
             txtView2.setVisibility(View.INVISIBLE);
-            //btn_away.setText("beacon in");
-            //user.setType("Out");
             localuserstate = 3;
             btn_extend.setVisibility(View.VISIBLE);
             pauseprogress = progress;
@@ -439,12 +391,14 @@ public class usingactivity extends AppCompatActivity implements BeaconConsumer{
             fn_countdown(0);
         }
     }
+    /*연장하기 버튼 누를시 작동되는 함수*/
     public void extend(){
         extendtime = progress - limit_leavingtime/2;
         countDownTimer.cancel();
         fn_countdown(extendtime);
         isextended = true;
     }
+    /*시간 다 지났을 때 다음 엑티비티로 넘김*/
     public void timeout(){
         Intent intentToActivitytimeout = new Intent(mContext, timeoutactivity.class);
         startActivity(intentToActivitytimeout);
