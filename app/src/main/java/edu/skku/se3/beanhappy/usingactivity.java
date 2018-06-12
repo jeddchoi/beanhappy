@@ -39,6 +39,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.lang.Thread.UncaughtExceptionHandler;
 
 
 
@@ -60,6 +61,8 @@ public class usingactivity extends AppCompatActivity implements BeaconConsumer{
     public static final String BeaconsEverywhere = "BeaconsEverywhere";
     private BeaconManager beaconManager;
     public static final int MY_PERMISSIONS_ACCESS_FINE_LOCATION = 998;
+
+    private UncaughtExceptionHandler mUncaughtExceptionHandler;
 
     /*피크타임 시작과 끝 그리고 피크타임 여부 설정*/
     int peak_starthour = 9;
@@ -102,6 +105,9 @@ public class usingactivity extends AppCompatActivity implements BeaconConsumer{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
+        Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandlerApplication());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usingactivity);
 
@@ -203,35 +209,38 @@ public class usingactivity extends AppCompatActivity implements BeaconConsumer{
         });
     }
 
-//    @Override
-//    public void onClick(View v) {
-//        int i = v.getId();
-//        switch(i) {
-//            case R.id.to_main :
-//                Intent intentToActivitymain = new Intent(mContext, MainActivity.class);
-//                intentToActivitymain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//                startActivity(intentToActivitymain);
-//                finish();
-//                break;
-//            case R.id.wakeup:
-//                getout();
-//                break;
-//            case R.id.btn_extend:
-//                extend();
-//                btn_extend.setVisibility(View.INVISIBLE);
-//                break;
-//            case R.id.away:
-//                if(realbeacon){
-//                    realbeacon = false;
-//                }
-//                else{
-//                    realbeacon = true;
-//                }
-//                break;
-//            default :
-//                break;
-//        }
-//    }
+    class UncaughtExceptionHandlerApplication implements Thread.UncaughtExceptionHandler{
+
+        @Override
+        public void uncaughtException(Thread thread, Throwable ex) {
+
+            //예외상황이 발행 되는 경우 작업
+            if (istimeout) {
+                mRootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String seatNum = dataSnapshot.child("users").child(TodayDate).child(uuid).child("seatNum").getValue(String.class);
+                        mRootRef.child("bb_" + seatNum.charAt(0)).child("bb_" + seatNum).child("state").setValue(0);
+                        mRootRef.child("bb_" + seatNum.charAt(0)).child("bb_" + seatNum).child("user").removeValue();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.e(TAG, "onCancelled: " + databaseError.getMessage());
+                    }
+                });
+
+                mRootRef.child("users").child(TodayDate).child(uuid).child("status").setValue(0);
+                mRootRef.child("users").child(TodayDate).child(uuid).child("seatNum").setValue(null);
+                Toast.makeText(usingactivity.this, "자리가 반납되었습니다", Toast.LENGTH_SHORT).show();
+            }
+
+            //예외처리를 하지 않고 DefaultUncaughtException으로 넘긴다.
+            mUncaughtExceptionHandler.uncaughtException(thread, ex);
+        }
+
+    }
+
 
     @Override
     public void onBackPressed() {
