@@ -94,7 +94,6 @@ public class AfterRegisterActivity extends AppCompatActivity implements BeaconCo
         progressBar=(ProgressBar)findViewById(R.id.progressBar);
         tv_time= (TextView)findViewById(R.id.tv_timer);
         Button btn_return = (Button)findViewById(R.id.returnseat);
-        Button btn_beaconin = (Button)findViewById(R.id.beaconin);
         Button btn_showmap = (Button)findViewById(R.id.showmap);
 
         device = new DeviceUuidFactory(this);
@@ -115,13 +114,6 @@ public class AfterRegisterActivity extends AppCompatActivity implements BeaconCo
             }
         });
 
-        /*테스트용 임시 버튼*/
-        btn_beaconin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                beaconin();
-            }
-        });
 
         btn_showmap.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {

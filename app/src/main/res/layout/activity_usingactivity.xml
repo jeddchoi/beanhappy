@@ -94,21 +94,6 @@
 
 
     <Button
-        android:id="@+id/away"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:fontFamily="@font/hanna"
-        android:textSize="20sp"
-        android:background="#00ff0000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
-    <!--android:text="비콘아웃"-->
-
-    <Button
         android:id="@+id/to_main"
         android:layout_width="60dp"
         android:layout_height="30dp"
